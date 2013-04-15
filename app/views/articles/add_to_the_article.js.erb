@@ -1,0 +1,19 @@
+jQuery.noConflict();
+jQuery(document).ready(function($) { 
+  var id = $('#summary_hidden_id').val();
+  $(id).show();
+  var parent = $(id).parent();
+  $("#no_association_summary").prependTo(parent); 
+   html = [];
+  html.push("<div class=\"div-table-cell\">");
+  html.push("<%=@article_occurred%>");
+  html.push("</div>");
+  parent.prepend(html.join(''));
+  var truncated_id = id.replace('#', '');
+  $("#no_association_summary").attr("contenteditable", "false");
+  var style = $("#no_association_summary").attr('class', "summary_content");
+  $("#no_association_summary").attr("id", truncated_id); 
+  $(id).children("input[id*='full_article_id']").val("<%=@article_id%>");
+//  var ckeditor_id = $(id).children("textarea").attr("id");
+//  CKEDITOR.instances[ckeditor_id].setData("<%=@article_content%>");
+});

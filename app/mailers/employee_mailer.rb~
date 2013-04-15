@@ -1,0 +1,13 @@
+class EmployeeMailer < ActionMailer::Base
+  default from: "han.lee0707@gmail.com"
+
+  # Subject can be set in your I18n file at config/locales/en.yml
+  # with the following lookup:
+  #
+  #   en.employee_mailer.create_account.subject
+  #
+  def create_account(employee)
+#    @employee = employee
+#    mail to: employee.email, :subject => "GIST: Welcome aboard. Verify your account!"
+  end
+end

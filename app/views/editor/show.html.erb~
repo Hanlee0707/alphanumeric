@@ -1,0 +1,62 @@
+<% provide(:title, "Editor") %>
+
+
+<div class="span10 center">
+  <% if !@articles.empty? %>
+  <%= form_tag(published_list_remove_path, method: :post) do %>
+  <div class="span12 row">
+    <div class="span2">
+      <%= submit_tag "Remove Selected", class:'btn btn-primary' %>
+    </div>
+    <div class="span6"></div>      
+    <div class="span4">
+      <%= form_for administrator_path(current_employee), :url=>{:action => 'show'} do |f| %>
+      <%= text_field_tag 'search', "", placeholder: 'Name or Email', class:'down input-search' %>
+      <%= button_tag "Search", class: 'btn' %>
+      <% end %>
+    </div>
+  </div>
+  <div class="row span12">
+    <div class="span11">
+      <table class="table table-striped table-hover">
+	<thead>
+	  <tr>
+	    <th class="span1"><%=check_box_tag 'check_all', 'check_all', false%></th>
+	    <th class="span6">TITLE</th>
+	    <th class="span2">CREATED</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <% @articles.each do |article| %>
+	  <tr>
+	    <td><%= check_box_tag 'article_'+article.id.to_s, article.id, false %> </td>
+	    <td><%= link_to article.title, article %></td>
+	    <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	  </tr>
+	  <% end %>
+	</tbody>
+      </table>
+    </div>
+    <div class="span1"></div>
+  </div>
+  <% end %>
+  <% else %>
+  <div class="span12 row">
+  <div class="span12 row"></div>
+  <div class="span12 row"></div>
+    <div class="span2"></div>
+    <div class="span5">
+    <h4>There are no published articles at this moment.</h4>
+    </div>
+    <div class="span5"></div>
+  <div class="span12 row"></div>
+  <div class="span12 row"></div>
+  <div class="span12 row"></div>
+  </div>
+  <% end %>
+</div>
+
+
+
+
+

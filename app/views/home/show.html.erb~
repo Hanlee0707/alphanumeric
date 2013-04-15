@@ -1,0 +1,94 @@
+<% provide(:title, "Home")%>
+
+<div class="span10">
+  <div class="span9">
+    <% if @isEditor and @isContributor then %>
+    <div class="span1"></div>
+    <div class="span5">
+      <div class="span12 hero-unit">
+      <div class="span12 center">
+	<strong>Editor Statistics</strong>
+	<div class="hr-full">
+	</div>
+      </div>
+      <div class="span12"></div>
+      <div class="span12" style="font-size:80%;">
+	<%= @editor_incomplete_count %> working articles
+      </div>
+      <div class="span12" style="font-size:80%;">
+	<%= @editor_published_count %> published articles
+      </div>
+      <div class="span12" style="font-size:80%;">
+	<%= @editor_archived_count %> archived articles
+      </div>
+      </div>
+    </div>
+    <% else %>
+    <div class="span3">
+    </div>
+    <% end %>
+    <% if @isEditor and @isContributor %>
+    <div class="span1">
+    </div>
+    <% elsif @isEditor %>
+    <div class="span6 hero-unit">
+      <div class="span12 center">
+	<strong>Editor Statistics</strong>
+	<div class="hr-full">
+	</div>
+      </div>
+      <div class="span12"></div>
+      <div class="span12" style="font-size:80%;">
+	<%= @editor_incomplete_count %> working articles
+      </div>
+      <div class="span12" style="font-size:80%;">
+	<%= @editor_published_count %> published articles
+      </div>
+      <div class="span12" style="font-size:80%;">
+	<%= @editor_archived_count %> archived articles
+      </div>
+    </div>
+    <% elsif @isContributor %>
+    <div class="span6 hero-unit">
+      <div class="span12 center">
+	<strong>Contributor Statistics</strong>
+	<div class="hr-full">
+	</div>
+      </div>
+      <div class="span12"></div>
+      <div class="span12" style="font-size:80%;">
+	<%= @contributor_incomplete_count %> working articles
+      </div>
+      <div class="span12" style="font-size:80%;">
+	<%= @contributor_published_count %> published articles
+      </div>
+      <div class="span12" style="font-size:80%;">
+	<%= @contributor_archived_count %> archived articles
+      </div>
+    </div>
+    <% end %>
+    <% if @isEditor and @isContributor %>
+    <div class="span5 hero-unit">
+      <div class="span12 center">
+	<strong>Contributor Statistics</strong>
+	<div class="hr-full">
+	</div>
+      </div>
+      <div class="span12"></div>
+      <div class="span12" style="font-size:80%;">
+	<%= @contributor_incomplete_count %> working articles
+      </div>
+      <div class="span12" style="font-size:80%;">
+	<%= @contributor_published_count %> published articles
+      </div>
+      <div class="span12" style="font-size:80%;">
+	<%= @contributor_archived_count %> archived articles
+      </div>
+    </div>
+    <% else %>
+    <div class="span3">
+    </div>
+    <% end %>
+  </div>
+  <div class="span3"></div>
+</div>

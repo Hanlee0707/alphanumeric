@@ -1,0 +1,54 @@
+  <div class="row span12">
+    <div class="span1"></div>
+    <div class="span10 center">
+      <%=link_to raw("<i class='icon-arrow-left'></i>"), show_previous_path(:article_id=> article.id), id:'show_previous_summaries_button', class:'btn', style:"float:left;", remote: true %>
+      <strong>Recent Events</strong>
+      <%=link_to raw("<i class='icon-arrow-right'></i>"), show_details_path(:article_id => article.id), id:'show_details_button', class:'btn', style:"float:right;", remote: true %>
+      <div class="hr center"></div>
+    </div>
+    <div class="span1"></div>
+  </div>
+
+  <div class="row span12">
+    <div class="span12"></div>
+    <div class="span3"></div>
+    <div class="span6">
+      <div class="span1"></div>
+      <div class="span11">
+	<%= raw add_definitions(article) %>
+	<!-- <%= raw article.current_content %> -->
+      </div>
+    </div>
+    <div class="span3"></div>
+  </div>
+
+  <% if !(article.images.nil?) %>
+    <% article.images.each do |image| %>
+      <% if image.image_type == "GIST" %>
+      <div class="row span12">
+	<div class="row span12"></div>
+	<div class="span3"></div>
+	<div class="span6">
+	  <div class="span2"></div>
+  	  <div class="span10">
+  	    <%= image_tag image.image_name.fit.url.to_s %>
+  	  </div>
+	</div>
+	<div class="span3"></div>
+      </div>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <div class="row span12"></div>
+  <div class="row span12"></div>
+  <div class="row span12"></div>
+
+  <div class="row span12">
+    <div class="span5"></div>
+    <div class="span4" style="padding-left:22px;">
+
+
+    </div>
+    <div class="span3"></div>
+  </div>

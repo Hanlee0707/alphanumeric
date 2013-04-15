@@ -1,0 +1,134 @@
+<div class="span2"></div>
+<div class="span10 row-fluid">
+
+<%= form_for employee, :url=>{:action => 'create'} do |f| %>
+  <div class="span12 row center">
+    <div class="span3"></div>
+    <div class="span6">
+      <% if employee.errors.any? %>
+      <div class="error_messages">
+	<h2>There were some errors.</h2>
+	<ul>
+          <% for message in employee.errors.full_messages %>
+          <li><%= message %></li>
+          <% end %>
+	</ul>
+      </div>
+      <% end %>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <div class="span12 row center">
+    <div class="span3"></div>
+    <div class="span6">
+      <h1>Hire a New Employee</h1>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <div class="span12 row"></div>
+  <div class="span12 row"></div>
+
+  <div class="span12 row">
+    <div class="span3">
+    </div>
+    <div class="span6 field center">
+	<%= f.text_field :first_name, placeholder: "first name" %>
+	<%= f.text_field :last_name, placeholder: "last name" %>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <div class="span12 row">
+    <div class="span3">
+    </div>
+    <div class="span6 field center">
+      <div class="span12">
+	<%= f.text_field :email, placeholder: "email" %>
+      </div>
+      <div class="span12">
+	<%= f.text_field :email_confirmation, placeholder: "email confirmation" %>
+	<% initial_password = generate_temporary_password %>
+	<%= f.hidden_field :password, value: initial_password %>
+	<%= f.hidden_field :password_confirmation, value: initial_password %>
+      </div>
+    </div>
+    <div class="span3"></div>
+  </div>
+
+  <div class="row span12"></div>
+  <div class="row span12">
+    <div class="span3"></div>
+    <div class="span6 center">
+      <strong>Position</strong>
+      <div class="hr center"></div>
+    </div>
+    <div class="span3"></div>
+  </div>
+
+  <div class="span12 row">
+    <div class="span3"></div>
+    <div class="span6 field">
+      <div class="span1"></div>
+      <div id="employee_positions_container" class="span11">
+	<div class="span3"></div>
+	<div class="span9">
+	<% EmployeePositionType.all.each_with_index do |position, idx| %>
+	  <div class="fields span12 row">
+	    <div class="span6">
+	    <% position_exists = false %>
+	    <% selected_level = 0 %>
+	    <% if employee.employee_positions.any? then %>
+	      <% employee.employee_positions.each do |pos| %>
+	        <% if pos.position == position.position_type then %>
+		  <% position_exists = true %>
+		  <% break %>
+		<% end %>
+	      <% end %>
+	    <% end %>
+	    <div class="span2">
+	    <% if position_exists %>
+	      <%= check_box_tag( "employee[employee_positions_attributes][#{idx}][position]", position.position_type, true, class:'up') %>
+	    <% else %>
+	      <%= check_box_tag( "employee[employee_positions_attributes][#{idx}][position]", position.position_type, false, class:'up') %>
+	    <% end %>
+	    </div>
+	    <div class="span10 inline few-down">
+	      <%= position.position_type %>
+	    </div>
+	    </div>
+	    <div class="span4 less-up">
+	    <% if position.position_type != "Intern" and  position.position_type != "Contributor" then %>
+ 	      <% if position_exists %>
+	        <%= select_tag "employee[employee_positions_attributes][#{idx}][level]", options_for_select(list_of_levels(position.position_type), selected_level), {class: "input-time"} %>
+	      <% else %>
+	        <%= select_tag "employee[employee_positions_attributes][#{idx}][level]", options_for_select(list_of_levels(position.position_type)), {class: "input-time"} %>
+	      <% end %>
+	    <% else %>
+	      <%= hidden_field_tag "employee[employee_positions_attributes][#{idx}][level]", "1" %>
+	    <% end %>
+	    </div>
+	    <div class="span2"></div>
+	  </div>
+	<% end %>
+	</div>
+      </div>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <div class="span12 row"></div>
+
+
+  <div class="span12 row">
+    <div class="span3"></div>    
+    <div class="actions span6 center">
+      <%= f.submit "Create and send mail", class: 'btn btn-primary' %>
+      <%= link_to 'Back', list_path, class: 'btn btn-primary make-white' %>
+    </div>
+    <div class="span3"></div>
+  </div>
+
+<% end %>
+
+</div>
+
+
+<% session[:list] = request.path %>

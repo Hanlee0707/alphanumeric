@@ -1,0 +1,18 @@
+  <%= f.file_field :image_name, class:"input-city field" %>
+  <%= f.hidden_field :image_type, value: image_type %>
+  <%= f.hidden_field :_destroy, value: "0" %>
+  <% if image_type == "GIST" then %>
+    <%= link_to "Remove", "#", class:'btn remove_nested_attributes_button', show_gist_link: true %>
+  <% else %>
+    <%= link_to "Remove", "#", class:'btn remove_nested_attributes_button', show_detail_link: true %>
+    <%= f.hidden_field :location %>
+  <% end %>
+  <div class="span12"></div>
+  <% if !f.object.image_name_url.nil? %>
+    Current Thumbnail
+    <div class="hr center"></div>
+    <%= image_tag f.object.image_name.thumb.url.to_s %>
+  <div class="span12"></div>
+  <% end %>
+
+

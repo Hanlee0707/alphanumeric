@@ -1,0 +1,56 @@
+<div class="div-table-cell span3">
+  <div class="datetimepicker2 span10 input-append">
+    <% if f.object.full_article_id.nil? then%>
+      <%= f.text_field :occurred_date, class: "datepicker span10", placeholder: "Occurred Date", data: {format:"yyyy-MM-dd"} %>
+    <% else %>
+      <%= f.text_field :occurred_date, value: parse_date_only(Article.find(f.object.full_article_id).occurred), class: "datepicker span10", placeholder: "Occurred Date", data: {format:"yyyy-MM-dd"} %>
+    <% end %>
+    <span class="add-on">
+      <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+    </span>
+  </div>
+  <div class="span2">
+    <% if f.object.full_article_id.nil? then %>
+      <%= f.hidden_field :full_article_id, :value=> "", class: "full_article_id" %>    
+    <% else %> 
+      <%= f.hidden_field :full_article_id, :value=> f.object.full_article_id, class: "full_article_id" %>
+    <% end %>
+  </div>
+    <% if f.object.full_article_id.nil? %>
+    <div class="span12 div_title_wrapper" style="display:none;">
+      <div class="div_title span10">
+    <% else %>
+    <div class="span12 div_title_wrapper">
+      <div class="div_title span10">
+        <%= Article.find(f.object.full_article_id).title %>
+    <% end %>
+    </div>
+    <div class="span2"></div>
+  </div>
+  <div class="span10">
+    <% if f.object.full_article_id.nil? %>
+      <%= link_to "Link", "#", class:'span12 btn little-up link_summary' %>
+      <%= link_to "Unlink", "#", class:'span12 btn little-up unlink_summary', style:'display:none;' %>    
+    <% else %>
+     <%= link_to "Link", "#", class:'span12 btn little-up link_summary', style:'display:none;'%>
+      <%= link_to "Unlink", "#", class:'span12 btn little-up unlink_summary'%>
+    <% end %>
+  </div>
+  <div class="span2"></div>
+  <div class="span10">
+    <%= f.hidden_field :_destroy, value: "0" %>
+    <%= link_to "Remove", "#", class:'span12 btn remove_nested_attributes_button', show_link: false %>
+  </div>
+  <div class="span2"></div>
+  <div class="span10 div_error" style="display:none;">
+    Select an article from the list first.
+  </div>
+  <div class="span2"></div>
+</div>
+<div class="div-table-cell span9">
+  <%= f.cktext_area :summary, :ckeditor=>{ :height=> 100 } %>
+</div>
+
+<div class="row span12"></div>
+
+

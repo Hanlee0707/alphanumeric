@@ -1,0 +1,53 @@
+<div class="span2">
+  <div class="span10">
+    <%= f.text_field :author, placeholder: "author", class: "span12"%>
+  </div>
+  <div class="span2"></div>
+  <div class="span10">
+    <%= f.hidden_field :_destroy, value: "0" %>
+    <%= link_to "Remove", "#", class:'span12 btn remove_nested_attributes_button'%>
+  </div>
+  <div class="span2"></div>
+</div>
+<div class="span10">
+  <div class="span7">
+    <div class="span11">
+    <%= f.text_field :title, placeholder: "title", class: "span12" %>
+    </div>
+    <div class="span1"></div>
+  </div>
+  <div class="span3">
+    <div class="datetimepicker2 span10 input-append">
+      <%= f.text_field :published_date, class: "datepicker span10", placeholder: "Published Date", data: {format:"yyyy-MM-dd"} %>
+      <span class="add-on">
+	<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+      </span>
+    </div>
+    <div class="span2"></div>
+  </div>
+
+  <div class="span2">
+    <%= f.text_field :publisher, placeholder: "publisher", class:"span12" %>
+  </div>
+
+  <div class="span7">
+    <div class="span11">
+      <%= f.text_field :link, placeholder: "article link", class:"span12" %>
+    </div>
+    <div class="span1"></div>
+  </div>
+  <div class="span3">
+    <div class="datetimepicker2 span10 input-append">
+      <%= f.text_field :accessed_date, class: "datepicker span10", placeholder: "Accessed Date", data: {format:"yyyy-MM-dd"} %>
+      <span class="add-on">
+	<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+      </span>
+    </div>
+    <div class="span2"></div>
+  </div>
+  <div class="span2"></div>
+</div>
+
+<div class="row span12"></div>
+
+

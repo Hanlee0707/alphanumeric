@@ -1,0 +1,107 @@
+  <div class="row span12">
+    <div class="span1"></div>
+    <div class="span10 center">
+      <%=link_to raw("<i class='icon-arrow-left'></i>"), show_recent_path(:article_id=> article.id), id:'show_previous_summaries_button', class:'btn', style:"float:left;", remote: true %>
+      <strong>Details</strong>
+      <%=link_to raw("<i class='icon-arrow-right'></i>"), show_details_path(:article_id => article.id), id:'show_details_button', disabled: true, class:'btn', style:"float:right;", remote: true %>
+      <div class="hr center"></div>
+    </div>
+    <div class="span1"></div>
+  </div>
+
+
+  <% num_images = 0 %>
+  <% @article.images.each do |image| %>
+    <% if image.image_type == "DETAIL" then %>
+      <% num_images = num_images+1 %>
+    <% end %>
+  <% end %>
+  <% num_details = num_images + @article.additional_texts.size %>
+  <% if num_details > 0 then %>
+    <div class="row span12"></div>
+    <div class="row span12">
+      <ul>
+      <% position= 0 %>
+      <% @article.additional_texts.each do |text| %>
+        <% if text.location != position then %>
+	  <% @article.images.each do |image| %>
+            <% if image.image_type == "DETAIL" and image.location== position then %>
+	    <div class="row span12">
+	      <div class="span3"></div>
+	      <div class="span6">
+		<div class="span1"></div>
+		<div class="span11">
+ 		  <%= image_tag image.image_name.fit.url.to_s %>
+		</div>
+	      </div>
+	      <div class="span3"></div>
+	    </div>
+	    <% position = position + 1 %>
+ 	    <% end %>
+	  <% end %>
+	<% end %>
+   	<div class="span3"></div>
+	<div class="span6">
+	  <div class="span1"></div>
+	  <div class="span11">
+	    <li><%= raw(text.bullet)%></li>
+  	  </div>
+	</div>
+	<div class="span3"></div>
+	<% position = position + 1 %>
+      <% end %>
+      <% @article.images.each do |image| %>
+      <% if image.image_type == "DETAIL" and image.location== position then %>
+      <div class="row span12">
+	<div class="span3"></div>
+	<div class="span6">
+	  <div class="span1"></div>
+	  <div class="span11">
+ 	    <%= image_tag image.image_name.fit.url.to_s %>
+	  </div>
+	</div>
+	<div class="span3"></div>
+      </div>
+      <% position = position + 1 %>
+      <% end %>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="row span12"></div>
+  <div class="row span12"></div>
+
+  <div class="row span12">
+    <div class="span3"> </div>
+    <div class="span6">
+      <div class="span1"></div>
+      <div class="span11">
+	<% article.numbers.each do |number| %>
+	  <div class="row span12">
+	    <div class="span3">
+	      <font size="5"><strong><%= number.value%></strong></font>
+	    </div>
+	    <div class="span9">
+	      <%=number.explanation %>
+	    </div>
+	  </div>
+	<% end %>
+      </div>
+    </div>
+    <div class="span3"></div>
+  </div>
+
+  <div class="span12 row"></div>
+  <div class="span12 row"></div>
+  <div class="span12 row"></div>
+
+  <div class="row span12">
+    <div class="span5"></div>
+    <div class="span4" style="padding-left:22px;">
+
+
+    </div>
+    <div class="span3"></div>
+  </div>
+  
+

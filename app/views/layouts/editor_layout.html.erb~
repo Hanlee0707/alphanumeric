@@ -1,0 +1,92 @@
+<!-- START:head -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GIST <% title_component = yield(:title) %>
+      <% if title_component!="" then %>
+      | <%= title_component %>
+      <% end %>
+    </title>
+    <%= stylesheet_link_tag "application", media: "all" %><!-- <label id="code.slt"/> -->
+    <!-- <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/redmond/jquery-ui.css" %> -->
+    <!-- <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js" %> -->
+    <%= javascript_include_tag "application",  '/assets/ckeditor/ckeditor.js', '/assets/ckeditor/init.js'%><!-- <label id="code.jlt"/> -->
+    <%= csrf_meta_tags %><!-- <label id="code.csrf"/> -->
+  </head>
+<!-- END:head -->
+  <body>
+    <header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+	  <div class="span1"></div>
+	  <div class="span9">
+            <%= link_to "Gist", root_path,class: "brand", id: "logo" %>
+            <nav>
+	      <% if current_employee %>
+              <ul class="nav pull-left">
+		<% if employee_privilege("Contributor") %>
+		  <li><%=link_to "Contributor", contributor_path(current_employee) %></li>
+		<% end %>
+		<% if employee_privilege("Editor") %>
+		<li><%=link_to "Editor", editor_path(current_employee) %></li>
+		<% end %>
+		<% if employee_privilege("Administrator") %>
+		<li><%=link_to "Administrator", administrator_path(current_employee)%></li>
+		<% end %>
+              </ul>
+	      <% end %>
+              <ul class="nav pull-right">
+		<% if current_employee %>
+		<li>
+		    <%= link_to image_tag("Control Panel.png", alt: "Settings") + raw("<span class='caret white-caret'></span>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
+		      <li><%= link_to "Edit Account", edit_employee_path(current_employee) %></li>
+		      <li class="dropdown-divider"></li>
+		      <li><%= link_to "Sign Out", log_out_path %></li>
+		    </ul>
+		</li>
+		<% else %>
+		<li><%= link_to "Sign in", root_path %></li>
+		<% end %>
+              </ul>
+            </nav>
+	  </div>
+	  <div class="span2"></div>
+        </div>
+      </div>
+    </header>
+    <div class="row-fluid no-space">  
+      <% if notice %>
+      <div class="span12 row">
+	<div class="span2"></div>
+	<div class="span10">
+	  <div class="span12 row">
+	    <div class="span2"></div>
+	    <div class="span6 center">
+	      <%=notice %>
+	    </div>
+	    <div class="span4"></div>
+	  </div>
+	</div>
+      </div>
+      <% end %>
+      <div class="span2 bs-docs-sidebar">
+	<div class="well sidebar-nav sidebar-nav-fixed">
+	  <ul class="nav nav-list bs-docs-sidenav">
+	    <li class="nav-header">Article Options</li>
+	    <li class="nav-list-item"><%=link_to "New", new_editor_article_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_incomplete.to_s + raw("</span>"), editor_incomplete_index_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to raw("Review<span class='round list-right less-up'>") + num_review.to_s + raw("</span>"), editor_review_index_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to raw("Publish<span class='round list-right less-up'>") + num_publish.to_s + raw("</span>"), review_path %></li>
+	    <li class="nav-list-item"><%=link_to "View Published", published_list_path %></li>
+	  </ul>
+	</div><!--/.well -->
+      </div><!--/span-->
+
+      <%= yield %><!-- <label id="code.depot.e.include"/> -->
+    </div>
+  </body>
+<%= debug(params) if Rails.env.development? %>
+</html>
+
+

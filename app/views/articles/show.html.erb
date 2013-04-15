@@ -1,0 +1,149 @@
+<div class="span2">
+  <div id="definition_window" style="display:none;">
+  </div>
+
+  <div id="citations_window" style="display:none;" class="row-fluid">
+    <% @article.citations.each do |citation| %>
+      <div class="span12">
+        <%= citation.author%>. &quot;<%=citation.title%>&quot; <u><%=citation.publisher%></u> <%=citation.published_date.strftime "%e %b. %Y."%> <%=citation.accessed_date.strftime "%e %b. %Y."%> &lt;<%=citation.link%>&gt;
+      </div>
+    <% end %>
+  </div>
+
+</div>
+<div class="span10">
+  <div class="span3"></div>
+  <div class="span9">
+    <div class="row span12">
+      <div class="span3"></div>
+      <div class="center span6">
+	<% @article.tag_list.to_s.split(", ").each do |tag| %>
+	<div class='tag_wrap_form'>
+	  <div class='tag triangle-obtuse'>
+	    <%=tag %>
+	  </div>
+	</div>
+	<% end %>
+      </div>
+    <div class="span3"></div>
+    </div>
+    <div class="row span12">
+      <div class="span2"></div>
+      <div class="span8 center">
+	<h3 id="title"><%= @article.title %>
+	  <%= link_to raw("<i class='icon-info-sign'></i>"), "#",  class: 'show_citations_window' %></h3>
+      </div>
+      <div class="span2"></div>
+    </div>
+    
+    <div class="row span12">
+      <% if current_employee %>
+      <div class="span2"></div>
+      <div class="span8 center">
+	<div class="span12">
+          STATUS: <%= @status %>    
+	</div>	
+	<% if @through_contributor and (@status=="Being Written" or @status=="Revoked") then %>
+	<div class="span12">
+	  <%= link_to 'Submit For Review', update_status_path(:contributor_id => current_employee.id, :id => @article.id, :status=>"Need Review"), class: 'btn btn-primary make-white', method: :post %>
+	</div>
+	<% end %> 
+	<% if @through_editor and @status=="Need Review" then %>
+	<div class="span12" id="article_status_actions">
+	  <%= link_to 'Approve', update_status_path(:editor_id => current_employee.id, :id => @article.id, :status=>"Approved"), class: 'btn btn-primary make-white', method: :post %>
+	  <%= link_to 'Revoke', "#", id:"revoke_article_button", class: 'btn btn-primary make-white'%>	
+	</div>
+	<div id="article_revoke_actions" class="row span12" style="display:none;">
+	  <div class= "span12">
+	    <%= form_tag(update_status_path(:editor_id => current_employee.id, :id => @article.id, :status => "Revoked")) do |f| %>
+	    <div class="span3"></div>
+	    <div class="span6">
+		<%= text_area_tag "reason", nil, placeholder:"Reason for revoking", rows: 8, class:'input-xlarge' %>
+	    </div>
+	    <div class="span3"></div>
+	    <div class="span12 center">
+              <%= submit_tag "Confirm", class: 'btn btn-primary make-white' %>
+	      <%= link_to "Cancel", "#", id: "cancel_revoke_article_button", class: 'btn btn-primary make-white' %>
+	    </div>  
+	    <% end %>
+	  </div>
+	</div>
+	<% end %>
+	<% if @through_editor and @status=="Approved" then %>
+	<div class="span12" id="article_status_actions">
+	  <%= link_to 'Publish', update_status_path(:editor_id => current_employee.id, :id => @article.id, :status=>"Published"), class: 'btn btn-primary make-white', method: :post %>
+	</div>
+	<% end %>
+      </div>
+      <div class="span2"></div>
+      <% end %>
+    </div>
+    
+    <div class="row center span12">
+      <div class="span2"></div>
+      <div class="span8">
+	<em><%=distance_of_time_in_words(@article.created_at, Time.now)%> ago in <%= @article.city %>, <%= @article.country %>,</em>
+      </div>
+      <div class="span2"></div>
+    </div>
+    
+    <div class="row span12"></div>
+
+    <% if (@through_editor and (@status=="Being Written" or @status == "Assigned")) or (@through_contributor and @status=="Assigned") %>
+
+    <div class="row span12"></div>
+    <div class="row span12"></div>
+    <% else %>
+    <div id="content_container" class="row span12">
+      <%=render 'show_recent_events', :article => @article %>
+    </div>
+    <% end %>
+    <div class="row span12"></div>
+    <div class="row span12"></div>
+
+
+
+    <div class="row span12"></div>
+    <div id="article_actions" class="row span12 center">
+      <div class= "span1"></div>
+      <div class= "span10">
+	<% if @show_edit %>
+	  <%= link_to 'Edit', @edit_path, class: 'btn btn-primary make-white' %>
+	<% end %>
+	<% if @through_editor then %>
+	  <%= link_to 'Delete', "#", id: "delete_article_button", class: 'btn btn-primary make-white'%>
+	<% end %>
+	<%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
+      </div>
+      <div class="span1"></div>
+    </div>
+    <div id="article_delete_actions" class="row span12" style="display:none;">
+      <div class= "span1"></div>
+      <div class= "span10">
+	<%= form_tag(editor_article_path(current_employee, @article, :back_path => @back_path), :method => :delete) do |f| %>
+	<div class="span3"></div>
+	<div class="span6">
+	  <div class="span1"></div>
+	  <div class="span11 move-right">
+	    <%= text_area_tag "reason", nil, placeholder:"Reason for deletion", rows: 8, class:'input-xlarge' %>
+	  </div>
+	</div>
+	<div class="span3"></div>
+	<div class="span12 center">
+          <%= submit_tag "Confirm", class: 'btn btn-primary make-white' %>
+	  <%= link_to "Cancel", "#", id: "cancel_delete_article_button", class: 'btn btn-primary make-white' %>
+	</div>
+      </div>
+      <div class="span1"></div>
+      <% end %>
+    </div>
+
+  </div>
+  <div class="row span12"></div>
+  <div class="row span12"></div>
+  <div class="row span12"></div>
+</div>
+
+
+
+

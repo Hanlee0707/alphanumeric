@@ -1,0 +1,8 @@
+<%= f.hidden_field :original_article_id %>
+<%= f.cktext_area :summary, :ckeditor => {:height => 70} %>
+<%= f.hidden_field :_destroy, value: "0" %>
+<%= link_to "Remove", "#", class:'btn remove_nested_attributes_button', show_link: false %>
+
+
+
+

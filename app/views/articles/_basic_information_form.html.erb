@@ -1,0 +1,126 @@
+  <div class="row span12" id="basic_information">
+
+    <% if editor then %>
+    <%= f.hidden_field :editor_id, value: editor %>
+    <% end %>
+    <div class="row span12">
+      <div class="span12">
+	<h5>Assigned Contributor <b id="basic-caret" class="caret little-down"></b></h5>
+      </div>
+      <div class="span12">
+	<div class="hr-input"></div>
+      </div>
+    </div>
+
+    <% if edit %>
+    <div class="row span12">
+      <%= f.object.contributor.first_name + " " + f.object.contributor.last_name + " ("+f.object.contributor.email + ")" %>
+    </div>
+    <% else %>
+    <div class="row span12">
+      <% if f.object.contributor_id.nil? or f.object.contributor_id="" %>
+        <div class="span6" id="contributor_container" style="display:none;">
+	</div>
+	<div class="span6" id="remove_contributor_button_container" style="display:none;">
+	<%= link_to "Remove", "#", id: 'remove_contributor', class: 'btn little-up' %>
+	</div>
+	<div class="span12" id="contributor_query">
+	  <%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
+	  <%= f.hidden_field :contributor_id, id: "contributor_id" %>
+	  <%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down input-title", placeholder: "Search by last name", :id_element =>'#searched_contributor_id' %>
+	  <%= link_to "Set", "#", id: 'set_contributor', class: 'btn'%>
+	   &nbsp;&nbsp;OR&nbsp;&nbsp; 
+	  <%= link_to "Assign Random", "#", id:'assign_random_contributor', class: 'btn'%>
+	</div>
+      <% else %>
+        <div class="span6" id="contributor_container">
+	  <%= get_contributor(f.object.contributor_id) %>
+	</div>
+	<div class="span6"id="remove_contributor_button_container">
+	  <%= link_to "Remove", "#", id: 'remove_contributor', class: 'btn little-up'%>
+	</div>
+	<div class="span12" id="contributor_query" style="display:none;">
+	  <%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
+	  <%= f.hidden_field :contributor_id, id: "contributor_id" %>
+	  <%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down input-title", placeholder: "Search by last name", :id_element =>'#searched_contributor_id' %>
+	  <%= link_to "Set", "#", id:'set_contributor', class: 'btn'%>
+	   &nbsp;&nbsp;OR&nbsp;&nbsp; 
+	  <%= link_to "Assign Random", "#", id:'assign_random_contributor', class: 'btn'%>
+	</div>
+      <% end %>
+      <div class="span12">
+	<div style="display:none;" id="contributor_error">Select a contributor from the search result.</div>
+      </div>	
+    </div>
+    <% end %>
+    <div class="row span12"></div>
+
+    <div class="row span12">
+      <div class="span12">
+	<h5>Basic Information <b id="basic-caret" class="caret little-down"></b></h5>
+      </div>
+      <div class="span12">
+	<div class="hr-input"></div>
+      </div>
+    </div>
+    
+    <% if edit %>
+    <% article = f.object %>
+    <div class="row span12">
+      <div class="span3"></div>
+      <div class="center span6">
+	<% article.tag_list.to_s.split(", ").each do |tag| %>
+	<div class='tag_wrap_form'>
+	  <div class='tag triangle-obtuse'>
+	    <%=tag %>
+	  </div>
+	</div>
+	<% end %>
+      </div>
+    <div class="span3"></div>
+    </div>
+    <div class="row span12">
+      <div class="span2"></div>
+      <div class="span8 center">
+	<h3 id="title"><%= @article.title %></h3>
+      </div>
+      <div class="span2"></div>
+    </div>
+    
+    <div class="row center span12">
+      <div class="span2"></div>
+      <div class="span8">
+	<em><%=distance_of_time_in_words(article.created_at, Time.now)%> ago in <%= article.city %>, <%= article.country %>,</em>
+      </div>
+      <div class="span2"></div>
+    </div>
+
+    <% else %>
+    <div class="row span12">
+      <div class="row span7">
+	<div class="row span12">
+	  <%= f.text_field :title, :size => 80, maxlength: 80, class:"input-title", placeholder: "Enter title here" %>
+	</div>
+	<div class="row span12">
+	  <div class="span6">
+	    <%= f.text_field :city, size: 20, maxlength: 20, class:"input-city", placeholder: "city" %>
+	  </div>
+	  <div class="span6">
+	    <%= f.text_field :country, size: 20, maxlength: 20, class:"input-country country-right", placeholder: "country" %>
+	  </div>
+	</div>
+      </div>
+      <div class="row span5">
+	  <div class="span12 module-header center">
+	    <%= f.hidden_field :tag_list %>
+	    <%= autocomplete_field_tag "throwaway", "",  autocomplete_tag_name_articles_path, 'data-delimiter' => ', ', :multiple=> true, class:"little-further-down input-tag", placeholder: "search for tags" %>
+	    <!-- <%= text_field_tag :tag_list, nil, placeholder: "tags (Separated by commas)", class:"little-further-down input-tag" %> -->
+	    <%= button_tag "Add", class: 'btn', type: 'button', id: 'add_tag_button' %>
+	  </div>
+	  <div id="tag_icons" class="span12 tag_list module-body center">
+	  </div>
+      </div>
+    </div>
+    <% end %>
+
+  </div>

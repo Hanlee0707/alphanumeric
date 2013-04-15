@@ -1,0 +1,16 @@
+Following article has been deleted by the editor.
+
+
+
+          Title:
+       
+     <%= @title %>
+
+
+
+
+Gist it up now!
+
+<%= root_url(:host => "localhost:3000") %>
+
+

@@ -1,0 +1,52 @@
+  <div class="row span12">
+    <div class="span1"></div>
+    <div class="span10 center">
+      <%=link_to raw("<i class='icon-arrow-left'></i>"), show_previous_path(:article_id=> article.id), id:'show_previous_summaries_button', class:'btn', disabled: true, style:"float:left;", remote: true %>
+      <strong>Past Summaries</strong>
+      <%=link_to raw("<i class='icon-arrow-right'></i>"), show_recent_path(:article_id => article.id), id:'show_details_button', class:'btn', style:"float:right;", remote: true %>
+      <div class="hr center"></div>
+    </div>
+    <div class="span1"></div>
+  </div>
+
+  <div class="row span12">
+    <div class="span12"></div>
+    <div class="span3"></div>
+    <div class="span6">
+      <div class="span1"></div>
+      <div class="span11">
+	<%= raw(article.previous_summary) %>
+      </div>
+    </div>
+    <div class="span3"></div>
+  </div>
+
+  <div class="span12 row"></div>
+  <div class="span12 row">
+    <% count = 0 %>
+    <% article.tag_list.each do |tag| %>
+      <% if count < 3 then %>
+      <div class="span3"></div>
+      <div class="span6">
+        <div class="span1"></div>
+        <div class="span11">
+	  <%= link_to "More on "+tag, tag_path(tag) %>
+	  <% count = count +1 %>
+	</div>
+      </div>
+      <div class="span3"></div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="span12 row"></div>
+  <div class="span12 row"></div>
+
+  <div class="row span12">
+    <div class="span5"></div>
+    <div class="span4" style="padding-left:22px;">
+
+
+    </div>
+    <div class="span3"></div>
+  </div>

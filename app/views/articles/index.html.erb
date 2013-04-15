@@ -1,0 +1,38 @@
+<% provide(:title, "Articles") %>
+
+<div class="background-white">
+
+<% if !@articles.empty? %>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th class="span5">TITLE</th>
+      <th class="span2">CITY</th>
+      <th class="span2">COUNTRY</th>
+      <th class="span2">CREATED</th>
+      <th class="span1"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @articles.each do |article| %>
+    <tr>
+      <td><%= link_to article.title, article %></td>
+      <td><%= article.city %></td>
+      <td><%= article.country %></td>
+      <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+      <td><%= link_to 'Delete', article, method: :delete, data: { confirm: 'Are you sure?' }, remote: true %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+<% else %>
+<p>There are no articles.</p>
+<% end %>
+<%= link_to 'New Article', new_article_path, class: "btn btn-large btn-primary make-white" %>
+<p class='index'><%= will_paginate @articles, class: 'index' %></p>
+
+</div>
+
+<% session[:list] = request.path %>

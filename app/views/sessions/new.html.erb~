@@ -1,0 +1,35 @@
+<div class="span2"></div>
+
+<div class="span10">
+  <div class="row span12"></div>
+  <div class="row span12">
+    <div class="span3"></div>
+    <div class="span6">
+      <h2>Less is More. </h2>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <div class="row span12"></div>
+  <div class="row span12">
+    <div class="span3"></div>
+    <div class="span6">
+      <%= form_tag sessions_path do %>
+      <div class="field span12 center">
+	<%= text_field_tag :email, params[:email], placeholder: "email" %>
+      </div>
+      <div class="field span12 center">
+	<%= password_field_tag :password, "", placeholder:"password" %>
+      </div>
+      <div class="action span12 center">
+        <%= submit_tag "Log in",:class => "btn" %>
+        <%= link_to "Forgot password?", "#", :class => "btn" %>
+      </div>
+    </div>
+    <div class="span3"></div>
+  </div>
+<% end %>
+</div>
+
+
+
+

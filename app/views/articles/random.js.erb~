@@ -1,0 +1,33 @@
+jQuery.noConflict();
+jQuery(document).ready(function($) { 
+  var hidden_element = $('#searched_contributor_id');
+  hidden_element.val("<%=
+  $(id).show();
+  var parent = $(id).parent();
+  $("#no_association_summary").prependTo(parent); 
+   html = [];
+  html.push("<div class=\"div-table-cell\">");
+  html.push("<%=@article_occurred%>");
+  html.push("</div>");
+  parent.prepend(html.join(''));
+  var truncated_id = id.replace('#', '');
+  $("#no_association_summary").attr("contenteditable", "false");
+  var style = $("#no_association_summary").attr('class', "summary_content");
+  $("#no_association_summary").attr("id", truncated_id); 
+  $(id).children("input[id*='full_article_id']").val("<%=@article_id%>");
+//  var ckeditor_id = $(id).children("textarea").attr("id");
+//  CKEDITOR.instances[ckeditor_id].setData("<%=@article_content%>");
+});
+
+$(document).on "click", "#set_contributor",  (event)->
+    event.preventDefault()
+    hidden_element = $("#searched_contributor_id")
+    if hidden_element.val()==""
+      $("#contributor_error").show()	
+      $("#contributor_error").fadeOut(1000)
+    else 
+      $("#contributor_id").val(hidden_element.val())
+      $("#contributor_query").hide()
+      $("#contributor_container").show()
+      $("#contributor_container").html($("#article_contributor_last_name").val())
+      $("#remove_contributor_button_container").show()

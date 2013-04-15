@@ -1,0 +1,9 @@
+<div class="span3">
+<%= f.hidden_field :_destroy, value: "0" %>
+<%= link_to "Remove", "#", class:'btn remove_nested_attributes_button'%>
+</div>
+<div class="span9">
+  <%= f.cktext_area :bullet, :ckeditor => {:height => 70} %>
+</div>
+<%= f.hidden_field :location %>
+<div class="span12"></div>

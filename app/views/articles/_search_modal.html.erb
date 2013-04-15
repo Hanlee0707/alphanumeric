@@ -1,0 +1,27 @@
+
+<div id="search_modal" class="modal hide fade in bigModal" style="display: none; ">  
+  <div class="modal-header">  
+    <a class="close" data-dismiss="modal">×</a>  
+    <h3>Search for Past Articles</h3>  
+  </div>  
+  <div class="modal-body"> 
+    <div class="span6">
+      <div>
+	<%= hidden_field_tag 'div_id', "", id: 'summary_hidden_id' %>
+	<%= text_field_tag 'search field', "", placeholder: 'Enter keywords here', class:'down' %>
+	<%= button_tag "Search", type: 'button', class: 'btn', id: 'search_button' %>
+      </div>
+      <div id="result_spot">
+      </div>
+    </div>
+    <div class="span4 left">
+      <div id="selected_article_content" class="span4" placeholder="Content will be displayed here...">Content will be displayed here...</div>
+      <%=hidden_field_tag 'selected_id', "", id:'selected_article_id' %>
+    </div>
+  </div>  
+  <div class="modal-footer">
+    <%= button_tag "Add to the article", type: 'button', class: 'btn btn-success', id: 'add_to_the_article_button', data: {dismiss: "modal"} %>    
+    <a href="#" class="btn" data-dismiss="modal">Close</a>  
+  </div>  
+</div>  
+
