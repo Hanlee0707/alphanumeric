@@ -19,6 +19,7 @@ gem 'sass-rails',   '~> 3.2.3'
 
 group :development do
       gem 'pg'
+      gem 'taps', :require => false
 end
 
 # Gems used only for assets and not required
