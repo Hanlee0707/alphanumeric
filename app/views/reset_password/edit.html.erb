@@ -1,0 +1,23 @@
+<div class="span10 row">
+  <div class="span10 center">
+    <div class="span12"><h1> Reset Password </h1></div>
+    <div class="span12"></div>
+    <div class="span12"></div>
+    <div class="span12"></div>
+    <div class="span12">
+    <%= form_for @employee, :url => reset_password_path(params[:id]) do |f| %>
+      <div class="field">
+        <%= f.password_field :password, placeholder: "Password" %>
+      </div>
+      <div class="field">
+        <%= f.password_field :password_confirmation, placeholder: "Password Confirmation" %>
+      </div>
+      <div class="span12"></div>
+      <div class="actions"><%= f.submit "Reset Password", :class => "btn" %></div>
+    <% end %>
+    </div>
+  </div>
+  <div class="span2"></div>
+</div>
+
+

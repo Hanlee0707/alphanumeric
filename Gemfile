@@ -19,6 +19,7 @@ gem 'sass-rails',   '~> 3.2.3'
 
 group :development do
       gem 'pg'
+      gem 'sqlite3'
       gem 'taps', :require => false
 end
 

@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  # before_filter :logged_in?
+  before_filter :logged_in?
   layout :select_layout
   def select_layout
     if params[:administrator_id] and employee_privilege("Administrator") then
@@ -47,6 +47,7 @@ class EmployeesController < ApplicationController
     if params[:administrator_id] 
       if params[:administrator_id]== @current_employee.id.to_s 
         @administrative = true 
+        @back_path = administrator_employee_path(params[:administrator_id], params[:id])
       else
         respond_to do |format|
           format.html { redirect_to home_path, notice: "You don't have the required privilege." }
@@ -55,6 +56,7 @@ class EmployeesController < ApplicationController
     else
       if @current_employee.id.to_s == params[:id] 
         @administrative = false
+        @back_path = home_path
       else
         respond_to do |format|
           format.html { redirect_to home_path, notice: "You can't edit other employees' personal information." }

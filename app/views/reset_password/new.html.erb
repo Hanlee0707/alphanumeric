@@ -1,0 +1,15 @@
+<div class="span10 row">
+  <div class="span10 center">
+    <div class="span12"><h1> Reset Password </h1></div>
+    <div class="span12"></div>
+    <div class="span12">Request a link via email to reset your password.
+    </div>
+    <%= form_tag reset_password_index_path, :method => :post do %>
+    <div class="span12 fields">
+      <%= text_field_tag :email, params[:email], placeholder: "email", class: 'down' %>
+        <%= submit_tag "Request", :class => "btn"%>
+    </div>
+    <% end %>
+  </div>
+  <div class="span2"></div>
+</div>

@@ -43,4 +43,9 @@ class EmployeeMailer < ActionMailer::Base
     mail to: employee.email, :subject => "GIST: Your article has just been published."
   end
 
+  def reset_password(employee)
+    @employee = employee
+    mail to: employee.email, :subject => "GIST: Reset password link for your account."
+  end
+
 end

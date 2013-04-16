@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130415145928) do
+ActiveRecord::Schema.define(:version => 20130416050008) do
 
   create_table "additional_texts", :force => true do |t|
     t.integer  "article_id"
@@ -94,6 +94,8 @@ ActiveRecord::Schema.define(:version => 20130415145928) do
     t.datetime "create_account_sent_at"
     t.datetime "account_create_time"
     t.datetime "latest_login_at"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
 
   add_index "employees", ["last_name"], :name => "index_employees_on_last_name"

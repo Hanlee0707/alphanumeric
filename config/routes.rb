@@ -1,5 +1,6 @@
 Alphanumeric::Application.routes.draw do
 
+
   mount Ckeditor::Engine => '/ckeditor'
 
   match '/published', to: 'published#index', :via => :get, as:'published_index' 
@@ -12,6 +13,7 @@ Alphanumeric::Application.routes.draw do
     get :autocomplete_contributor_last_name, :on => :collection
   end
   resources :account_creates 
+  resources :reset_password
   resources :sessions
   resources :administrator, :only => [:show] do
     resources :employees

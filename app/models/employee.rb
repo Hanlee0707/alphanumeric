@@ -26,6 +26,13 @@ class Employee < ActiveRecord::Base
     updating_password==true || new_record?
   end
 
+  def send_password_reset
+    generate_token(:password_reset_token)
+    self.password_reset_sent_at = Time.zone.now
+    save!
+    EmployeeMailer.reset_password(self).deliver
+  end
+
   def send_create_account
     generate_token(:create_account_token)
     self.create_account_sent_at = Time.zone.now
