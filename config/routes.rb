@@ -19,7 +19,7 @@ Alphanumeric::Application.routes.draw do
     resources :employees
   end
   match 'administrator/:id' => 'administrator#show', :via => :post
-  resources :employees, :only => [:show, :edit, :update]
+  resources :employees, :only => [:show, :edit, :update, :index]
   resources :editor, :only => [:show] do
     resources :articles, :except => [:index] 
     resources :incomplete, :only => [:index]

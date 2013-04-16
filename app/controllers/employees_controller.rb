@@ -5,7 +5,7 @@ class EmployeesController < ApplicationController
     if params[:administrator_id] and employee_privilege("Administrator") then
       'administrator_layout'
     else
-      'application'
+      'employees_layout'
     end
   end  
 
@@ -15,9 +15,11 @@ class EmployeesController < ApplicationController
           format.html { redirect_to home_path, notice: "Invalid access." }
         end
     else
+      @through_administrator = false
       if params[:administrator_id] or params[:id]==current_employee.id.to_s then
         @can_edit = true
         if params[:administrator_id] then
+          @through_administrator = true
           @back_path = administrator_path(params[:administrator_id])
           if params[:id] == current_employee.id.to_s then
             @administrative = false
@@ -25,13 +27,13 @@ class EmployeesController < ApplicationController
             @administrative= true
           end
         else
-          @back_path = home_path
+          @back_path = employees_path
           @administrative = false
         end
       else
         @administrative = false
         @can_edit = false
-        @back_path = home_path
+        @back_path = employees_path
       end
       @employee = Employee.find(params[:id])
       respond_to do |format|
@@ -121,4 +123,14 @@ class EmployeesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def index
+    if params[:search] then
+      @employees = Employee.search(params[:search]).paginate page: params[:page], order: 'last_name desc', per_page: 20
+    else
+      @employees = Employee.paginate page: params[:page], order: 'last_name desc', per_page: 20
+    end
+  end
+
+
 end
