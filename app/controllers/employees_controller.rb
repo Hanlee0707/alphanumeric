@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_filter :logged_in?
+  # before_filter :logged_in?
   layout :select_layout
   def select_layout
     if params[:administrator_id] and employee_privilege("Administrator") then
