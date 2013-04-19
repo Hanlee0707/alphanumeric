@@ -1,7 +1,11 @@
 class EditorController < ApplicationController
   before_filter :logged_in?
   before_filter :is_editor?
-  layout "editor_layout"
+  before_filter :set_editor
+
+  def set_editor 
+    @editor_layout= true
+  end
 
   def show
     @articles = Article.joins(:published_item).paginate page: params[:page], per_page: 20

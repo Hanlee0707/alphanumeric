@@ -1,6 +1,10 @@
 class ArchivedController < ApplicationController
   before_filter :logged_in?
-  layout 'archived_layout'
+  before_filter :set_attributes
+
+  def set_attributes
+    @archived_layout = true
+  end
 
   def index
     if params[:tag] then

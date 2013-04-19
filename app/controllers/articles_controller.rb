@@ -3,21 +3,20 @@ class ArticlesController < ApplicationController
   helper_method :sort_column, :sort_direction
   autocomplete :tag, :name, :full=> true, :class_name => 'ActsAsTaggableOn::Tag'
   autocomplete :contributor, :last_name, :class_name => 'Employee', :display_value => :full_name_with_email, :extra_data => [:first_name, :email], :scopes => [:contributor_only]
-
-
-
-  layout :select_layout
-  def select_layout
+  before_filter :set_attribute
+  def set_attribute
     if params[:editor_id] and employee_privilege("Editor") then
-      'editor_layout'
+      @editor_layout = true
     elsif params[:contributor_id] and employee_privilege("Contributor") then
-      'contributor_layout'
+      @contributor_layout = true
     elsif request.env["HTTP_REFERER"].include?("published")
-      'published_layout'
+      @published_layout = true
     elsif request.env["HTTP_REFERER"].include?("archived")
-      'archived_layout'
-    else
-      'application'
+      @archived_layout = true
+    elsif request.env["HTTP_REFERER"].include?("history/editor")
+      @history_editor_layout = true
+    elsif request.env["HTTP_REFERER"].include?("history/contributor")
+      @history_contributor_layout = true
     end
   end
 
@@ -51,6 +50,10 @@ class ArticlesController < ApplicationController
           @edit_path = edit_editor_article_path(current_employee, @article)
         elsif @status == "Approved" then
           @back_path = editor_approved_index_path(current_employee)
+        elsif @status == "Published" then
+          @back_path = editor_published_index_path(current_employee)
+        elsif @status == "Archived" then
+          @back_path = history_editor_path
         end
         object = {:article => @article, :image =>@article.images, :numbers => @article.numbers, :extra_informations => @article.extra_informations, :additional_texts => @article.additional_texts, :citations => @article.citations}
 
@@ -74,11 +77,10 @@ class ArticlesController < ApplicationController
           @edit_path = edit_contributor_article_path(current_employee, @article)
         elsif @status == "Need Review" then
           @back_path = contributor_review_index_path(current_employee)
-        elsif @status == "Approved" then
-          @back_path = contributor_approved_index_path(current_employee)
+        else
+          @back_path = history_contributor_path
         end
         object = {:article => @article, :image =>@article.images, :numbers => @article.numbers, :extra_informations => @article.extra_informations, :additional_texts => @article.additional_texts, :citations => @article.citations}
-
         respond_to do |format|
           format.html # show.html.erb
           format.json { render json: object }
@@ -90,6 +92,9 @@ class ArticlesController < ApplicationController
         end 
       end
     else
+      if @history_editor_layout then
+        @through_editor = true
+      end
       @back_path = request.env["HTTP_REFERER"]
     end
   end
@@ -178,6 +183,8 @@ class ArticlesController < ApplicationController
         format.json { render json: @article, status: :created, location: @article }
     
       else
+        @back_path = editor_path(@current_employee)
+        @editor_id = @current_employee.id
         format.html { render action: "new" }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
@@ -250,19 +257,38 @@ contributor = Employee.find(item.contributor_id)
 
   def update_status
     @article = Article.find(params[:id])
-    @article.update_attribute(:status, params[:status])
+    update= true
+    if (@article.title.nil? or @article.title=="") or (@article.city.nil? or @article.city=="") or (@article.current_content.nil? or @article.current_content=="") then
+      update = false
+    end
+    if update then
+      @article.update_attribute(:status, params[:status])
+    end
     respond_to do |format|
       if params[:contributor_id] and params[:status]=="Need Review" then
-        editor = Employee.find(@article.editor_id)
-        editor.notify_review_article(@article.title)
-        format.html { redirect_to contributor_article_path(params[:contributor_id], @article), notice: "Article was successfully submitted for review."}
+        if update then
+          editor = Employee.find(@article.editor_id)
+          editor.notify_review_article(@article.title)
+          notice = "Article was successfully submitted for review."
+        else
+          notice = "Article was not submitted for review because required fields are not filled out."
+        end
+        format.html { redirect_to contributor_article_path(params[:contributor_id], @article), notice: notice}
       elsif params[:editor_id] then
         if params[:status]=="Revoked" then
+          if !update then
+            @article.update_attribute(:status, params[:status])
+          end
           contributor = Employee.find(@article.contributor_id)
           contributor.notify_revoke_article(@article.title, params[:reason])
           format.html { redirect_to editor_article_path(params[:editor_id], @article), notice: "Article was successfully revoked."}
         elsif params[:status]=="Approved" then
-          format.html { redirect_to editor_article_path(params[:editor_id], @article), notice: "Article was successfully approved."}
+          if update then
+            notice =  "Article was successfully approved."
+          else
+            notice = "Article was not approved because required fields are not filled out."
+          end
+          format.html { redirect_to editor_article_path(params[:editor_id], @article), notice: notice}
         elsif params[:status]=="Published" then
           format.html { redirect_to editor_article_path(params[:editor_id], @article), notice: "Article was successfully published."}
         end

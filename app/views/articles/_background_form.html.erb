@@ -1,16 +1,24 @@
   <div class="row span12" id="background">
     <div class="row span12">
       <div class="span12">
-	<h5>Background <b id="background-caret" class="caret little-down"></b></h5>
+      <h5><%= link_to raw("Background <b id='basic-caret' class='up-caret little-down'></b>"), "#", class: 'hide-form-element' %>
+      </h5>
       </div>
       <div class="span12">
 	<div class="hr-full"></div>
       </div>
-    </div>
-    <div class="row span12">
-      <div id="previous_summaries_container" class="span6 div-table center">
-	<%= f.cktext_area :previous_summary, :ckeditor=>{ :height=> 100 } %>
+      <div id="background-text" class="row span12 center">
+	<div class="span4"></div>
+	<div id="previous_summaries_container" class="span6 div-table center">
+	  <div class="span1"></div>
+	  <div class="span11">
+	    <%= f.cktext_area :previous_summary, :ckeditor=>{ :width => 350, :height=> 150 } %>
+	  </div>
+	</div>
+	<div class="span2"></div>
+	<div class="span12"></div>
+	<div class="span12"></div>
+	<div class="span12"></div>
       </div>
-      <div class="span6"></div>
     </div>
   </div>

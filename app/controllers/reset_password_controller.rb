@@ -7,7 +7,7 @@ class ResetPasswordController < ApplicationController
   def create
     employee = Employee.find_by_email(params[:email])
     employee.send_password_reset if employee
-    redirect_to root_url, :notice => "Email sent with password reset instructions."
+    redirect_to root_uploader_url, :notice => "Email sent with password reset instructions."
   end
 
   def edit
@@ -20,7 +20,7 @@ class ResetPasswordController < ApplicationController
       redirect_to new_reset_password_path,
                   :alert => "Password reset token has expired. Please try again."
     elsif @employee.update_attributes(params[:employee])
-      redirect_to root_url, :notice => "Password has been successfully reset!"
+      redirect_to root_uploader_url, :notice => "Password has been successfully reset!"
     else
       render :edit
     end

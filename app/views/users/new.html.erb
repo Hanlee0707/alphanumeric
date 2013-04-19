@@ -1,0 +1,58 @@
+<%= form_for(@user) do |f| %>
+  <div class="span12 row center">
+    <div class="span3"></div>
+    <div class="span6">
+      <% if @user.errors.any? %>
+      <div class="error_messages">
+	<h2>There were some errors.</h2>
+	<ul>
+          <% for message in @employee.errors.full_messages %>
+          <li><%= message %></li>
+          <% end %>
+	</ul>
+      </div>
+      <% end %>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <div class="span12 row center">
+    <div class="span3"></div>
+    <div class="span6">
+      <h1>New User</h1>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <div class="span12 row"></div>
+  <div class="span12 row"></div>
+
+  <div class="span12 row">
+    <div class="span3">
+    </div>
+    <div class="span6 field center">
+	<%= f.text_field :first_name, placeholder: "first name", class: 'input-name' %>
+	<%= f.text_field :last_name, placeholder: "last name", class: 'input-name' %>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <div class="span12 row">
+    <div class="span3">
+    </div>
+    <div class="span6 field center">
+      <div class="span12">
+	<%= f.text_field :email, placeholder: "email", class:'input-user-field' %>
+      </div>
+      <div class="span12">
+	<%= f.password_field :password, placeholder: "password", class:'input-user-field' %>
+      </div>
+      <div class="span12">
+	<%= f.password_field :password_confirmation, placeholder: "password confirmation", class:'input-user-field' %>
+      </div>
+      <div class="span12"></div>
+      <div class="span12"></div>
+      <%= f.submit "Create", class:'btn btn-primary' %>
+      <%= link_to "Back", root_path, class: 'btn btn-primary' %>
+    </div>
+    <div class="span3"></div>
+  </div>
+
+<% end %>

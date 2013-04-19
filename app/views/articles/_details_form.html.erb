@@ -2,76 +2,79 @@
   
     <div class="row span12">
       <div class="span12">
-	<h5>Details <b id="basic-caret" class="caret little-down"></b></h5>
+	<h5><%= link_to raw("Details <b id='basic-caret' class='up-caret little-down'></b>"), "#", class: 'hide-form-element' %>
+	</h5>
       </div>
       <div class="span12">
 	<div class="hr-full"></div>
       </div>
-    </div>
 
-    <div class="row span12">
-      <div class="span6">
+      <div id="detail_block" class="row span12">
+	<div class="span6">
 	  <div id="detail_fields" class="center span12">
 	    <% num_details = 0 %>
 	    <% detail_image_exists = false %>
 	    <% @article.additional_texts.each do |text| %>
-	      <% if text.location != num_details then %>
-	       <% @article.images.each do |image| %>
-	         <% if image.image_type == "DETAIL" and image.location == num_details then %>
-	   	  <% detail_image_exists = true %>
-	          <%= f.fields_for :images, image do |builder| %>
-	            <div class="fields">
-  	              <%= render 'image_fields', :f => builder, :image_type => "DETAIL" %>
-	            </div>
- 	          <% end %>
-	        <% end %>
-	       <% end %>
-	       <% num_details = num_details +1 %>
-	     <% end %>
-	     <%= f.fields_for :additional_texts, text do |builder| %>
-	       <div class="fields">
-		 <%= render 'additional_text_fields', :f => builder %>
-  	       </div>
-	     <% end %>
-	     <% num_details = num_details +1 %>
+	    <% if text.location != num_details then %>
+	    <% @article.images.each do |image| %>
+	    <% if image.image_type == "DETAIL" and image.location == num_details then %>
+	    <% detail_image_exists = true %>
+	    <%= f.fields_for :images, image do |builder| %>
+	    <div class="fields">
+  	      <%= render 'image_fields', :f => builder, :image_type => "DETAIL" %>
+	    </div>
+ 	    <% end %>
+	    <% end %>
+	    <% end %>
+	    <% num_details = num_details +1 %>
+	    <% end %>
+	    <%= f.fields_for :additional_texts, text do |builder| %>
+	    <div class="fields">
+	      <%= render 'additional_text_fields', :f => builder %>
+  	    </div>
+	    <% end %>
+	    <% num_details = num_details +1 %>
 	    <% end %>
 	    <% @article.images.each do |image| %>
 	    <% if image.image_type == "DETAIL" and image.location == num_details then %>
-	      <% detail_image_exists = true %>
-	      <%= f.fields_for :images, image do |builder| %>
-	        <div class="fields">
-  	          <%= render 'image_fields', :f => builder, :image_type => "DETAIL" %>
-	        </div>
- 	      <% end %>
-	      <% num_details = num_details +1 %>
+	    <% detail_image_exists = true %>
+	    <%= f.fields_for :images, image do |builder| %>
+	    <div class="fields">
+  	      <%= render 'image_fields', :f => builder, :image_type => "DETAIL" %>
+	    </div>
+ 	    <% end %>
+	    <% num_details = num_details +1 %>
 	    <% end %>
 	    <% end %>
 	  </div>
 	  <div class="span12 center">
 	    <%= hidden_field_tag "num_details", num_details %>
 	    <% if detail_image_exists then %>
-              <%= link_to_add_fields "New Image", f, :images, image_type: "DETAIL", target: "detail_fields", delete: true, hide: true, class: 'btn btn-large add_detail_image' %>
+            <%= link_to_add_fields "New Image", f, :images, image_type: "DETAIL", target: "detail_fields", delete: true, hide: true, class: 'btn btn-large add_detail_image' %>
 	    <% else %>
-              <%= link_to_add_fields "New Image", f, :images, image_type: "DETAIL", target: "detail_fields", delete: true, hide: false, class: 'btn btn-large add_detail_image' %>
+            <%= link_to_add_fields "New Image", f, :images, image_type: "DETAIL", target: "detail_fields", delete: true, hide: false, class: 'btn btn-large add_detail_image' %>
 	    <% end %>
 	    <%= link_to_add_fields "New bullet", f, :additional_texts, image_type: "DETAIL", target: "detail_fields", delete: false, hide: false, class: 'btn btn-large' %>
 	  </div>
-      </div>
-      <div class="span6">
-	<div class="span1"></div>
-	<div class="span11">
-	  <div id="numbers" class="span12">
-	    <%= f.fields_for :numbers do |builder| %>
-	    <div class="fields span12">
-	      <%= render 'number_fields', :f => builder %>
+	</div>
+	<div class="span6">
+	  <div class="span1"></div>
+	  <div class="span11">
+	    <div id="numbers" class="span12">
+	      <%= f.fields_for :numbers do |builder| %>
+	      <div class="fields span12">
+		<%= render 'number_fields', :f => builder %>
+	      </div>
+	      <% end %>
 	    </div>
-	    <% end %>
+	  </div>
+	  <div class="span12 center">
+	    <%= link_to_add_fields "Add new Number", f, :numbers, target: "numbers", delete: false, class: 'btn btn-large' %>
 	  </div>
 	</div>
-	<div class="span12"></div>
-	<div class="span12 center">
-	    <%= link_to_add_fields "Add new Number", f, :numbers, target: "numbers", delete: false, class: 'btn' %>
-	</div>
+	<div class="span12 center"></div>
+	<div class="span12 center"></div>
       </div>
     </div>
+
   </div>

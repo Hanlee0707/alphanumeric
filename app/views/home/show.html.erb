@@ -1,94 +1,43 @@
 <% provide(:title, "Home")%>
 
-<div class="span10">
-  <div class="span10">
-    <% if @isEditor and @isContributor then %>
-    <div class="span1"></div>
-    <div class="span5">
-      <div class="span12 hero-unit">
-      <div class="span12 center">
-	<strong>Editor Statistics</strong>
-	<div class="hr-full">
-	</div>
-      </div>
-      <div class="span12"></div>
-      <div class="span12" style="font-size:80%;">
-	<%= @editor_incomplete_count %> working articles
-      </div>
-      <div class="span12" style="font-size:80%;">
-	<%= @editor_published_count %> published articles
-      </div>
-      <div class="span12" style="font-size:80%;">
-	<%= @editor_archived_count %> archived articles
-      </div>
-      </div>
-    </div>
-    <% else %>
-    <div class="span3">
-    </div>
-    <% end %>
-    <% if @isEditor and @isContributor %>
-    <div class="span1">
-    </div>
-    <% elsif @isEditor %>
-    <div class="span6 hero-unit">
-      <div class="span12 center">
-	<strong>Editor Statistics</strong>
-	<div class="hr-full">
-	</div>
-      </div>
-      <div class="span12"></div>
-      <div class="span12" style="font-size:80%;">
-	<%= @editor_incomplete_count %> working articles
-      </div>
-      <div class="span12" style="font-size:80%;">
-	<%= @editor_published_count %> published articles
-      </div>
-      <div class="span12" style="font-size:80%;">
-	<%= @editor_archived_count %> archived articles
-      </div>
-    </div>
-    <% elsif @isContributor %>
-    <div class="span6 hero-unit">
-      <div class="span12 center">
-	<strong>Contributor Statistics</strong>
-	<div class="hr-full">
-	</div>
-      </div>
-      <div class="span12"></div>
-      <div class="span12" style="font-size:80%;">
-	<%= @contributor_incomplete_count %> working articles
-      </div>
-      <div class="span12" style="font-size:80%;">
-	<%= @contributor_published_count %> published articles
-      </div>
-      <div class="span12" style="font-size:80%;">
-	<%= @contributor_archived_count %> archived articles
-      </div>
-    </div>
-    <% end %>
-    <% if @isEditor and @isContributor %>
-    <div class="span5 hero-unit">
-      <div class="span12 center">
-	<strong>Contributor Statistics</strong>
-	<div class="hr-full">
-	</div>
-      </div>
-      <div class="span12"></div>
-      <div class="span12" style="font-size:80%;">
-	<%= @contributor_incomplete_count %> working articles
-      </div>
-      <div class="span12" style="font-size:80%;">
-	<%= @contributor_published_count %> published articles
-      </div>
-      <div class="span12" style="font-size:80%;">
-	<%= @contributor_archived_count %> archived articles
-      </div>
-    </div>
-    <% else %>
-    <div class="span3">
-    </div>
-    <% end %>
+<div class="span12">
+  <div class="span12 row center">
+    <h3>List of Working Issues</h3>
   </div>
-  <div class="span2"></div>
-</div>
+  <div class="span12 row center"></div>
+  <% if !@articles.empty? %>
+  <div class="span1"></div>
+  <div class="span10">
+    <table class="table table-striped table-hover">
+      <thead>
+	<tr>
+	  <th class="span5">ISSUE</th>
+	  <th class="span3">EDITOR</th>
+	  <th class="span2">CREATED</th>
+	  <th class="span2">STATUS</th>
+	</tr>
+      </thead>
+      <tbody>
+	<% @articles.each do |article| %>
+	<tr>
+	  <td><%= article.temporary_title%></td>
+	  <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
+	  <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	  <td><%= article.status %></td>
+	</tr>
+	<% end %>
+      </tbody>
+    </table>
+    <div class="span12 row center"><%= will_paginate @articles, :renderer => BootstrapPagination::Rails, :previous_label => "←", :next_label => "→" %></div>
+  </div>
+  <div class="span1"></div>
+  <% else %>
+  <div class="span12 row center">
+    <strong>There are no articles in progress right now.</strong>
+  </div>
+  <% end %>
+</div>  
+
+  
+
+

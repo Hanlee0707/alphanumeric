@@ -1,9 +1,8 @@
 class Article < ActiveRecord::Base
-  attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id
+  attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id, :temporary_title, :instruction, :category
   attr_accessor :contributor_last_name, :searched_contributor_id
 
-  validates_presence_of :city, :country, :title, :contributor_id, :on=> :create
-  validates_presence_of :current_content, :on => :update
+  validates_presence_of :instruction, :temporary_title, :contributor_id, :on=> :create
   validates :title, uniqueness: true
 
   has_many :numbers, dependent: :destroy

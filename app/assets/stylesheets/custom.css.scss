@@ -16,11 +16,28 @@
      }
  }
 
+.input-name {
+  width: 10em;
+}
+
+.input-user-field {
+  width: 21.3em;
+}
 
 .white-caret
 {
   border-top-color: white;
   border-bottom-color: white;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle .caret
+{
+  border-top-color: #0088CC;
+  border-bottom-color: #0088CC;;
+}
+
+ul.nav li.dropdown:hover > ul.dropdown-menu{
+    display: block;    
 }
 
 .dropdown-divider
@@ -75,6 +92,10 @@
 .list-right
 {
  float: right;
+}
+
+.input-temporary-title {
+  width: 38em;
 }
 
 .input-title {
@@ -224,5 +245,27 @@ p {
 #logo:hover {
   color: #fff;
   text-decoration: none;
+}
+
+.caret {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #000000;
+    display: inline-block;
+    height: 0;
+    opacity: 1.0;
+    vertical-align: top;
+    width: 0;
+}
+
+.up-caret {
+    border-bottom: 4px solid #000000;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    display: inline-block;
+    height: 0;
+    opacity: 1.0;
+    vertical-align: top;
+    width: 0;
 }
 

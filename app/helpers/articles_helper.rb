@@ -65,6 +65,15 @@ module ArticlesHelper
     end
   end 
 
+  def list_of_categories
+    categories = []
+    categories.append("World")
+    categories.append("Politics")
+    categories.append("Economy")
+    categories.append("Technology")
+    categories
+  end
+
 end
 
 

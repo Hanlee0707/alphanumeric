@@ -1,67 +1,46 @@
 <% provide(:title, "Employees") %>
 
-<div class="span10 center">
-  <div class="span12"></div>
+<div class="span12"> 
+  <div class="span12 row center"></div>
+  <div class="span12 row center">
+    <%= form_for employees_path do |f| %>
+    <%= text_field_tag 'search', "", placeholder: 'Name or Email', class:'down input-search' %>
+    <%= button_tag "Search", class: 'btn' %>
+    <% end %>
+  </div>
+  <% if !@employees.empty? %>
+  <div class="span1"></div>
   <div class="span10">
-    <div class="span12 row">
-      <div class="span2">
-      </div>
-      <div class="span6"></div>      
-      <div class="span4">
-	<%= form_for employees_path  do |f| %>
-        <%= text_field_tag 'search', "", placeholder: 'Name or Email', class:'down input-search' %>
-        <%= button_tag "Search", class: 'btn' %>
-	<% end %>
-      </div>
-    </div>
-    <% if !@employees.empty? %>
-    <div class="span12 row">
-      <div class="span11">
-	<table class="table table-striped table-hover">
-	  <thead>
-	    <tr>
-	      <th class="span3">NAME</th>
-	      <th class="span3">EMAIL</th>
-	      <th class="span5">POSITION</th>
-	      <th class="span1"></th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <% @employees.each do |employee| %>
-	    <tr>
-	      <td><%= link_to employee.first_name+" "+employee.last_name, employee_path(employee) %></td>
-	      <td><%= employee.email %></td>
-	      <td>
-		<% positions = [] %>
-		<% employee.employee_positions.each do |position| %>
-		<% positions.append(position.position) %>
-		<% end %>
-		<%= positions.join(', ') %>
-	      </td>
-	      <td></td>
-	    </tr>
+    <table class="table table-striped table-hover">
+      <thead>
+	<tr>
+	  <th class="span4">NAME</th>
+	  <th class="span3">EMAIL</th>
+	  <th class="span5">POSITION</th>
+	</tr>
+      </thead>
+      <tbody>
+	<% @employees.each do |employee| %>
+	<tr>
+	  <td><%= link_to employee.first_name+" "+employee.last_name, employee_path(employee) %></td>
+	  <td><%= employee.email %></td>
+	  <td>
+	    <% positions = [] %>
+	    <% employee.employee_positions.each do |position| %>
+	    <% positions.append(position.position) %>
 	    <% end %>
-	  </tbody>
-	</table>
-      </div>
-      <div class="span1"></div>
-    </div>
-    <div class="span12 row">
-      <div class="span2"></div>
-      <div class="span10">
-	<p><%= will_paginate @employees, :renderer => BootstrapPagination::Rails, :previous_label => " ", :next_label => " " %></p>
-      </div>
-    </div>
+	    <%= positions.join(', ') %>
+	  </td>
+	</tr>
+	<% end %>
+      </tbody>
+    </table>
+    <div class="span12 row center"><%= will_paginate @employees, :renderer => BootstrapPagination::Rails, :previous_label => "←", :next_label => "→" %></div>
+  </div>
+  <div class="span1"></div>
   <% else %>
-  <div class="span12 row">
-    <div class="span11">
-      <h4>Search returned nothing.</h4>
-    </div>
-    <div class="span1"></div>
-  </div>
+  <div class="span12 row center"><strong>There are no employees with that criteria.</strong></div>
   <% end %>
-  </div>
-  <div class="span12 row"></div>
-  <div class="span12 row"></div>
 </div>
+
 

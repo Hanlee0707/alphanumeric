@@ -1,6 +1,11 @@
 class SessionsController < ApplicationController
   def new
-    if current_employee
+    path = request.path
+    @is_employee= false
+    if path.include? '/uploaders'
+      @is_employee = true
+    end
+    if current_employee or current_user
       redirect_to home_path
     else
       render "new"

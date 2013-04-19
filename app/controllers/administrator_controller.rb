@@ -1,7 +1,11 @@
 class AdministratorController < ApplicationController
   before_filter :logged_in?
   before_filter :is_administrator?
-  layout "administrator_layout"
+  before_filter :set_administrator
+
+  def set_administrator
+    @administrator_layout= true
+  end
 
   def show
     if params[:search] then

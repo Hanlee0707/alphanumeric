@@ -9,7 +9,15 @@ module EmployeesHelper
   end
 
   def list_of_levels(position)
-    EmployeePositionType.where(:position_type => position).select(:number_of_levels).map { |pos| pos.number_of_levels }
+    levels = []
+    i = 1
+    EmployeePositionType.where(:position_type => position).select(:number_of_levels).map { |x|
+      x.number_of_levels.times {
+        levels.append(i) 
+        i = i+1
+      }
+    }
+    levels
   end
 
 end

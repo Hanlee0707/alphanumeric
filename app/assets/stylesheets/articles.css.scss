@@ -22,6 +22,41 @@ a {
 
 }
 
+.toggles-container-out {
+
+  position:fixed;
+  top: 100px;
+  left: 166px;
+  background-color: whitesmoke;  
+  border: 1px solid #E3E3E3;
+  border-radius: 4px 4px 4px 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+}
+
+.toggles-container-in {
+
+  position:fixed;
+  top: 100px;
+  left: 0px;
+  background-color: whitesmoke;  
+  border: 1px solid #E3E3E3;
+  border-radius: 4px 4px 4px 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+ }
+
+a.contributor {
+  display:block;
+  padding-top: 38px;
+  padding-bottom: 38px;
+}
+
+a.editor {
+  display:block;
+  padding-top: 77px;
+  padding-bottom: 77px;
+}
+
+
 .nav-list {
 	  a {
 	    color: #000;
@@ -119,6 +154,14 @@ a {
 
 div.hr {
    width: 55%;   
+   height: 1px;
+   border: 0;
+   color: black;
+   background-color: black;   
+}
+
+div.hr-short {
+   width: 25%;   
    height: 1px;
    border: 0;
    color: black;

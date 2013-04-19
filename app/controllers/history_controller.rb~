@@ -1,0 +1,7 @@
+class HistoryController < ApplicationController
+  def editor
+  end
+
+  def contributor
+  end
+end

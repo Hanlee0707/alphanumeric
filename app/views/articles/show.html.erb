@@ -1,4 +1,4 @@
-<div class="span2">
+
   <div id="definition_window" style="display:none;">
   </div>
 
@@ -10,13 +10,17 @@
     <% end %>
   </div>
 
-</div>
-<div class="span10">
-  <div class="span3"></div>
-  <div class="span9">
+  <div class="span12 row"></div>
+
+  <div class="span1"></div>
+  <div class="span11">
+    <div class="span12">
     <div class="row span12">
       <div class="span3"></div>
       <div class="center span6">
+	<div class="row span12">
+	  <strong><%= @article.category %></strong>
+	</div>
 	<% @article.tag_list.to_s.split(", ").each do |tag| %>
 	<div class='tag_wrap_form'>
 	  <div class='tag triangle-obtuse'>
@@ -30,8 +34,12 @@
     <div class="row span12">
       <div class="span2"></div>
       <div class="span8 center">
+	<% if (@through_editor and @status=="Being Written" or @status=="Assigned") or (@through_contributor and @status=="Assigned") %>
+	<h3 id="title"><%= @article.temporary_title %></h3>
+	<% else %>
 	<h3 id="title"><%= @article.title %>
 	  <%= link_to raw("<i class='icon-info-sign'></i>"), "#",  class: 'show_citations_window' %></h3>
+	<% end %>
       </div>
       <div class="span2"></div>
     </div>
@@ -45,22 +53,22 @@
 	</div>	
 	<% if @through_contributor and (@status=="Being Written" or @status=="Revoked") then %>
 	<div class="span12">
-	  <%= link_to 'Submit For Review', update_status_path(:contributor_id => current_employee.id, :id => @article.id, :status=>"Need Review"), class: 'btn btn-primary make-white', method: :post %>
+	  <%= form_tag(update_status_path(:contributor_id => current_employee.id, :id => @article.id, :status => "Need Review")) do |f| %>
+          <%= submit_tag "Submit For Review", class: 'btn btn-primary make-white' %>
+	  <% end %>
 	</div>
 	<% end %> 
 	<% if @through_editor and @status=="Need Review" then %>
 	<div class="span12" id="article_status_actions">
-	  <%= link_to 'Approve', update_status_path(:editor_id => current_employee.id, :id => @article.id, :status=>"Approved"), class: 'btn btn-primary make-white', method: :post %>
-	  <%= link_to 'Revoke', "#", id:"revoke_article_button", class: 'btn btn-primary make-white'%>	
+	    <%= form_tag(update_status_path(:editor_id => current_employee.id, :id => @article.id, :status => "Approved")) do |f| %>
+            <%= submit_tag "Approve", class: 'btn btn-primary make-white' %>
+	    <%= link_to 'Revoke', "#", id:"revoke_article_button", class: 'btn btn-primary make-white'%>	
+	    <% end %>
 	</div>
 	<div id="article_revoke_actions" class="row span12" style="display:none;">
-	  <div class= "span12">
+	  <div class= "span12 center">
 	    <%= form_tag(update_status_path(:editor_id => current_employee.id, :id => @article.id, :status => "Revoked")) do |f| %>
-	    <div class="span3"></div>
-	    <div class="span6">
-		<%= text_area_tag "reason", nil, placeholder:"Reason for revoking", rows: 8, class:'input-xlarge' %>
-	    </div>
-	    <div class="span3"></div>
+		<%= text_area_tag "reason", nil, placeholder:"Reason for revoking", rows: 8, class: 'input-xlarge' %>
 	    <div class="span12 center">
               <%= submit_tag "Confirm", class: 'btn btn-primary make-white' %>
 	      <%= link_to "Cancel", "#", id: "cancel_revoke_article_button", class: 'btn btn-primary make-white' %>
@@ -71,14 +79,32 @@
 	<% end %>
 	<% if @through_editor and @status=="Approved" then %>
 	<div class="span12" id="article_status_actions">
-	  <%= link_to 'Publish', update_status_path(:editor_id => current_employee.id, :id => @article.id, :status=>"Published"), class: 'btn btn-primary make-white', method: :post %>
+	  <%= form_tag(update_status_path(:editor_id => current_employee.id, :id => @article.id, :status => "Published")) do |f| %>
+          <%= submit_tag "Publish", class: 'btn btn-primary make-white' %>
+	  <% end %>
 	</div>
 	<% end %>
       </div>
       <div class="span2"></div>
       <% end %>
     </div>
-    
+
+    <% if (@through_editor and (@status=="Being Written" or @status == "Assigned")) or (@through_contributor and @status=="Assigned") %>
+
+    <div class="row span12"></div>
+    <div class="row span12 center">
+      <div class="span4"></div>
+     <div class="span4">
+       <div class="span12 center">
+	 <strong>Notes</strong>
+	 <div class="hr-full center"></div>
+       </div>
+       <%= @article.instruction %>
+     </div>
+     <div class="span4"></div>
+    </div>
+    <% else %>
+
     <div class="row center span12">
       <div class="span2"></div>
       <div class="span8">
@@ -89,13 +115,14 @@
     
     <div class="row span12"></div>
 
-    <% if (@through_editor and (@status=="Being Written" or @status == "Assigned")) or (@through_contributor and @status=="Assigned") %>
-
-    <div class="row span12"></div>
-    <div class="row span12"></div>
-    <% else %>
-    <div id="content_container" class="row span12">
+    <div class="span4">
+      <%= render 'show_past_summaries', :article => @article %>
+    </div>
+    <div id="content_container" class="span4">
       <%=render 'show_recent_events', :article => @article %>
+    </div>
+    <div class="span4">
+      <%= render 'show_details', :article => @article %>
     </div>
     <% end %>
     <div class="row span12"></div>
@@ -121,14 +148,9 @@
       <div class= "span1"></div>
       <div class= "span10">
 	<%= form_tag(editor_article_path(current_employee, @article, :back_path => @back_path), :method => :delete) do |f| %>
-	<div class="span3"></div>
-	<div class="span6">
-	  <div class="span1"></div>
-	  <div class="span11 move-right">
-	    <%= text_area_tag "reason", nil, placeholder:"Reason for deletion", rows: 8, class:'input-xlarge' %>
-	  </div>
+	<div class="span12 center">
+	  <%= text_area_tag "reason", nil, placeholder:"Reason for deletion", rows: 8, class:'input-xlarge' %>
 	</div>
-	<div class="span3"></div>
 	<div class="span12 center">
           <%= submit_tag "Confirm", class: 'btn btn-primary make-white' %>
 	  <%= link_to "Cancel", "#", id: "cancel_delete_article_button", class: 'btn btn-primary make-white' %>
@@ -137,12 +159,12 @@
       <div class="span1"></div>
       <% end %>
     </div>
-
+    </div>
   </div>
   <div class="row span12"></div>
   <div class="row span12"></div>
   <div class="row span12"></div>
-</div>
+
 
 
 

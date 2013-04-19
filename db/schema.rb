@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416050008) do
+ActiveRecord::Schema.define(:version => 20130418183732) do
 
   create_table "additional_texts", :force => true do |t|
     t.integer  "article_id"
@@ -32,6 +32,9 @@ ActiveRecord::Schema.define(:version => 20130416050008) do
     t.string   "status"
     t.integer  "contributor_id"
     t.integer  "editor_id"
+    t.string   "temporary_title"
+    t.text     "instruction"
+    t.string   "category"
   end
 
   add_index "articles", ["contributor_id"], :name => "index_articles_on_contributor_id"
@@ -140,6 +143,19 @@ ActiveRecord::Schema.define(:version => 20130416050008) do
 
   create_table "tags", :force => true do |t|
     t.string "name"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "password_digest"
+    t.string   "create_account_token"
+    t.datetime "create_account_sent_at"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
   end
 
 end

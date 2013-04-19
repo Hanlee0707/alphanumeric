@@ -17,15 +17,24 @@
   <body>
     <header class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
-        <div class="container-fluid">
+        <div class="container-fluid no-space">
 	  <div class="span1"></div>
-	  <div class="span9">
-            <%= link_to "Gist", root_path,class: "brand", id: "logo" %>
+	  <div class="span11">
+            <%= link_to "Gist", home_path,class: "brand", id: "logo" %>
             <nav>
 	      <% if current_employee %>
               <ul class="nav pull-left">
-		<li><%= link_to raw("WORKSPACE&nbsp;&nbsp;&nbsp;<i class='caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
+		<% if employee_privilege("Contributor") or employee_privilege("Editor") or employee_privilege("Administrator") then %>
+		  <% if @editor_layout then %>
+		  <li class="dropdown active"><%= link_to raw("WORKSPACE <span style='font-size:60%'>EDITOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		  <% elsif @contributor_layout then %>
+		  <li class="dropdown active"><%= link_to raw("WORKSPACE <span style='font-size:60%'>CONTRIBUTOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		  <% elsif @administrator_layout then %>
+		  <li class="dropdown active"><%= link_to raw("WORKSPACE <span style='font-size:60%'>ADMINISTRATOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		  <% else %>
+		  <li class="dropdown"><%= link_to raw("WORKSPACE&nbsp;&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		  <% end %>
+		  <ul class="dropdown-menu" role="menu" aria-labelledby="history">
 		    <% if employee_privilege("Contributor") %>
 		    <li><%=link_to "Contributor", contributor_path(current_employee) %></li>
 		    <% end %>
@@ -37,16 +46,47 @@
 		    <% end %>
 		  </ul>
 		</li>
-		<li><%= link_to "PUBLISHED", published_index_path %></li>
-		<li><%= link_to "ARCHIVED", archived_index_path %></li>
-		<li><%= link_to "EMPLOYEES", employees_path %></li>
+		<% end %>
+		<% if employee_privilege("Contributor") or employee_privilege("Editor") then %>
+		  <% if @history_editor_layout then %>
+		  <li class="dropdown active">
+		    <%= link_to raw("HISTORY<span style='font-size:60%'>EDITOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		    <% elsif @history_contributor_layout then %>
+		  <li class="dropdown active">
+		    <%= link_to raw("HISTORY<span style='font-size:60%'>CONTRIBUTOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		    <% else %>
+		  <li class="dropdown">
+		    <%= link_to raw("HISTORY&nbsp;&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		    <% end %>
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
+		      <% if employee_privilege("Contributor") %>
+		      <li><%=link_to "Contributor History", history_contributor_path %></li>
+		      <% end %>
+		      <% if employee_privilege("Editor") %>
+		      <li><%=link_to "Editor History", history_editor_path %></li>
+		      <% end %>
+		    </ul>
+		  </li>
+		<% end %>
+		<% if @published_layout then %>
+		<li class="active">
+		<% else %>
+		<li>
+		<% end %>
+		<%= link_to "PUBLISHED", published_index_path %></li>
+		<% if @employees_layout then %>
+		<li class="active">
+		<% else %>
+		<li>
+		<% end %>
+		<%= link_to "EMPLOYEES", employees_path %></li>
               </ul>
 	      <% end %>
               <ul class="nav pull-right">
 		<% if current_employee %>
 		<li><%=link_to "HOME", home_path %></li>
-		<li>
-		    <%= link_to image_tag("Control Panel.png", alt: "Settings") + raw("<span class='caret white-caret'></span>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		<li class="dropdown">
+		    <%= link_to image_tag("Control Panel.png", alt: "Settings") + raw("&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
 		      <li><%= link_to "Edit Account", edit_employee_path(current_employee) %></li>
 		      <li class="dropdown-divider"></li>
@@ -54,36 +94,53 @@
 		    </ul>
 		</li>
 		<% else %>
-		<li><%= link_to "Sign in", root_path %></li>
+		<li><%= link_to "User", root_path %></li>
+		<li><%= link_to "Uploader", root_uploader_path %></li>
 		<% end %>
               </ul>
             </nav>
 	  </div>
-	  <div class="span2"></div>
         </div>
       </div>
     </header>
     <div class="row-fluid no-space">
-      <% if notice %>
-      <div class="span12 row">
-	<div class="span2"></div>
-	<div class="span10">
-	  <div class="span12 row">
-	    <div class="span2"></div>
-	    <div class="span6 center">
-	      <div class="span1"></div>
-	      <div class="span11">
-		<%=notice %>
-	      </div>
-	    </div>
-	    <div class="span4"></div>
-	  </div>
+      <% if @editor_layout or @contributor_layout %>
+      <div id="sidebar" class="span2 bs-docs-sidebar" style="display:none;">
+	<div class="well sidebar-nav sidebar-nav-fixed">
+	  <ul class="nav nav-list bs-docs-sidenav">
+	    <li class="nav-header">Articles Options</li>
+	    <% if @contributor_layout %>
+	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_contributor_incomplete.to_s + raw("</span>"), contributor_incomplete_index_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to "View Pending Review", contributor_review_index_path(current_employee) %></li>
+	    <% elsif @editor_layout %>
+	    <li class="nav-list-item"><%=link_to "New", new_editor_article_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_incomplete.to_s + raw("</span>"), editor_incomplete_index_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to raw("Review<span class='round list-right less-up'>") + num_review.to_s + raw("</span>"), editor_review_index_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to raw("Publish<span class='round list-right less-up'>") + num_publish.to_s + raw("</span>"), editor_approved_index_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to "Manage Published", editor_published_index_path(current_employee) %></li>
+	    <% end %>
+	  </ul>
+	</div><!--/.well -->
+      </div><!--/span-->
+      <% end %>
+      <div id="content" class="span12">
+	<% if notice %>
+	<div class="span12 row center">
+	  <%=notice %>
 	</div>
+	<% end %>
+	<%= yield %><!-- <label id="code.depot.e.include"/> -->
+      </div>
+      <% if @editor_layout or @contributor_layout %>
+      <div class="toggles-container-in">
+	<% if @editor_layout %>
+	  <a href="#" class="toggles editor">
+	<% else %>
+	<a href="#" class="toggles contributor">
+	<% end %>
+	<i class="icon-chevron-right"></i></a>
       </div>
       <% end %>
-      <div class="span2"></div>
-      <%= yield %><!-- <label id="code.depot.e.include"/> -->
-    </div>
   </body>
 <!-- <%= debug(params) if Rails.env.development? %> -->
 </html>

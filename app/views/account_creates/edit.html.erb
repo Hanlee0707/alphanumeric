@@ -1,92 +1,66 @@
-<div class="span10">
-  <div class="span10 row">
-    <div class="span3"></div>
-    <div class="span6">
-      <div class="span12">
-	<h1>Welcome, <%=@employee.first_name%> <%=@employee.last_name%>!</h1>
-      </div>
-      <div class="row span12">
-	<div class="span3">
-	  Your ID:
-	</div>
-	<div class="span9">
-	  <%= @employee.email %>
-	</div>
-	<div class="span3">
-	  Your Position:
-	</div>
-	<div class="span9">
-	  <% @employee.employee_positions.each do |position| %>
-	    <div class="span9">
-	      <%= position.position %>
-	    </div>
-	    <div class="span3">
-	      <% if position.position != "Intern" and position.position != "Contributor" then %>
-	        level <%= position.level %>
-	      <% end %>
-	    </div>
-	  <% end %>
-	</div>
-
-      </div>
+<div class="span12">
+  <h1>Welcome, <%=@employee.first_name%> <%=@employee.last_name%>!</h1>
+</div>
+<div class="row span12">
+  <div class="span4"></div>
+  <div class="span4">
+    <div class="span4">
+      Your ID:
     </div>
-    <div class="span3"></div>
+    <div class="span8">
+      <%= @employee.email %>
+    </div>
+    <div class="span4">
+      Your Position:
+    </div>
+    <div class="span8">
+      <% @employee.employee_positions.each do |position| %>
+      <div class="span9">
+	<%= position.position %>
+      </div>
+      <div class="span3">
+	<% if position.position != "Intern" and position.position != "Contributor" then %>
+	level <%= position.level %>
+	<% end %>
+      </div>
+      <% end %>
+    </div>
   </div>
-  <div class="span2 row"></div>
-
-  <div class="span10">
-
+  <div class="span4"></div>
+</div>
+<div class="span12">
   <%= form_for @employee, :url => account_create_path(params[:id]) do |f| %>
-
     <% if @employee.errors.any? %>
     <div class="span12 row">
-      <div class="span3"></div>
-      <div class="span6 center well">
-	<div class="error_messages">
-	  <h2>There were some errors.</h2>
-	  <ul>
-	    <% for message in @employee.errors.full_messages %>
-	    <li><%= message %></li>
-	    <% end %>
-	  </ul>
-	</div>
-      </div>
-      <div class="span3"></div>
+      <h2>There were some errors.</h2>
+      <ul>
+	<% for message in @employee.errors.full_messages %>
+	<li><%= message %></li>
+	<% end %>
+      </ul>
     </div>
     <% end %>
+</div>
+
+<div class="span12 row center">
+  <h4>Fill out the form below to complete your registration.</h4>
+</div>
 
 
-  <div class="span12 row">
-    <div class="span2"></div>
-    <div class="span8 center">
-      <h4>Fill out the form below to complete your registration.</h4>
-    </div>
-    <div class="span2"></div>
+<div class="span12 row"></div>
+<div class="span12 row">
+  <div class="span12 center">
+    <%= f.password_field :password, placeholder: "password" %>
   </div>
-
-  <div class="span12 row"></div>
-  <div class="span12 row">
-    <div class="span3"></div>
-    <div class="span6 center">
-      <div class="span12">
-	<%= f.password_field :password, placeholder: "password" %>
-      </div>
-      <div class="span12">
-	<%= f.password_field :password_confirmation, placeholder:"password confirmation" %>
-
-	<%= f.hidden_field :account_create_time, value: Time.zone.now %>
-      </div>
-    </div>
-    <div class="span3"></div>
+  <div class="span12 center">
+    <%= f.password_field :password_confirmation, placeholder:"password confirmation" %>
+    <%= f.hidden_field :account_create_time, value: Time.zone.now %>
   </div>
-  <div class="span12 row"></div>
+</div>
+<div class="span12 row"></div>
 
 <div class="span12 row">
-  <div class="span3"></div>
-  <div class="actions span6 center"><%= f.submit "Complete Registration", class: 'btn btn-primary' %></div>
-  <div class="span3"></div>
+  <div class="actions span12 center"><%= f.submit "Complete Registration", class: 'btn btn-primary' %></div>
 </div>
 <% end %>
-</div>
-<div class="span2"></div>
-</div>
+

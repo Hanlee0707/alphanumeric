@@ -17,12 +17,16 @@ class ApplicationController < ActionController::Base
     @current_employee ||= Employee.find_by_id(session[:employee_id]) if session[:employee_id]
   end
 
+  def current_user
+
+  end
+
   def logged_in?
     if current_employee.present?
       @employee = current_employee
     else
       unless params[:controller] == "sessions" and params[:action] == "new"
-        redirect_to root_path, notice: "Please log in first." and return
+        redirect_to root_uploader_path, notice: "Please log in first." and return
       end
     end
   end

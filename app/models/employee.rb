@@ -7,13 +7,12 @@ class Employee < ActiveRecord::Base
   attr_accessor :email_confirmation, :updating_password, :name
   validates_presence_of :email, :password, :first_name, :last_name, :on => :create
   validates_presence_of :password, :on => :edit
-  validates :email, uniqueness: true
+  validates :email, :uniqueness => {:case_sensitive => false }, length: { minimum: 3, maximum: 50}
 
   has_many :employee_positions, dependent: :destroy 
   has_many :employee_position_types, :through => :employee_positions
   has_many :articles, :foreign_key => 'contributor_id'
   
-  validates :email, length: {maximum: 50}
   validates :password, length: {minimum: 8}, :if => :should_validate_password?
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, format: { with: VALID_EMAIL_REGEX }

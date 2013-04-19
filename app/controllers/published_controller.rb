@@ -1,14 +1,14 @@
 class PublishedController < ApplicationController
   before_filter :logged_in?
+  before_filter :set_attributes
 
-  layout :select_layout
-  def select_layout
+  def set_attributes
     if params[:editor_id] and employee_privilege("Editor") then
-      'editor_layout'
+      @editor_layout = true
     elsif params[:contributor_id] and employee_privilege("Contributor") then
-      'contributor_layout'
+      @contributor_layout = true
     else
-      'published_layout'
+      @published_layout = true
     end
   end  
 

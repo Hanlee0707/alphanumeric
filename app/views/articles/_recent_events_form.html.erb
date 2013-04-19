@@ -1,47 +1,52 @@
   <div class="row span12" id="recent_events">
     <div class="row span12">
       <div class="span12">
-	<h5>Recent Events <b id="basic-caret" class="caret little-down"></b></h5>
+	<h5><%= link_to raw("Recent Events <b id='basic-caret' class='up-caret little-down'></b>"), "#", class: 'hide-form-element' %>
+	</h5>
       </div>
       <div class="span12">
 	<div class="hr-full"></div>
       </div>
-    </div>
-    <div class="row span12">
-      <div class="span6">
-	<div class="span12">
-	  <%= f.cktext_area :current_content, class:"input-current" %>
-	</div>
-	<div class="span12"></div>
-	<div class="span12 center">      
-	  <div id="extra_information" class="span12">
-	    <%= f.fields_for :extra_informations do |builder| %>
-	    <div class="fields span12">
-	      <%= render 'extra_information_fields', :f=> builder %>
+      <div id="recent-fields" class="row span12">
+	<div class="span6">
+	  <div class="span2"></div>
+	  <div class="span10">
+	    <div class="span1"></div>
+	    <div class="span11">
+	      <%= f.cktext_area :current_content, :ckeditor=>{ :width => 350, :height=> 150 } %>
 	    </div>
+	  </div>
+	  <div class="span12"></div>
+	  <div class="span12 center">      
+	    <div id="extra_information" class="span12">
+	      <%= f.fields_for :extra_informations do |builder| %>
+	      <div class="fields span12">
+		<%= render 'extra_information_fields', :f=> builder %>
+	      </div>
+	      <% end %>
+	    </div>
+	    <div class="span12 center">
+	      <%= link_to_add_fields "New Popup", f, :extra_informations, target: "extra_information", delete: false, hide: false, class: 'btn btn-large' %>
+	    </div>
+	  </div>
+	</div>
+	<div class="span6 center">
+	  <div>
+	    <% if @article.images.nil? or @article.images.size ==0 then %>
+            <%= link_to_add_fields "New Image", f, :images, image_type: "GIST", target: "current_image", delete: true, hide: false, class: 'btn btn-large add_gist_image' %>
+	    <% else %>
+            <%= link_to_add_fields "New Image", f, :images, image_type: "GIST", target: "current_image", delete: true, hide: true, class: 'btn btn-large add_gist_image' %>
 	    <% end %>
 	  </div>
-	  <div class="span12 center">
-	    <%= link_to_add_fields "New Information", f, :extra_informations, target: "extra_information", delete: false, hide: false, class: 'btn btn-large' %>
+	  <div id="current_image" class="center">
+            <% if @article.images.size >0 and @article.images.first.image_type == "GIST" then %>
+	    <%= f.fields_for :images do |builder| %>
+	    <div class="fields">
+	      <%= render 'image_fields', :f => builder, :image_type => "GIST" %>
+	    </div>
+	    <% end %>
+	    <% end %>
 	  </div>
-	</div>
-      </div>
-      <div class="span6 center">
-	<div>
-	  <% if @article.images.nil? or @article.images.size ==0 then %>
-          <%= link_to_add_fields "New Image", f, :images, image_type: "GIST", target: "current_image", delete: true, hide: false, class: 'btn btn-large add_gist_image' %>
-	  <% else %>
-          <%= link_to_add_fields "New Image", f, :images, image_type: "GIST", target: "current_image", delete: true, hide: true, class: 'btn btn-large add_gist_image' %>
-	  <% end %>
-	</div>
-	<div id="current_image" class="center">
-          <% if @article.images.size >0 and @article.images.first.image_type == "GIST" then %>
-	  <%= f.fields_for :images do |builder| %>
-	  <div class="fields">
-	    <%= render 'image_fields', :f => builder, :image_type => "GIST" %>
-	  </div>
-	  <% end %>
-	  <% end %>
 	</div>
       </div>
     </div>

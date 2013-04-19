@@ -1,11 +1,12 @@
 class EmployeesController < ApplicationController
   before_filter :logged_in?
-  layout :select_layout
-  def select_layout
+  before_filter :set_attributes
+
+  def set_attributes
     if params[:administrator_id] and employee_privilege("Administrator") then
-      'administrator_layout'
+      @administrator_layout = true
     else
-      'employees_layout'
+      @employees_layout = true
     end
   end  
 
@@ -56,6 +57,7 @@ class EmployeesController < ApplicationController
         end
       end
     else
+      @employees_layout= false
       if @current_employee.id.to_s == params[:id] 
         @administrative = false
         @back_path = home_path
@@ -104,7 +106,7 @@ class EmployeesController < ApplicationController
         if administrative then
           format.html { redirect_to administrator_employee_url(current_employee, @employee), notice: "Employee was successfully updated." }
         else
-         format.html { redirect_to @employee, notice: "Employee was successfully updated." }
+         format.html { redirect_to home_path, notice: "Employee was successfully updated." }
         end
         format.json { head :no_content }
       else

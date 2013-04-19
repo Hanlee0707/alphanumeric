@@ -34,6 +34,28 @@ jQuery ($) ->
     else
       $("input[id*='article_']").prop('checked', false)	
 
+  $(document).on "click", "a.toggles", (event)->
+    event.preventDefault()
+    $("a.toggles i").toggleClass "icon-chevron-left icon-chevron-right"
+    $("a.toggles").parent().toggleClass "toggles-container-out toggles-container-in"
+    $("#sidebar").animate
+      width: "toggle"
+    , 0
+    if $("#content").attr("class")=="span10"
+      $("#content").attr("class","span12")
+    else 
+      $("#content").attr("class","span10")
+
+  $(document).on "click", "input[type='submit']", (event)->
+    $("input[type='submit']").attr('disabled', true)
+    $("a").attr('disabled', true)
+
+
+  $(document).on "click", ".hide-form-element", (event)->
+    event.preventDefault()
+    $(this).parent().parent().siblings('div[id]').toggle()
+    $(this).children("b").toggleClass "caret up-caret"
+
   $(document).on "click", "#revoke_article_button",  (event)->
     event.preventDefault()
     $("#article_status_actions").hide()
@@ -77,11 +99,6 @@ jQuery ($) ->
     $("#contributor_container").hide()
     $("#article_contributor_last_name").val("")
     $(this).parent().hide()
-
-  $(document).on "click", "#assign_random_contributor", (event)-> 
-    event.preventDefault()
-    $.post "/assign_random", 
-          null, null, "script"
 
   $(document).on "click", ".tag_wrap_form",  (event)->
     hidden_element = $("#article_tag_list")
