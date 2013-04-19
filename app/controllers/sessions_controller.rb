@@ -18,16 +18,21 @@ class SessionsController < ApplicationController
       session[:employee_id] = employee.id
       employee.latest_login_at = Time.now
       employee.save
-      if params[:uid] then
-        return "login Successful."
-      else
-        redirect_to home_path, :notice => "You have successfully logged in!"
+      respond_to do |format|
+        if params[:uid] then
+          format.json { render json: employee }
+        else
+          format.html {redirect_to home_path, :notice => "You have successfully logged in!"}
+        end
       end
     else
-      if params[:uid] then
-        return "login Failed."
-      else
-        redirect_to  new_session_path, :notice => "Invalid email or password."
+      @not_valid = ["not valid"]
+      respond_to do |format|
+        if params[:uid] then
+          format.json { render json: @not_valid }
+        else
+          format.html { redirect_to root_uploader_path, :notice => "Invalid email or password."}
+        end
       end
     end
   end
