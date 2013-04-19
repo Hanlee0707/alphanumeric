@@ -18,9 +18,17 @@ class SessionsController < ApplicationController
       session[:employee_id] = employee.id
       employee.latest_login_at = Time.now
       employee.save
-      redirect_to home_path, :notice => "You have successfully logged in!"
+      if params[:uid] then
+        return "login Successful."
+      else
+        redirect_to home_path, :notice => "You have successfully logged in!"
+      end
     else
-      redirect_to  new_session_path, :notice => "Invalid email or password."
+      if params[:uid] then
+        return "login Failed."
+      else
+        redirect_to  new_session_path, :notice => "Invalid email or password."
+      end
     end
   end
 
