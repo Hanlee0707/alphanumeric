@@ -46,7 +46,8 @@ jQuery ($) ->
     else 
       $("#content").attr("class","span10")
 
-  $(document).on "click", "input[type='submit']", (event)->
+  $(document).on "submit", "form", (event)->
+    $(this).find("input[type='submit']").val("Working...")
     $("input[type='submit']").attr('disabled', true)
     $("a").attr('disabled', true)
 
