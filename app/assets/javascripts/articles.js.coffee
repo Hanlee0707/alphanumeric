@@ -37,7 +37,13 @@ jQuery ($) ->
   $(document).on "click", "a.toggles", (event)->
     event.preventDefault()
     $("a.toggles i").toggleClass "icon-chevron-left icon-chevron-right"
-    $("a.toggles").parent().toggleClass "toggles-container-out toggles-container-in"
+    if $(this).parent().attr("class") == "toggles-container-in" 
+      $(this).parent().attr("class", "toggles-container-out")
+      $(this).parent().css({'left':($("#sidebar").children().width()+'%')})
+    else 
+      $(this).parent().attr("class", "toggles-container-in")
+      $(this).parent().css({'left':('0px')})
+
     $("#sidebar").animate
       width: "toggle"
     , 0

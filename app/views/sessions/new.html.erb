@@ -6,37 +6,46 @@
        <% end %>
 </div>
 <div class="row span12"></div>
-<div class="row span12 center">
-  <%= form_tag sessions_path do %>
+<div class="row span12">
+  <%= form_tag(sessions_path) do %>
   <div class="field span12">
     <div class="span12" style="font-size:80%;">
       <div class="span5"></div>
-      <div class="span3">
-	<div class="span6 left" style="padding-left:20px;">
-	<% if !@is_employee then %>
-	<%= link_to "Sign Up", signup_path %>
-	<%= hidden_field_tag "user", true %>
-	<% end %>
+      <div class="span3 row">
+	<div clas="span12 row">
+	  <div class="span8">
+	    <div class="span6 left">
+	      <% if !@is_employee then %>
+	      <%= link_to "Sign Up", signup_path %>
+	      <%= hidden_field_tag "user", true %>
+	      <% end %>
+	    </div>
+	    <div class="span6 right">
+	      <%= link_to "Forgot password?", new_reset_password_path %>
+	    </div>
+	  </div>
+	  <div class="span4"></div>
 	</div>
-	<div class="span6 right" style="padding-right:54px;">
-	  <%= link_to "Forgot password?", new_reset_password_path %>
+	<div class="span12 row" style="display:table;">
+	  <div class="span12 row" style="display:table-row;">
+	    <div id="login_fields" class="span8" style="display:table-cell;">
+	      <div class="span12">
+		<%= text_field_tag :email, params[:email], placeholder: "email", class: "span12" %>
+	      </div>
+	      <div class="span12">
+		<%= password_field_tag :password, "", placeholder:"password", class:"span12" %>
+	      </div>
+	    </div>
+	    <div class="span4" style="display:table-cell;">
+	      <div class="span1"></div>
+	      <div class="span11">
+		<%= submit_tag "Log in",:class => "btn btn-primary", id:"login_button" %>
+	      </div>
+	    </div>
+	  </div>
 	</div>
       </div>
-      <div class="span3"></div>
-    </div>
-  </div>
-  <div class="field span12">
-    <div class="span4"></div>
-    <div class="span4" style="padding-left:65px;">
-      <div class="span12" style="margin-bottom:-6px;">
-	<%= text_field_tag :email, params[:email], placeholder: "email" %>
-      </div>
-      <div class="span12" style="display:inline-block;">
-	<%= password_field_tag :password, "", placeholder:"password" %>
-      </div>
-    </div>
-    <div class="span4 left" style="margin-left:-58px;">
-      <%= submit_tag "Log in",:class => "btn btn-primary", :style => "height:65px;" %>
+      <div class="span4"></div>
     </div>
   </div>
 </div>

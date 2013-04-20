@@ -17,6 +17,7 @@
 //= require bootstrap
 //= require bootstrap-datetimepicker
 //= require articles
+//= require sessions
 //= require ckeditor/init
 
 
