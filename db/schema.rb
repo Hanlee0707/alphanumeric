@@ -11,12 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130418183732) do
+ActiveRecord::Schema.define(:version => 20130420104304) do
 
   create_table "additional_texts", :force => true do |t|
     t.integer  "article_id"
     t.text     "bullet"
     t.integer  "location"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "archived_articles", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "article_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -156,6 +163,7 @@ ActiveRecord::Schema.define(:version => 20130418183732) do
     t.datetime "password_reset_sent_at"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
+    t.datetime "latest_login_at"
   end
 
 end

@@ -12,8 +12,7 @@
       <div class="span8"></div>
     </div>
     <div class="span4 right">
-      <div class="span3"></div>
-      <div class="span7">
+      <div class="span10">
 	<%= form_for administrator_path(current_employee), :url=>{:action => 'show'} do |f| %>
 	<%= text_field_tag 'search', "", placeholder: 'Name or Email', class:'down input-search' %>
 	<%= button_tag "Search", class: 'btn' %>

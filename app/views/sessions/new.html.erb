@@ -21,7 +21,11 @@
 	      <% end %>
 	    </div>
 	    <div class="span6 right">
+	      <% if !@is_employee then %>
+	      <%= link_to "Forgot password?", new_user_reset_password_path %>
+	      <% else %>
 	      <%= link_to "Forgot password?", new_reset_password_path %>
+	      <% end %>
 	    </div>
 	  </div>
 	  <div class="span4"></div>

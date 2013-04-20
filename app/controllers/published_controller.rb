@@ -36,6 +36,7 @@ class PublishedController < ApplicationController
       object[:numbers]=article.numbers
       object[:extra_informations]=article.extra_informations
       object[:additional_texts]=article.additional_texts
+      object[:tag_list]=article.tag_list
       objects.append(object)
     }
     respond_to do |format| 

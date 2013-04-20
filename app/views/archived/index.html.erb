@@ -1,42 +1,39 @@
 <% provide(:title, "Archived Articles") %>
 
-<div class="span10">
-  <div class="span10">
-    <div class="span12">
-      <div class="span12 row center">
-	<h3>Archived Articles</h3>
-      </div>
-      <div class="span12 row center"></div>
-      <% if !@articles.empty? %>
-      <div class="span1"></div>
-      <div class="span11">
-	<div class="span1"></div>
-	<table class="table table-striped table-hover span11">
-	  <thead>
-	    <tr>
-	      <th class="span5">TITLE</th>
-	      <th class="span3">AUTHOR</th>
-	      <th class="span2">CREATED</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <% @articles.each do |article| %>
-	    <tr>
-	      <td><%= link_to article.title, archived_article_path(article)%></td>
-	      <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
-	      <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
-	    </tr>
-	    <% end %>
-	  </tbody>
-	</table>
-	<div class="span12 row center"><%= will_paginate @articles, :renderer => BootstrapPagination::Rails, :previous_label => "←", :next_label => "→" %></div>
-      </div>
-      <% else %>
-      <div class="span12 row center"><strong>There are no articles.</strong></div>
-      <% end %>
-    </div>
+<div class="span12">
+  <div class="span12 row center">
+    <h3>Archived Articles</h3>
   </div>
-  <div class="span2"></div>
+  <div class="span12 row center"></div>
+  <% if !@articles.empty? %>
+  <div class="span1"></div>
+  <div class="span10">
+    <table class="table table-striped table-hover">
+      <thead>
+	<tr>
+	  <th class="span5">TITLE</th>
+	  <th class="span3">AUTHOR</th>
+	  <th class="span2">CREATED</th>
+	</tr>
+      </thead>
+      <tbody>
+	<% @articles.each do |article| %>
+	<tr>
+	  <td><%= link_to article.title, archived_article_path(article)%></td>
+	  <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
+	  <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	</tr>
+	<% end %>
+      </tbody>
+    </table>
+    <div class="span12 row center"><%= will_paginate @articles, :renderer => BootstrapPagination::Rails, :previous_label => "←", :next_label => "→" %></div>
+  </div>
+  <div class="span1"></div>
+  <% else %>
+  <div class="span12 row center"><strong>There are no articles.</strong></div>
+  <% end %>
 </div>
+
+
 
 

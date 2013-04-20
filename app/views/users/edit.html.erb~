@@ -1,0 +1,40 @@
+<% provide(:title, "Edit User") %>
+
+<%= form_for @user, :url=>{:action => 'update'} do |f| %> 
+<div class="span12 row center">
+  <div class="span3"></div>
+  <div class="span6">
+    <% if @employee.errors.any? %>
+    <div class="error_messages">
+      <h2>There were some errors.</h2>
+      <ul>
+        <% for message in @employee.errors.full_messages %>
+        <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+  </div>
+  <div class="span3"></div>
+</div>
+
+<% if @administrative then %>
+<%= render 'edit_administrator',  :f => f, :employee=> @employee  %>
+<% else %>
+<%= render 'edit_employee', :f => f, :employee=> @employee %>
+<% end %>
+
+<div class="span12 row">
+  <div class="span3"></div>    
+  <div class="actions span6 center">
+    <%= f.submit "Apply", class: 'btn btn-primary' %>
+    <%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
+  </div>
+  <div class="span3"></div>
+</div>
+
+<% end %>
+</div>
+
+
+

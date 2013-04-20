@@ -10,6 +10,7 @@ class Article < ActiveRecord::Base
   has_many :extra_informations, dependent: :destroy
   has_many :additional_texts, dependent: :destroy
   has_many :citations, dependent: :destroy
+  has_many :archived_articles, dependent: :destroy
 
   belongs_to :contributor, :class_name => "Employee", :foreign_key => "contributor_id"
   belongs_to :editor, :class_name => "Employee", :foreign_key => "editor_id"

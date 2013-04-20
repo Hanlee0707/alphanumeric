@@ -1,5 +1,6 @@
 <% provide(:title, "Home")%>
 
+<% if current_employee then %>
 <div class="span12">
   <div class="span12 row center">
     <h3>List of Working Issues</h3>
@@ -37,7 +38,13 @@
   </div>
   <% end %>
 </div>  
-
+<% elsif current_user %>
+<div class="span12">
+  <div class="span12 row center">
+    <h3>User Home</h3>
+  </div>
+</div>  
+<% end %>
   
 
 

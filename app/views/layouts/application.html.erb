@@ -82,14 +82,33 @@
 		<% end %>
 		<%= link_to "EMPLOYEES", employees_path %></li>
               </ul>
+	      <% elsif current_user %>
+              <ul class="nav pull-left">
+		<% if @published_layout then %>
+		<li class="active">
+		<% else %>
+		<li>
+		<% end %>
+		<%= link_to "PUBLISHED", published_index_path %></li>
+		<% if @archived_layout then %>
+		<li class="active">
+		<% else %>
+		<li>
+		<% end %>
+		<%= link_to "ARCHIVE", archived_index_path %></li>
+              </ul>
 	      <% end %>
               <ul class="nav pull-right">
-		<% if current_employee %>
+		<% if current_employee or current_user %>
 		<li><%=link_to "HOME", home_path %></li>
 		<li class="dropdown">
 		    <%= link_to image_tag("Control Panel.png", alt: "Settings") + raw("&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
+		      <% if current_employee %>
 		      <li><%= link_to "Edit Account", edit_employee_path(current_employee) %></li>
+		      <% else %>
+		      <li><%= link_to "Edit Account", edit_user_path(current_user) %></li>
+		      <% end %>
 		      <li class="dropdown-divider"></li>
 		      <li><%= link_to "Sign Out", log_out_path %></li>
 		    </ul>

@@ -13,14 +13,22 @@ class SessionsController < ApplicationController
   end
 
   def create
-    employee = Employee.find_by_email(params[:email])
-    if employee && employee.authenticate(params[:password])
-      session[:employee_id] = employee.id
-      employee.latest_login_at = Time.now
-      employee.save
+    if params[:user] then
+      personnel = User.find_by_email(params[:email])
+    else
+      personnel = Employee.find_by_email(params[:email])
+    end
+    if personnel && personnel.authenticate(params[:password])
+      if params[:user] then
+        session[:user_id] = personnel.id
+      else
+        session[:employee_id] = personnel.id
+      end
+      personnel.latest_login_at = Time.now
+      personnel.save
       respond_to do |format|
         if params[:uid] then
-          format.json { render json: employee }
+          format.json { render json: personnel }
         else
           format.html {redirect_to home_path, :notice => "You have successfully logged in!"}
         end
@@ -39,6 +47,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:employee_id] = nil
+    session[:user_id] = nil
     redirect_to root_path, :notice => "You have successfully logged out."
   end
 end

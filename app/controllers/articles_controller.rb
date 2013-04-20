@@ -38,6 +38,8 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     @status = @article.status
     @show_edit = false
+    @through_editor = false
+    @through_contributor = false
     if params[:editor_id] then
       if current_employee and params[:editor_id] == current_employee.id.to_s
         @through_editor = true
@@ -92,6 +94,9 @@ class ArticlesController < ApplicationController
         end 
       end
     else
+      if current_user then 
+        @archived_article = current_user.archived_articles.find_by_article_id(@article.id)
+      end
       if @history_editor_layout then
         @through_editor = true
       end
@@ -239,6 +244,28 @@ contributor = Employee.find(item.contributor_id)
     respond_to do |format|
       format.html { redirect_to editor_approved_index_path(params[:editor_id]), notice: count.to_s + " articles were successfully published."}
     end
+  end
+  
+  def archive_for_user
+    if params[:archive]=="true" then
+      @user_article = ArchivedArticle.new(:user_id => params[:user_id], :article_id => params[:article_id])
+      if @user_article.save then
+        notice = "Article was successfully archived."
+      else
+        notice = "Archiving failed."
+      end
+    else
+      @user_article = User.find(params[:user_id]).archived_articles.find_by_article_id(params[:article_id])
+      if @user_article.destroy then
+        notice = "Article was successfully removed from the archive."
+      else
+        notice = "Removing from the archive failed."
+      end
+    end
+      
+    respond_to do |format|
+      format.html { redirect_to published_article_path(params[:article_id]), notice: notice}
+    end    
   end
 
   def archive_articles 

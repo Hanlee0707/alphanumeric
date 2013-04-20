@@ -116,13 +116,21 @@
     <div class="row span12"></div>
 
     <div class="span4">
-      <%= render 'show_past_summaries', :article => @article %>
+      <% if @through_editor or @through_contributor then %>
+      <%= render 'show_past_summaries', :article => @article, :user => false %>
+      <% end %>
     </div>
     <div id="content_container" class="span4">
-      <%=render 'show_recent_events', :article => @article %>
+      <% if @through_editor or @through_contributor then %>
+      <%=render 'show_recent_events', :article => @article, :user => false %>
+      <% else %>
+      <%=render 'show_recent_events', :article => @article, :user => true %>
+      <% end %>
     </div>
     <div class="span4">
-      <%= render 'show_details', :article => @article %>
+      <% if @through_editor or @through_contributor then %>
+      <%= render 'show_details', :article => @article, :user => false %>
+      <% end %>
     </div>
     <% end %>
     <div class="row span12"></div>
@@ -140,13 +148,28 @@
 	<% if @through_editor then %>
 	  <%= link_to 'Delete', "#", id: "delete_article_button", class: 'btn btn-primary make-white'%>
 	<% end %>
-	<%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
+	<% if !@through_editor and !@through_contributor %> 
+	<% if @archived_article.nil? %>
+	<%= form_tag(archive_for_user_path(:user_id => current_user.id, :article_id => @article.id, :archive => true)) do |f| %>
+        <%= submit_tag "Archive", class: 'btn btn-primary make-white' %>
+ 	<%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
+	<% end %>
+	<% else %>
+	<%= form_tag(archive_for_user_path(:user_id => current_user.id, :article_id => @article.id, :archive => false)) do |f| %>
+        <%= submit_tag "Unarchive", class: 'btn btn-primary make-white' %>
+ 	<%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
+	<% end %>
+	<% end %>
+	<% else %>
+ 	<%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
+	<% end %>
       </div>
       <div class="span1"></div>
     </div>
     <div id="article_delete_actions" class="row span12" style="display:none;">
       <div class= "span1"></div>
       <div class= "span10">
+	<% if @through_editor then %>
 	<%= form_tag(editor_article_path(current_employee, @article, :back_path => @back_path), :method => :delete) do |f| %>
 	<div class="span12 center">
 	  <%= text_area_tag "reason", nil, placeholder:"Reason for deletion", rows: 8, class:'input-xlarge' %>
@@ -154,10 +177,11 @@
 	<div class="span12 center">
           <%= submit_tag "Confirm", class: 'btn btn-primary make-white' %>
 	  <%= link_to "Cancel", "#", id: "cancel_delete_article_button", class: 'btn btn-primary make-white' %>
+	  <% end %>
 	</div>
+	<% end %>
       </div>
       <div class="span1"></div>
-      <% end %>
     </div>
     </div>
   </div>

@@ -16,7 +16,7 @@ Alphanumeric::Application.routes.draw do
       get :autocomplete_contributor_last_name, :on => :collection
     end
     resources :account_creates 
-    resources :reset_password
+    resources :reset_password, :only => [:new, :create, :edit, :update]
     resources :sessions
     resources :administrator, :only => [:show] do
       resources :employees
@@ -54,10 +54,24 @@ Alphanumeric::Application.routes.draw do
     match '/', to: 'sessions#new', as: 'root_uploader'
   end
 
+  match '/sign_out', to: 'sessions#destroy', as: 'log_out'
+  match '/home', to: 'home#show', as: 'home'
   match '/signup', to: 'users#new', :via=> :get, as: 'signup'
-  resources :users, :only => [:create]
-
+  match '/published', to: 'published#index', :via => :get, as:'published_index' 
+  match '/published/articles/:id' => 'articles#show', :via => :get, as: 'published_article'
+  match '/archived', to: 'archived#index', :via => :get, as:'archived_index'
+  match '/archived/articles/:id' => 'articles#show', :via => :get, as: 'archived_article'
+  get 'tags/:tag', to: 'list#index', as: :tag
+  resources :users, :only => [:create, :edit, :update, :show]
+  match '/previous', to:'articles#previous', :via => :get, as: 'show_previous'
+  match '/details', to:'articles#details', :via => :get, as: 'show_details'
+  match '/recent', to:'articles#recent', :via => :get, as: 'show_recent'
+  match '/archive_for_user', to: 'articles#archive_for_user', as: 'archive_for_user'
+  match '/archived', to: 'archived#index', :via => :get, as:'archived_index'
+  match '/archived/articles/:id' => 'articles#show', :via => :get, as: 'archived_article'
   root to: 'sessions#new'  
+  resources :reset_password, :only => [:new, :create, :edit, :update], as: 'user_reset_password'
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

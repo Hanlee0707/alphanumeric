@@ -2,6 +2,6 @@ jQuery.noConflict();
 
 jQuery(function($) {
   $(document).ready(function() {
-    $("#content_container").html("<%= escape_javascript(render('show_past_summaries', :article=> @article)) %>");
+    $("#content_container").html("<%= escape_javascript(render('show_past_summaries', :article=> @article, :user => true)) %>");
   });
 });
