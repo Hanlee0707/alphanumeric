@@ -15,7 +15,7 @@
 	    <tr>
 	      <th class="span5">TITLE</th>
 	      <th class="span3">EDITOR</th>
-	      <th class="span2">CREATED</th>
+	      <th class="span2">PUBLISHED TIME</th>
 	      <th class="span2">STATUS</th>
 	    </tr>
 	  </thead>
@@ -24,7 +24,11 @@
 	    <tr>
 	      <td><%= link_to article.title, history_contributor_article_path(article)%></td>
 	      <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
-	      <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	      <% if article.published_at.nil? %>
+	      <td>NO TIME </td>
+	      <% else %>
+	      <td><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
+	      <% end %>
 	      <td><%= article.status %></td>
 	    </tr>
 	    <% end %>

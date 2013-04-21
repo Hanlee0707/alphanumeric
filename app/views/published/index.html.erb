@@ -37,7 +37,7 @@
 	  <% if article.published_at.nil? %>
 	  <td>NO TIME </td>
 	  <% else %>
-	  <td><%= article.published_at.localtime.strftime "%m/%d/%y" %></td>
+	  <td><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
 	  <% end %>
 	</tr>
 	<% end %>
@@ -86,7 +86,7 @@
 	<% if article.published_at.nil? %>
 	<td>NO TIME </td>
 	<% else %>
-	<td><%= article.published_at.localtime.strftime "%m/%d/%y" %></td>
+	<td><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
 	<% end %>
       </tr>
       <% end %>

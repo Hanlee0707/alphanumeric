@@ -17,15 +17,15 @@ class PublishedController < ApplicationController
     @isContributor = false
     if params[:editor_id] and current_employee.id.to_s == params[:editor_id]
       @isEditor = true
-      @articles = Article.where("status = ?", "Published").paginate page: params[:page], order: 'created_at desc', per_page: 20
+      @articles = Article.where("status = ?", "Published").paginate page: params[:page], order: 'published_at desc', per_page: 20
     elsif params[:contributor_id] and current_employee.id.to_s == params[:contributor_id]
       @isContributor = true
-      @articles = Article.where("contributor_id=? and status = ?", params[:contributor_id], "Published").paginate page: params[:page], order: 'created_at desc', per_page: 20
+      @articles = Article.where("contributor_id=? and status = ?", params[:contributor_id], "Published").paginate page: params[:page], order: 'published_at desc', per_page: 20
     else
       if params[:tag] then
-        @articles = Article.tagged_with(params[:tag]).where("status = ?", "Published").paginate page: params[:page], order: 'created_at desc', per_page: 20
+        @articles = Article.tagged_with(params[:tag]).where("status = ?", "Published").paginate page: params[:page], order: 'published_at desc', per_page: 20
       else
-        @articles = Article.where("status = ?", "Published").paginate page: params[:page], order: 'created_at desc', per_page: 20
+        @articles = Article.where("status = ?", "Published").paginate page: params[:page], order: 'published_at desc', per_page: 20
       end
     end
     objects = []

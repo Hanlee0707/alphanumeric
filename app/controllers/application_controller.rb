@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_employee, :logged_in, :employee_privilege, :is_administrator, :is_editor, :is_contributor, :current_user
+  helper_method :current_employee, :logged_in, :employee_privilege, :is_administrator, :is_editor, :is_contributor, :current_user, :adjacent_article_path
 
   def employee_privilege(option)
     current_employee.employee_positions.each do |position|
@@ -13,6 +13,29 @@ class ApplicationController < ActionController::Base
 
 
   private
+
+  def adjacent_article_path(article_id)
+    if request.path.include?("published")
+      if current_user then
+        @article_path = user_published_article_path(article_id)
+      else
+        @article_path = published_article_path(article_id)
+      end
+    elsif request.path.include?("archived")
+      if current_user then
+        @article_path = user_archived_article_path(article_id)
+      else
+        @article_path = archived_article_path(article_id)
+      end
+    elsif request.path.include?("history/editor")
+      @article_path = history_editor_article_path(article_id)
+    elsif request.path.include?("history/contributor")
+      @article_path = history_contributor_article_path(article_id)
+    end
+  end
+
+
+
   def current_employee
     @current_employee ||= Employee.find_by_id(session[:employee_id]) if session[:employee_id]
   end

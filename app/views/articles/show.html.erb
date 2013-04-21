@@ -35,10 +35,33 @@
       <div class="span2"></div>
       <div class="span8 center">
 	<% if (@through_editor and @status=="Being Written" or @status=="Assigned") or (@through_contributor and @status=="Assigned") %>
-	<h3 id="title"><%= @article.temporary_title %></h3>
-	<% else %>
+	<h3 id="title">
+	  <%= @article.title %>
+	</h3>
+	<% elsif @status!= "Published" and @status!="Archived" then %>
 	<h3 id="title"><%= @article.title %>
 	  <%= link_to raw("<i class='icon-info-sign'></i>"), "#",  class: 'show_citations_window' %></h3>
+	<% elsif @status== "Published" then %>	  
+	  <h3 id="title">
+	    <% if current_user then %>
+	      <% user = current_user %>
+	    <% else %>
+	      <% user = nil %>
+	    <% end %>
+	    <% if @article.previous_published(current_user, request.path) then %>
+	    <%=link_to raw("<i class='icon-arrow-left'></i>"), adjacent_article_path(@article.previous_published(current_user, request.path)), id:'previous_article_button', class:'btn', disabled: false, style:"float:left;"%> 
+	    <% else %>
+	    <%=link_to raw("<i class='icon-arrow-left'></i>"), "#", id:'previous_article_button', class:'btn', disabled: true, style:"float:left;"%> 
+	    <% end %>
+	    <%= @article.title %><%= link_to raw("<i class='icon-info-sign'></i>"), "#",  class: 'show_citations_window' %>	  
+	    <% if @article.next_published(current_user, request.path) then %>
+ 	    <%=link_to raw("<i class='icon-arrow-right'></i>"), adjacent_article_path(@article.next_published(current_user, request.path)), id:'next_article_button', class:'btn', disabled: false, style:"float:right;"%>
+	    <% else %>
+	    <%=link_to raw("<i class='icon-arrow-right'></i>"), "#", id:'next_article_button', class:'btn', disabled: true, style:"float:right;"%>
+	  <% end %></h3> 
+
+	<% elsif @status == "Archived" then%>
+	  <h3 id="title"><%= @article.title %><%= link_to raw("<i class='icon-info-sign'></i>"), "#",  class: 'show_citations_window' %></h3> 
 	<% end %>
       </div>
       <div class="span2"></div>
@@ -108,7 +131,11 @@
     <div class="row center span12">
       <div class="span2"></div>
       <div class="span8">
-	<em><%=distance_of_time_in_words(@article.created_at, Time.now)%> ago in <%= @article.city %>, <%= @article.country %>,</em>
+	<% if @article.published_at.nil? %>
+	<em>NOT YET PUBLISHED</em>
+	<% else %>
+	<em><%=distance_of_time_in_words(@article.published_at, Time.now)%> ago in <%= @article.city %>, <%= @article.country %>,</em>
+	<% end %>
       </div>
       <div class="span2"></div>
     </div>

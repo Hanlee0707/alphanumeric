@@ -4,7 +4,7 @@ class ListController < ApplicationController
   def index
     if params[:tag]
       @tag = params[:tag]
-      @articles = Article.tagged_with(params[:tag]).where("status = ? OR status = ?", "Published", "Archived").paginate page: params[:page], order: 'created_at desc', per_page: 20
+      @articles = Article.tagged_with(params[:tag]).where("status = ? OR status = ?", "Published", "Archived").paginate page: params[:page], order: 'published_at desc', per_page: 20
       objects = []
       objects = []
       @articles.map { |article| 

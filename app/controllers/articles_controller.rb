@@ -102,12 +102,24 @@ class ArticlesController < ApplicationController
       end
       if request.path.include?("published")
         @back_path = request.path.split("published")[0] + "published"
+        if current_user then
+          @article_path = user_published_article_path
+        else
+          @article_path = published_article_path
+        end
       elsif request.path.include?("archived")
         @back_path = request.path.split("archived")[0] + "archived"
+        if current_user then
+          @article_path = user_archived_article_path
+        else
+          @article_path = archived_article_path
+        end
       elsif request.path.include?("history/editor")
         @back_path = request.path.split("history/editor")[0] + "history/editor"
+        @article_path = history_editor_article_path
       elsif request.path.include?("history/contributor")
         @back_path = request.path.split("history/contributor")[0] + "history/contributor"
+        @article_path = history_contributor_article_path
       end
     end
   end

@@ -22,6 +22,49 @@ class Article < ActiveRecord::Base
 
   acts_as_taggable
 
+  def previous_published(current_user=nil, path)
+    if path.include?("published")
+      if current_user then 
+        intersection = Article.joins(current_user.archived_articles).select(:article_id). map { |tup| tup.article_id }
+        Article.order("published_at asc").where(:status => "Published").where("id!=? and id not in (?) and published_at < ?", self.id, intersection, self.published_at).last
+      else
+        Article.order("published_at asc").where(:status => "Published").where("id!=? and published_at < ?", self.id, self.published_at).last
+      end
+    elsif path.include?("archived")
+      if current_user then 
+        intersection = Article.joins(current_user.archived_articles).select(:article_id). map { |tup| tup.article_id }
+        Article.order("published_at asc").where("status = ? or status = ?", "Archived", "Published").where("id!=? and id in (?) and published_at < ?", self.id, intersection, self.published_at).last
+      else
+        Article.order("published_at asc").where("status = ?", "Archived").where("id!=? and published_at < ?", self.id, self.published_at).last
+      end
+    elsif path.include?("history/editor")
+      Article.order("published_at asc").where("status = ?", "Archived").where("id!=? and published_at < ?", self.id, intersection, self.published_at).last      
+    elsif path.include?("history/contributor")
+      Article.order("published_at asc").where("status = ? or status = ? or status = ?", "Approved", "Published", "Archived").where("id!=? and published_at < ?", self.id, self.published_at).last      
+    end
+  end
+
+  def next_published(current_user=nil, path)
+    if path.include?("published")
+      if current_user then 
+        intersection = Article.joins(current_user.archived_articles).select(:article_id). map { |tup| tup.article_id }
+      Article.order("published_at desc").where(:status => "Published").where("id!= ? and id not in (?) and published_at > ?", self.id, intersection, self.published_at).last
+      else
+      Article.order("published_at desc").where(:status => "Published").where("id!= ? and published_at > ?", self.id, self.published_at).last
+      end
+    elsif path.include?("archived")
+      if current_user then 
+        intersection = Article.joins(current_user.archived_articles).select(:article_id). map { |tup| tup.article_id }
+        Article.order("published_at desc").where("status = ? or status = ?", "Archived", "Published").where("id!=? and id in (?) and published_at > ?", self.id, intersection, self.published_at).last
+      else
+        Article.order("published_at desc").where("status = ?", "Archived").where("id!=? and published_at > ?", self.id, self.published_at).last
+      end
+    elsif path.include?("history/editor")
+      Article.order("published_at desc").where("status = ?", "Archived").where("id!=? and published_at > ?", self.id, intersection, self.published_at).last      
+    elsif path.include?("history/contributor")
+      Article.order("published_at desc").where("status = ? or status = ? or status = ?", "Approved", "Published", "Archived").where("id!=? and published_at > ?", self.id, self.published_at).last      
+    end
+  end
 
   def self.search(search)#, type)
     if search then #and type then
