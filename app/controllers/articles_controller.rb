@@ -9,13 +9,13 @@ class ArticlesController < ApplicationController
       @editor_layout = true
     elsif params[:contributor_id] and employee_privilege("Contributor") then
       @contributor_layout = true
-    elsif request.env["HTTP_REFERER"].include?("published")
+    elsif request.path.include?("published")
       @published_layout = true
-    elsif request.env["HTTP_REFERER"].include?("archived")
+    elsif request.path.include?("archived")
       @archived_layout = true
-    elsif request.env["HTTP_REFERER"].include?("history/editor")
+    elsif request.path.include?("history/editor")
       @history_editor_layout = true
-    elsif request.env["HTTP_REFERER"].include?("history/contributor")
+    elsif request.path.include?("history/contributor")
       @history_contributor_layout = true
     end
   end
@@ -100,7 +100,15 @@ class ArticlesController < ApplicationController
       if @history_editor_layout then
         @through_editor = true
       end
-      @back_path = request.env["HTTP_REFERER"]
+      if request.path.include?("published")
+        @back_path = request.path.split("published")[0] + "published"
+      elsif request.path.include?("archived")
+        @back_path = request.path.split("archived")[0] + "archived"
+      elsif request.path.include?("history/editor")
+        @back_path = request.path.split("history/editor")[0] + "history/editor"
+      elsif request.path.include?("history/contributor")
+        @back_path = request.path.split("history/contributor")[0] + "history/contributor"
+      end
     end
   end
 
