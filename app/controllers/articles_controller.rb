@@ -267,6 +267,7 @@ class ArticlesController < ApplicationController
 contributor = Employee.find(item.contributor_id)
         contributor.notify_publish_article(item.title)
         item.update_attribute(:status, "Published")        
+        item.update_attribute(:published_at, Time.now)
         count = count + 1
       end
     end

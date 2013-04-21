@@ -7,7 +7,7 @@ class ArchivedController < ApplicationController
   end
 
   def index
-    @articles = Article.joins(:archived_articles).where("user_id = ?", current_user.id).paginate page: params[:page], order: 'published_at desc', per_page: 20
+    @articles = Article.joins(:archived_articles).where("user_id = ?", current_user.id).paginate page: params[:page], order: 'published_at desc, created_at desc', per_page: 20
     objects = []
     @articles.map { |article| 
       object = {}

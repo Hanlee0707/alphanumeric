@@ -22,47 +22,103 @@ class Article < ActiveRecord::Base
 
   acts_as_taggable
 
-  def previous_published(current_user=nil, path)
+  def previous_published(current_employee=nil, current_user=nil, path)
     if path.include?("published")
       if current_user then 
-        intersection = Article.joins(current_user.archived_articles).select(:article_id). map { |tup| tup.article_id }
-        Article.order("published_at asc").where(:status => "Published").where("id!=? and id not in (?) and published_at < ?", self.id, intersection, self.published_at).last
+        @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc')
+        currentIndex = @articles.index(self)
+        if currentIndex <= 0 then
+          return nil
+        else
+          @articles[currentIndex-1]
+        end
       else
-        Article.order("published_at asc").where(:status => "Published").where("id!=? and published_at < ?", self.id, self.published_at).last
+        @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc')
+        currentIndex = @articles.index(self)
+        if currentIndex <= 0 then
+          return nil
+        else
+          @articles[currentIndex-1]
+        end
       end
     elsif path.include?("archived")
       if current_user then 
-        intersection = Article.joins(current_user.archived_articles).select(:article_id). map { |tup| tup.article_id }
-        Article.order("published_at asc").where("status = ? or status = ?", "Archived", "Published").where("id!=? and id in (?) and published_at < ?", self.id, intersection, self.published_at).last
+        @articles = Article.joins(:archived_articles).where("user_id = ?", current_user.id).order('published_at desc, created_at desc')
+        currentIndex = @articles.index(self)
+        if currentIndex <= 0 then
+          return nil
+        else
+          @articles[currentIndex-1]
+        end
       else
-        Article.order("published_at asc").where("status = ?", "Archived").where("id!=? and published_at < ?", self.id, self.published_at).last
+        return nil
       end
     elsif path.include?("history/editor")
-      Article.order("published_at asc").where("status = ?", "Archived").where("id!=? and published_at < ?", self.id, self.published_at).last      
+      @articles = Article.where("editor_id=? and status =?", current_employee.id, "Archived").order("published_at desc, created_at desc")
+      currentIndex = @articles.index(self)
+      if currentIndex <= 0 then
+        return nil 
+      else
+        @articles[currentIndex-1]
+      end
     elsif path.include?("history/contributor")
-      Article.order("published_at asc").where("status = ? or status = ? or status = ?", "Approved", "Published", "Archived").where("id!=? and published_at < ?", self.id, self.published_at).last      
+      @articles = Article.where("contributor_id=? and (status = ? or status = ? or status = ?)", current_employee.id, "Approved", "Published", "Archived").order('published_at desc, created_at desc')
+      currentIndex = @articles.index(self)
+      if currentIndex <= 0 then
+        return nil
+      else
+        @articles[currentIndex-1]
+      end
     end
   end
 
-  def next_published(current_user=nil, path)
+  def next_published(current_employee=nil, current_user=nil, path)
     if path.include?("published")
       if current_user then 
-        intersection = Article.joins(current_user.archived_articles).select(:article_id). map { |tup| tup.article_id }
-      Article.order("published_at desc").where(:status => "Published").where("id!= ? and id not in (?) and published_at > ?", self.id, intersection, self.published_at).last
+        @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc')
+        currentIndex = @articles.index(self)
+        if currentIndex >= @articles.size-1 then
+          return nil
+        else
+          @articles[currentIndex+1]
+        end
       else
-      Article.order("published_at desc").where(:status => "Published").where("id!= ? and published_at > ?", self.id, self.published_at).last
+        @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc')
+        currentIndex = @articles.index(self)
+        if currentIndex >= @articles.size-1 then
+          return nil
+        else
+          @articles[currentIndex+1]
+        end
       end
     elsif path.include?("archived")
       if current_user then 
-        intersection = Article.joins(current_user.archived_articles).select(:article_id). map { |tup| tup.article_id }
-        Article.order("published_at desc").where("status = ? or status = ?", "Archived", "Published").where("id!=? and id in (?) and published_at > ?", self.id, intersection, self.published_at).last
+        @articles = Article.joins(:archived_articles).where("user_id = ?", current_user.id).order('published_at desc, created_at desc')
+        currentIndex = @articles.index(self)
+        if currentIndex >= @articles.size-1 then
+          return nil
+        else
+          @articles[currentIndex+1]
+        end
       else
-        Article.order("published_at desc").where("status = ?", "Archived").where("id!=? and published_at > ?", self.id, self.published_at).last
+        return nil
       end
     elsif path.include?("history/editor")
-      Article.order("published_at desc").where("status = ?", "Archived").where("id!=? and published_at > ?", self.id, self.published_at).last      
+      @articles = Article.where("editor_id=? and status =?", current_employee.id, "Archived").order("published_at desc, created_at desc")
+      currentIndex = @articles.index(self)
+      if currentIndex >= @articles.size-1 then
+        return nil 
+      else
+        @articles[currentIndex+1]
+      end
     elsif path.include?("history/contributor")
-      Article.order("published_at desc").where("status = ? or status = ? or status = ?", "Approved", "Published", "Archived").where("id!=? and published_at > ?", self.id, self.published_at).last      
+      @articles = Article.where("contributor_id=? and (status = ? or status = ? or status = ?)", current_employee.id, "Approved", "Published", "Archived").order('published_at desc, created_at desc')
+      currentIndex = @articles.index(self)
+      if currentIndex >= @articles.size-1 then
+        return nil
+      else
+        @articles[currentIndex+1]
+      end
     end
   end
 
