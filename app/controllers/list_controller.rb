@@ -15,6 +15,7 @@ class ListController < ApplicationController
         object[:extra_informations]=article.extra_informations
         object[:additional_texts]=article.additional_texts
         object[:tag_list]=article.tag_list
+        object[:citations]=article.citations
         objects.append(object)
       }
       respond_to do |format| 

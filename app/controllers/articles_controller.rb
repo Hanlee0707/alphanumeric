@@ -82,7 +82,7 @@ class ArticlesController < ApplicationController
         else
           @back_path = history_contributor_path
         end
-        object = {:article => @article, :image =>@article.images, :numbers => @article.numbers, :extra_informations => @article.extra_informations, :additional_texts => @article.additional_texts, :citations => @article.citations}
+        object = {:article => @article, :image =>@article.images, :numbers => @article.numbers, :extra_informations => @article.extra_informations, :additional_texts => @article.additional_texts, :citations => @article.citations, :tag_list => @article.tag_list}
         respond_to do |format|
           format.html # show.html.erb
           format.json { render json: object }
