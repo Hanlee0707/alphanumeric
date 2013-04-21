@@ -38,7 +38,7 @@ class Article < ActiveRecord::Base
         Article.order("published_at asc").where("status = ?", "Archived").where("id!=? and published_at < ?", self.id, self.published_at).last
       end
     elsif path.include?("history/editor")
-      Article.order("published_at asc").where("status = ?", "Archived").where("id!=? and published_at < ?", self.id, intersection, self.published_at).last      
+      Article.order("published_at asc").where("status = ?", "Archived").where("id!=? and published_at < ?", self.id, self.published_at).last      
     elsif path.include?("history/contributor")
       Article.order("published_at asc").where("status = ? or status = ? or status = ?", "Approved", "Published", "Archived").where("id!=? and published_at < ?", self.id, self.published_at).last      
     end
@@ -60,7 +60,7 @@ class Article < ActiveRecord::Base
         Article.order("published_at desc").where("status = ?", "Archived").where("id!=? and published_at > ?", self.id, self.published_at).last
       end
     elsif path.include?("history/editor")
-      Article.order("published_at desc").where("status = ?", "Archived").where("id!=? and published_at > ?", self.id, intersection, self.published_at).last      
+      Article.order("published_at desc").where("status = ?", "Archived").where("id!=? and published_at > ?", self.id, self.published_at).last      
     elsif path.include?("history/contributor")
       Article.order("published_at desc").where("status = ? or status = ? or status = ?", "Approved", "Published", "Archived").where("id!=? and published_at > ?", self.id, self.published_at).last      
     end

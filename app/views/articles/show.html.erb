@@ -34,14 +34,15 @@
     <div class="row span12">
       <div class="span2"></div>
       <div class="span8 center">
-	<% if (@through_editor and @status=="Being Written" or @status=="Assigned") or (@through_contributor and @status=="Assigned") %>
+	<% if (@through_editor and @status=="Assigned") or (@through_contributor and @status=="Assigned") %>
+	<h3 id="title">
+	  <%= @article.temporary_title %>
+	</h3>
+	<% elsif (@through_editor and (@status=="Being Written" or @status=="Need Review")) or (@through_contributor and (@status == "Being Written" or @status=="Need Review")) %>
 	<h3 id="title">
 	  <%= @article.title %>
 	</h3>
-	<% elsif @status!= "Published" and @status!="Archived" then %>
-	<h3 id="title"><%= @article.title %>
-	  <%= link_to raw("<i class='icon-info-sign'></i>"), "#",  class: 'show_citations_window' %></h3>
-	<% elsif @status== "Published" then %>	  
+	<% elsif @history_editor_layout or @history_contributor_layout or @published_layout or @archived_layout then %>
 	  <h3 id="title">
 	    <% if current_user then %>
 	      <% user = current_user %>
