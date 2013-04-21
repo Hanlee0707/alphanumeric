@@ -22,9 +22,9 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in?
-    if current_employee.present? and request.path.includes "uploaders"
+    if current_employee.present? and request.path.include? "uploaders"
       @employee = current_employee
-    elsif current_user.present? and !(request.path.includes? "uploaders")
+    elsif current_user.present? and !(request.path.include? "uploaders")
       @user = current_user
     else
       if current_employee.present? then
