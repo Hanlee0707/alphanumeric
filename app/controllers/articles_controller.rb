@@ -218,6 +218,15 @@ class ArticlesController < ApplicationController
         end
         format.json { head :no_content }
       else
+        if params[:editor_id] then
+          if current_employee and params[:editor_id] == current_employee.id.to_s
+            @back_path = editor_article_path(current_employee, @article)
+          end
+        elsif params[:contributor_id] then
+          if params[:contributor_id] == current_employee.id.to_s
+            @back_path = contributor_article_path(current_employee, @article)  
+          end
+        end
         format.html { render action: "edit" }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
@@ -272,7 +281,7 @@ contributor = Employee.find(item.contributor_id)
     end
       
     respond_to do |format|
-      format.html { redirect_to published_article_path(params[:article_id]), notice: notice}
+      format.html { redirect_to user_published_article_path(params[:article_id]), notice: notice}
     end    
   end
 

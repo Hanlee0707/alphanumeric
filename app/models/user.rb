@@ -7,10 +7,11 @@ class User < ActiveRecord::Base
                     :uniqueness => {:case_sensitive => false},
                     :length => {:minimun => 3, :maximum => 50},
                     :format => {:with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
-  validates_length_of :password, :minimun => 8, :maximum => 20
+  validates_length_of :password, :minimum => 8, :maximum => 20
   validates :first_name, :presence => :true
   validates :last_name, :presence => :true
-
+  validates :password, :presence => :true
+  validates :password_confirmation, :presence => :true
   has_many :archived_articles, :dependent => :destroy
 
   def send_password_reset

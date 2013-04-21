@@ -18,10 +18,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @current_user = current_user
     if @current_user.id.to_s == params[:id] 
-      @back_path = home_path
+      @back_path = user_home_path
     else
       respond_to do |format|
-        format.html { redirect_to home_path, notice: "You can't edit other user's personal information." }
+        format.html { redirect_to user_home_path, notice: "You can't edit other user's personal information." }
       end
     end
   end
@@ -31,9 +31,10 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-         format.html { redirect_to home_path, notice: "User information was successfully updated." }
+         format.html { redirect_to user_home_path, notice: "User information was successfully updated." }
         format.json { head :no_content }
       else
+        @back_path = user_home_path
         format.html { render action: "edit" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end

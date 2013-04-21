@@ -30,26 +30,10 @@
       <tbody>
 	<% @articles.each do |article| %>
 	<tr>
-	  <% if @isEditor then %>
 	  <td><%= check_box_tag 'article_'+article.id.to_s, article.id, false %> </td>
 	  <td><%= link_to article.title, editor_article_path(current_employee, article)%></td>
-	  <% end %>
-	  <% if @isContributor then %>
-	  <td><%= link_to article.title, contributor_article_path(current_employee, article)%></td>
-	  <% end %>
-	  <% if !@isContributor and !@isEditor then %>
-	  <td><%= link_to article.title, published_article_path(article)%></td>
-	  <% end %>
-	  <% if @isEditor then %>
 	  <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
 	  <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
-	  <% end %>
-	  <% if @isContributor then %>
-	  <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
-	  <% end %>
-	  <% if !@isEditor and !@isContributor then %>
-	  <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
-	  <% end %>
 	  <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
 	</tr>
 	<% end %>
@@ -81,8 +65,11 @@
 	<% if @isContributor then %>
 	<td><%= link_to article.title, contributor_article_path(current_employee, article)%></td>
 	<% end %>
-	<% if !@isContributor and !@isEditor then %>
+	<% if !@isContributor and !@isEditor and !current_user.present? then %>
 	<td><%= link_to article.title, published_article_path(article)%></td>
+	<% end %>
+	<% if !@isContributor and !@isEditor and current_user.present? then %>
+	<td><%= link_to article.title, user_published_article_path(article)%></td>
 	<% end %>
 	<% if @isContributor then %>
 	<td><%= article.editor.first_name + " " + article.editor.last_name %></td>

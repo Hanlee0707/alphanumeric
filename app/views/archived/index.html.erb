@@ -19,7 +19,12 @@
       <tbody>
 	<% @articles.each do |article| %>
 	<tr>
+	  <% if !current_user.present? %>
 	  <td><%= link_to article.title, archived_article_path(article)%></td>
+	  <% end %>
+	  <% if current_user.present? %>
+	  <td><%= link_to article.title, user_archived_article_path(article)%></td>
+	  <% end %>
 	  <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
 	  <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
 	</tr>

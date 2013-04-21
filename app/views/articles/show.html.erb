@@ -117,19 +117,19 @@
 
 
     <div class="span4">
-      <% if @through_editor or @through_contributor then %>
+      <% if @through_editor or @through_contributor or !current_user.present? then %>
       <%= render 'show_past_summaries', :article => @article, :user => false %>
       <% end %>
     </div>
     <div id="content_container" class="span4">
-      <% if @through_editor or @through_contributor then %>
+      <% if @through_editor or @through_contributor or !current_user.present? then %>
       <%=render 'show_recent_events', :article => @article, :user => false %>
       <% else %>
       <%=render 'show_recent_events', :article => @article, :user => true %>
       <% end %>
     </div>
     <div class="span4">
-      <% if @through_editor or @through_contributor then %>
+      <% if @through_editor or @through_contributor or !current_user.present? then %>
       <%= render 'show_details', :article => @article, :user => false %>
       <% end %>
     </div>
@@ -149,7 +149,7 @@
 	<% if @through_editor then %>
 	  <%= link_to 'Delete', "#", id: "delete_article_button", class: 'btn btn-primary make-white'%>
 	<% end %>
-	<% if !@through_editor and !@through_contributor %> 
+	<% if !@through_editor and !@through_contributor and current_user.present?%> 
 	<% if @archived_article.nil? %>
 	<%= form_tag(archive_for_user_path(:user_id => current_user.id, :article_id => @article.id, :archive => true)) do |f| %>
         <%= submit_tag "Archive", class: 'btn btn-primary make-white' %>

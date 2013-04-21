@@ -55,20 +55,18 @@ Alphanumeric::Application.routes.draw do
   end
 
   match '/sign_out', to: 'sessions#destroy', as: 'log_out'
-  match '/home', to: 'home#show', as: 'home'
+  match '/home', to: 'home#show', as: 'user_home'
   match '/signup', to: 'users#new', :via=> :get, as: 'signup'
-  match '/published', to: 'published#index', :via => :get, as:'published_index' 
-  match '/published/articles/:id' => 'articles#show', :via => :get, as: 'published_article'
-  match '/archived', to: 'archived#index', :via => :get, as:'archived_index'
-  match '/archived/articles/:id' => 'articles#show', :via => :get, as: 'archived_article'
-  get 'tags/:tag', to: 'list#index', as: :tag
+  match '/published', to: 'published#index', :via => :get, as:'user_published_index' 
+  match '/published/articles/:id' => 'articles#show', :via => :get, as: 'user_published_article'
+  match '/archived', to: 'archived#index', :via => :get, as:'user_archived_index'
+  match '/archived/articles/:id' => 'articles#show', :via => :get, as: 'user_archived_article'
+  get 'tags/:tag', to: 'list#index', as: 'user_tag'
   resources :users, :only => [:create, :edit, :update, :show]
   match '/previous', to:'articles#previous', :via => :get, as: 'show_previous'
   match '/details', to:'articles#details', :via => :get, as: 'show_details'
   match '/recent', to:'articles#recent', :via => :get, as: 'show_recent'
   match '/archive_for_user', to: 'articles#archive_for_user', as: 'archive_for_user'
-  match '/archived', to: 'archived#index', :via => :get, as:'archived_index'
-  match '/archived/articles/:id' => 'articles#show', :via => :get, as: 'archived_article'
   root to: 'sessions#new'  
   resources :reset_password, :only => [:new, :create, :edit, :update], as: 'user_reset_password'
 

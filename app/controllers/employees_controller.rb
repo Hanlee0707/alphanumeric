@@ -110,6 +110,11 @@ class EmployeesController < ApplicationController
         end
         format.json { head :no_content }
       else
+        if administrative then
+          @back_path = administrator_employee_path(params[:administrator_id], params[:id])
+        else
+          @back_path = home_path
+        end
         format.html { render action: "edit" }
         format.json { render json: @employee.errors, status: :unprocessable_entity }
       end

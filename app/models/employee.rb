@@ -6,7 +6,7 @@ class Employee < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name, :password, :password_confirmation, :employee_positions_attributes, :email_confirmation, :account_create_time, :updating_password
   attr_accessor :email_confirmation, :updating_password, :name
   validates_presence_of :email, :password, :first_name, :last_name, :on => :create
-  validates_presence_of :password, :on => :edit
+  validates_presence_of :password, :on => :update
   validates :email, :uniqueness => {:case_sensitive => false }, length: { minimum: 3, maximum: 50}
 
   has_many :employee_positions, dependent: :destroy 

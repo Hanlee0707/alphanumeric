@@ -4,6 +4,7 @@ class AccountCreatesController < ApplicationController
   end
   
   def edit
+    session[:employee_id] = nil
     @employee = Employee.find_by_create_account_token!(params[:id])
     if !@employee.account_create_time.nil? then
       redirect_to home_path, :notice => "You are already registered!"

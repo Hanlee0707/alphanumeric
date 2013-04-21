@@ -30,7 +30,11 @@ class SessionsController < ApplicationController
         if params[:uid] then
           format.json { render json: personnel }
         else
-          format.html {redirect_to home_path, :notice => "You have successfully logged in!"}
+          if params[:user] then 
+            format.html {redirect_to user_home_path, :notice => "You have successfully logged in!"}
+          else
+            format.html {redirect_to home_path, :notice => "You have successfully logged in!"}
+          end
         end
       end
     else
@@ -39,7 +43,11 @@ class SessionsController < ApplicationController
         if params[:uid] then
           format.json { render json: @not_valid }
         else
-          format.html { redirect_to root_uploader_path, :notice => "Invalid email or password."}
+          if params[:user] then
+            format.html { redirect_to root_uploader_path, :notice => "Invalid email or password."}
+          else
+            format.html { redirect_to root_path, :notice => "Invalid email or password."}
+          end
         end
       end
     end
