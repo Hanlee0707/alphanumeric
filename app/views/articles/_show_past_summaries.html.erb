@@ -24,7 +24,11 @@
     <% article.tag_list.each do |tag| %>
       <% if count < 3 then %>
         <div class="span12">
+	  <% if current_user then %>
 	  <%= link_to "More on "+tag, user_tag_path(tag) %>
+	  <% else %>
+	  <%= link_to "More on "+tag, tag_path(tag) %>
+	  <% end %>
 	  <% count = count +1 %>
 	</div>
       <% end %>
