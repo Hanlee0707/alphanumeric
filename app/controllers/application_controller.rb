@@ -30,9 +30,13 @@ class ApplicationController < ActionController::Base
       if current_employee.present? then
         redirect_to home_path, notice: "Please log in as a user first."
       elsif current_user.present? then
-        redirect_to home_path, notice: "Please log in as an employee first."
+        redirect_to user_home_path, notice: "Please log in as an employee first."
       elsif params[:controller] != "sessions" and params[:action] != "new"
-        redirect_to root_path, notice: "Please log in first."
+        if request.path.include? "uploaders" then
+          redirect_to root_uploader_path, notice: "Please log in first."
+        else
+          redirect_to root_path, notice: "Please log in first."
+        end
       end
     end
   end
