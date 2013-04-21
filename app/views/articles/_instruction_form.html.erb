@@ -21,12 +21,17 @@
 	<%= link_to "Remove", "#", id: 'remove_contributor', class: 'btn little-up' %>
       </div>
       <div class="span12" id="contributor_query">
+	<div class="span12">
 	<%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
 	<%= f.hidden_field :contributor_id, id: "contributor_id" %>
 	<%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down input-title", placeholder: "Search by last name", :id_element =>'#searched_contributor_id' %>
 	<%= link_to "Set", "#", id: 'set_contributor', class: 'btn'%>
 	&nbsp;&nbsp;OR&nbsp;&nbsp; 
 	<%= link_to "Assign Random", assign_random_path, id:'assign_random_contributor', method: :post, remote: true, class: 'btn'%>
+	</div>
+	<div class="span12">
+	  You need to press the set button to assign this article to the contributor.
+	</div>
       </div>
       <% else %>
       <div class="span6" id="contributor_container">

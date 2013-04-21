@@ -13,12 +13,26 @@ class ResetPasswordController < ApplicationController
     path = request.path
     if path.include? "uploaders" then
       employee = Employee.find_by_email(params[:email])
-      employee.send_password_reset if employee
-      redirect_to root_uploader_url, :notice => "Email sent with password reset instructions."
+      if employee then
+        if employee.send_password_reset
+          redirect_to root_uploader_url, :notice => "Email sent with password reset instructions."
+        else
+          redirect_to new_reset_password_url, :notice => "Email was not sent. Try again."
+        end
+      else
+        redirect_to new_reset_password_url, :notice => "Account with that email does not exist."
+      end
     else
       user = User.find_by_email(params[:email])
-      user.send_password_reset if user
-      redirect_to root_url, :notice => "Email sent with password reset instructions."
+      if user then
+        if user.send_password_reset
+          redirect_to root_url, :notice => "Email sent with password reset instructions."
+        else
+          redirect_to new_user_reset_password_url, :notice => "Email was not sent. Try again."
+        end
+      else
+        redirect_to new_user_reset_password_url, :notice => "Account with that email does not exist."
+      end
     end
   end
 

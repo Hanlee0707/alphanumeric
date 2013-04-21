@@ -118,8 +118,18 @@
 		    </ul>
 		</li>
 		<% else %>
-		<li><%= link_to "User", root_path %></li>
-		<li><%= link_to "Uploader", root_uploader_path %></li>
+		<% if !@through_user.nil? and @through_user then %>
+		<li class="active">
+		<% else %>
+		<li>
+		<% end%>
+		<%= link_to "User", root_path %></li>
+		<% if !@through_user.nil? and !@through_user then %>
+		<li class="active">
+		<% else %>
+		<li>
+		<% end%>
+		<%= link_to "Uploader", root_uploader_path %></li>
 		<% end %>
               </ul>
             </nav>

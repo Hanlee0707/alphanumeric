@@ -3,8 +3,6 @@ class Article < ActiveRecord::Base
   attr_accessor :contributor_last_name, :searched_contributor_id
 
   validates_presence_of :instruction, :temporary_title, :contributor_id, :on=> :create
-  validates :title, uniqueness: true
-
   has_many :numbers, dependent: :destroy
   has_many :images, dependent: :destroy
   has_many :extra_informations, dependent: :destroy

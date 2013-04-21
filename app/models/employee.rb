@@ -12,7 +12,7 @@ class Employee < ActiveRecord::Base
   has_many :employee_position_types, :through => :employee_positions
   has_many :articles, :foreign_key => 'contributor_id'
   
-  validates :password, length: {minimum: 8}, :if => :should_validate_password?
+  validates :password, presence: true, length: {minimum: 8}, :if => :should_validate_password?
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, format: { with: VALID_EMAIL_REGEX }
 
