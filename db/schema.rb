@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130420104304) do
+ActiveRecord::Schema.define(:version => 20130421062902) do
 
   create_table "additional_texts", :force => true do |t|
     t.integer  "article_id"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20130420104304) do
     t.string   "temporary_title"
     t.text     "instruction"
     t.string   "category"
+    t.datetime "published_at"
   end
 
   add_index "articles", ["contributor_id"], :name => "index_articles_on_contributor_id"

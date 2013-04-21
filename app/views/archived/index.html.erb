@@ -11,9 +11,9 @@
     <table class="table table-striped table-hover">
       <thead>
 	<tr>
-	  <th class="span5">TITLE</th>
+	  <th class="span6">TITLE</th>
 	  <th class="span3">AUTHOR</th>
-	  <th class="span2">CREATED</th>
+	  <th class="span3">PUBLISHED TIME</th>
 	</tr>
       </thead>
       <tbody>
@@ -26,7 +26,11 @@
 	  <td><%= link_to article.title, user_archived_article_path(article)%></td>
 	  <% end %>
 	  <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
-	  <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	  <% if article.published_at.nil? %>
+	  <td>NO TIME </td>
+	  <% else %>
+	  <td><%= article.published_at.localtime.strftime "%m/%d/%y" %></td>
+	  <% end %>
 	</tr>
 	<% end %>
       </tbody>

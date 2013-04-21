@@ -44,9 +44,9 @@ class SessionsController < ApplicationController
           format.json { render json: @not_valid }
         else
           if params[:user] then
-            format.html { redirect_to root_uploader_path, :notice => "Invalid email or password."}
-          else
             format.html { redirect_to root_path, :notice => "Invalid email or password."}
+          else
+            format.html { redirect_to root_uploader_path, :notice => "Invalid email or password."}
           end
         end
       end

@@ -334,6 +334,7 @@ contributor = Employee.find(item.contributor_id)
           end
           format.html { redirect_to editor_article_path(params[:editor_id], @article), notice: notice}
         elsif params[:status]=="Published" then
+          @article.update_attribute(:published_at, Time.now)
           format.html { redirect_to editor_article_path(params[:editor_id], @article), notice: "Article was successfully published."}
         end
       end

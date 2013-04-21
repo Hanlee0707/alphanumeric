@@ -24,7 +24,7 @@
 	  <% if !@isContributor and !@isEditor then %>
 	  <th class="span3">AUTHOR</th>
 	  <% end %>
-	  <th class="span2">CREATED</th>
+	  <th class="span2">PUBLISHED TIME</th>
 	</tr>
       </thead>
       <tbody>
@@ -34,7 +34,11 @@
 	  <td><%= link_to article.title, editor_article_path(current_employee, article)%></td>
 	  <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
 	  <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
-	  <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	  <% if article.published_at.nil? %>
+	  <td>NO TIME </td>
+	  <% else %>
+	  <td><%= article.published_at.localtime.strftime "%m/%d/%y" %></td>
+	  <% end %>
 	</tr>
 	<% end %>
       </tbody>
@@ -45,7 +49,7 @@
     </div>
     <% end %>
     <% else %>
-    <th class="span5">TITLE</th>
+    <th class="span6">TITLE</th>
     <% if @isEditor then %> 
     <th class="span3">CONTRIBUTOR</th>
     <th class="span2">EDITOR</th>
@@ -56,7 +60,9 @@
     <% if !@isContributor and !@isEditor then %>
     <th class="span3">AUTHOR</th>
     <% end %>
-    <th class="span2">CREATED</th>
+    <% if !@isContributor and !@isEditor then %>
+    <th class="span3">PUBLISHED TIME</th>
+    <% end %>
     </tr>
     </thead>
     <tbody>
@@ -77,7 +83,7 @@
 	<% if !@isEditor and !@isContributor then %>
 	<td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
 	<% end %>
-	<td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	<td><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M %p" %></td>
       </tr>
       <% end %>
     </tbody>
