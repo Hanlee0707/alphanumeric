@@ -83,7 +83,11 @@
 	<% if !@isEditor and !@isContributor then %>
 	<td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
 	<% end %>
-	<td><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M %p" %></td>
+	<% if article.published_at.nil? %>
+	<td>NO TIME </td>
+	<% else %>
+	<td><%= article.published_at.localtime.strftime "%m/%d/%y" %></td>
+	<% end %>
       </tr>
       <% end %>
     </tbody>
