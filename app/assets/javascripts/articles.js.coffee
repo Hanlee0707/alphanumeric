@@ -22,17 +22,28 @@ jQuery ($) ->
       maskInput: false,
       language: 'en',
       pickTime: false
-    $(".navbar li").has("a").each ->
-      hrefpath = $("a",this).attr("href").split("?")[0]
-      if (hrefpath.toLowerCase()==location.pathname.toLowerCase())
-        if not $(this).parent().hasClass('dropdown-menu')
-          $(this).addClass("active")
 
   $(document).on "change", "#check_all",  (event)->
     if $(this).is(':checked')
       $("input[id*='article_']").prop('checked', true)
+      $(".user-action-button").show()
     else
       $("input[id*='article_']").prop('checked', false)	
+      $(".user-action-button").hide()
+
+  $(document).on "change", "input[type='checkbox']",  (event)->
+    if $(this).is(':checked')
+      $(".user-action-button").show()
+    else
+      if $("input[type='checkbox']:checked").length == 0 or ($("input[type='checkbox']:checked").length == 1 and $("#check_all").is(':checked'))
+        $("#check_all").prop('checked', false)
+        $(".user-action-button").hide()		
+
+  $(document).on "click", ".set-action",  (event)->
+    if $("#user_action").val() == "" 
+      event.preventDefault()
+      $("#user_action").val($(this).attr("name"))
+      $(this).trigger('click')
 
   $(document).on "click", "a.toggles", (event)->
     event.preventDefault()

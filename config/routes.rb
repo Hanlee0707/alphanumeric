@@ -70,7 +70,7 @@ Alphanumeric::Application.routes.draw do
   root to: 'sessions#new'  
   resources :reset_password, :only => [:new, :create, :edit, :update], as: 'user_reset_password'
   match '/login', to: 'sessions#create', :via=> :post, as:"login_post"
-
+  match '/user_action', to: 'articles#user_action', :via=> :post, as:'user_action'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

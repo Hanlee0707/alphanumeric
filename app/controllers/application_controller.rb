@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
       if current_user then
         @article_path = user_archived_article_path(article_id)
       else
-        @article_path = archived_article_path(article_id)
+        @article_path = user_archived_article_path(article_id)
       end
     elsif request.path.include?("history/editor")
       @article_path = history_editor_article_path(article_id)

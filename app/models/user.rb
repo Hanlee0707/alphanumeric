@@ -10,7 +10,9 @@ class User < ActiveRecord::Base
   validates_length_of :password, :minimum => 8, :maximum => 20,:if => :should_validate_password?
   validates :first_name, :presence => :true
   validates :last_name, :presence => :true
-  has_many :archived_articles, :dependent => :destroy
+  has_many :user_archived_articles, :dependent => :destroy
+  has_many :user_read_articles, :dependent => :destroy
+  has_many :user_followed_articles, :dependent => :destroy
 
 
   def should_validate_password?

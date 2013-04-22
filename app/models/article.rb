@@ -8,7 +8,8 @@ class Article < ActiveRecord::Base
   has_many :extra_informations, dependent: :destroy
   has_many :additional_texts, dependent: :destroy
   has_many :citations, dependent: :destroy
-  has_many :archived_articles, dependent: :destroy
+  has_many :user_archived_articles, dependent: :destroy
+  has_many :user_read_articles, dependent: :destroy
 
   belongs_to :contributor, :class_name => "Employee", :foreign_key => "contributor_id"
   belongs_to :editor, :class_name => "Employee", :foreign_key => "editor_id"
@@ -25,7 +26,15 @@ class Article < ActiveRecord::Base
   def previous_published(current_employee=nil, current_user=nil, path)
     if path.include?("published")
       if current_user then 
-        @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc')
+        archived_article_ids = current_user.user_archived_articles.select(:article_id).map { |archived_article| archived_article.article_id }
+        followed_article_ids = current_user.user_followed_articles.select(:article_id).map { |followed_article| followed_article.article_id }
+        @articles = Article.where("status = ?", "Published")
+        if archived_article_ids.present?
+          @articles = @articles.where("id NOT IN (?)", archived_article_ids)
+        end
+        if followed_article_ids.present?
+          @articles = @articles.where("id NOT IN (?)", followed_article_ids)
+        end
         currentIndex = @articles.index(self)
         if currentIndex <= 0 then
           return nil
@@ -42,8 +51,8 @@ class Article < ActiveRecord::Base
         end
       end
     elsif path.include?("archived")
-      if current_user then 
-        @articles = Article.joins(:archived_articles).where("user_id = ?", current_user.id).order('published_at desc, created_at desc')
+      if current_user then
+        @articles = Article.joins(:user_archived_articles).where("user_id = ?", current_user.id).order('published_at desc, created_at desc')
         currentIndex = @articles.index(self)
         if currentIndex <= 0 then
           return nil
@@ -74,8 +83,16 @@ class Article < ActiveRecord::Base
 
   def next_published(current_employee=nil, current_user=nil, path)
     if path.include?("published")
-      if current_user then 
-        @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc')
+      if current_user then
+         archived_article_ids = current_user.user_archived_articles.select(:article_id).map { |archived_article| archived_article.article_id }
+        followed_article_ids = current_user.user_followed_articles.select(:article_id).map { |followed_article| followed_article.article_id }
+        @articles = Article.where("status = ?", "Published")
+        if archived_article_ids.present?
+          @articles = @articles.where("id NOT IN (?)", archived_article_ids)
+        end
+        if followed_article_ids.present?
+          @articles = @articles.where("id NOT IN (?)", followed_article_ids)
+        end
         currentIndex = @articles.index(self)
         if currentIndex >= @articles.size-1 then
           return nil
@@ -93,7 +110,7 @@ class Article < ActiveRecord::Base
       end
     elsif path.include?("archived")
       if current_user then 
-        @articles = Article.joins(:archived_articles).where("user_id = ?", current_user.id).order('published_at desc, created_at desc')
+        @articles = Article.joins(:user_archived_articles).where("user_id = ?", current_user.id).order('published_at desc, created_at desc')
         currentIndex = @articles.index(self)
         if currentIndex >= @articles.size-1 then
           return nil

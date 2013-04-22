@@ -40,6 +40,11 @@ class ArticlesController < ApplicationController
     @show_edit = false
     @through_editor = false
     @through_contributor = false
+    if current_user then 
+      if current_user.user_read_articles.find_by_article_id(params[:id]).nil? 
+        UserReadArticle.create(:user_id => current_user.id, :article_id => params[:id])
+      end
+    end
     if params[:editor_id] then
       if current_employee and params[:editor_id] == current_employee.id.to_s
         @through_editor = true
@@ -95,7 +100,7 @@ class ArticlesController < ApplicationController
       end
     else
       if current_user then 
-        @archived_article = current_user.archived_articles.find_by_article_id(@article.id)
+        @user_archived_article = current_user.user_archived_articles.find_by_article_id(@article.id)
       end
       if @history_editor_layout then
         @through_editor = true
@@ -112,7 +117,7 @@ class ArticlesController < ApplicationController
         if current_user then
           @article_path = user_archived_article_path
         else
-          @article_path = archived_article_path
+          @article_path = user_archived_article_path
         end
       elsif request.path.include?("history/editor")
         @back_path = request.path.split("history/editor")[0] + "history/editor"
@@ -278,14 +283,14 @@ contributor = Employee.find(item.contributor_id)
   
   def archive_for_user
     if params[:archive]=="true" then
-      @user_article = ArchivedArticle.new(:user_id => params[:user_id], :article_id => params[:article_id])
+      @user_article = UserArchivedArticle.new(:user_id => params[:user_id], :article_id => params[:article_id])
       if @user_article.save then
         notice = "Article was successfully archived."
       else
         notice = "Archiving failed."
       end
     else
-      @user_article = User.find(params[:user_id]).archived_articles.find_by_article_id(params[:article_id])
+      @user_article = User.find(params[:user_id]).user_archived_articles.find_by_article_id(params[:article_id])
       if @user_article.destroy then
         notice = "Article was successfully removed from the archive."
       else
@@ -372,6 +377,32 @@ contributor = Employee.find(item.contributor_id)
     @article_occurred = Article.find(@article_id).occurred
     respond_to do |format|
       format.js
+    end
+  end
+
+  def user_action
+    if current_user then 
+      if params[:user_action] == "archive" then
+        for key, value in params do
+          if key.include? "article_" and value=="0" then
+            article_id = key.split("article_")[1]
+            UserArchivedArticle.create(:user_id => current_user.id, :article_id => article_id)
+          end
+        end
+        respond_to do |format|
+          format.html {redirect_to user_published_index_url, notice: "Unselected articles were successfully archived."}
+        end
+      elsif params[:user_action] == "unarchive" then 
+        for key, value in params do
+          if key.include? "article_" and value=="1" then
+            article_id = key.split("article_")[1]
+            current_user.user_archived_articles.find_by_article_id(article_id).destroy
+          end
+        end
+        respond_to do |format|
+          format.html {redirect_to user_archived_index_url, notice: "Selected articles were successfully unarchived."}
+        end
+      end
     end
   end
 

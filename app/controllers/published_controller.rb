@@ -15,7 +15,25 @@ class PublishedController < ApplicationController
   def index
     @isEditor = false
     @isContributor = false
-    if params[:editor_id] and current_employee.id.to_s == params[:editor_id]
+    if current_user then
+      archived_article_ids = current_user.user_archived_articles.select(:article_id).map { |archived_article| archived_article.article_id }
+      followed_article_ids = current_user.user_followed_articles.select(:article_id).map { |followed_article| followed_article.article_id }
+      @articles = Article.where("status = ?", "Published")
+      if archived_article_ids.present?
+        @articles = @articles.where("id NOT IN (?)", archived_article_ids)
+      end
+      if followed_article_ids.present?
+        @articles = @articles.where("id NOT IN (?)", followed_article_ids)
+      end
+      @articles=@articles.order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
+      @articles.each { |article| 
+        if !current_user.user_read_articles.find_by_article_id(article.id).nil? 
+          article[:read]= true
+        else
+          article[:read] = false
+        end
+      }        
+    elsif params[:editor_id] and current_employee.id.to_s == params[:editor_id]
       @isEditor = true
       @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
     elsif params[:contributor_id] and current_employee.id.to_s == params[:contributor_id]

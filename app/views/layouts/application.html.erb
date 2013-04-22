@@ -89,13 +89,19 @@
 		<% else %>
 		<li>
 		<% end %>
-		<%= link_to "PUBLISHED", user_published_index_path %></li>
+		<%= link_to "NEW", user_published_index_path %></li>
+		<% if @followed_layout then %>
+		<li class="active">
+		<% else %>
+		<li>
+		<% end %>
+		<%= link_to "FOLLOWED", user_published_index_path %></li>		
 		<% if @archived_layout then %>
 		<li class="active">
 		<% else %>
 		<li>
 		<% end %>
-		<%= link_to "ARCHIVE", user_archived_index_path %></li>
+		<%= link_to "ARCHIVED", user_archived_index_path %></li>
               </ul>
 	      <% end %>
               <ul class="nav pull-right">
