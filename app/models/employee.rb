@@ -1,7 +1,7 @@
 class Employee < ActiveRecord::Base
   has_secure_password
 
-  scope :contributor_only, joins(:employee_positions).where('position LIKE ?', "%Contributor%")
+
 
   attr_accessible :email, :first_name, :last_name, :password, :password_confirmation, :employee_positions_attributes, :email_confirmation, :account_create_time, :updating_password
   attr_accessor :email_confirmation, :updating_password, :name

@@ -1,0 +1,6 @@
+module TagExtend
+  scope :issues, joins(ActsAsTaggableOn::Tagging).where('context LIKE ?', "issues").select(:name).uniq
+  def self.issues
+    joins(ActsAsTaggableOn::Tagging).where('context LIKE ?', "issues").select(:name).uniq
+  end
+end

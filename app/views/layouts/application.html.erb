@@ -106,10 +106,15 @@
 	      <% end %>
               <ul class="nav pull-right">
 		<% if current_employee or current_user %>
-		<% if current_employee %>
-		<li><%=link_to "HOME", home_path %></li>
+		<% if @home_layout then %>
+		  <li class="active">
 		<% else %>
-		<li><%=link_to "HOME", user_home_path %></li>
+		<li>
+		<% end %>
+		<% if current_employee %>
+		<%=link_to "HOME", home_path %></li>
+		<% else %>
+		<%=link_to "HOME", user_home_path %></li>
 		<% end %>
 		<li class="dropdown">
 		    <%= link_to image_tag("Control Panel.png", alt: "Settings") + raw("&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
@@ -124,13 +129,13 @@
 		    </ul>
 		</li>
 		<% else %>
-		<% if !@through_user.nil? and @through_user then %>
+		<% if @user_layout then %>
 		<li class="active">
 		<% else %>
 		<li>
 		<% end%>
 		<%= link_to "User", root_path %></li>
-		<% if !@through_user.nil? and !@through_user then %>
+		<% if @employee_layout then %>
 		<li class="active">
 		<% else %>
 		<li>

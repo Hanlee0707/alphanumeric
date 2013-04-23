@@ -13,6 +13,7 @@ Alphanumeric::Application.routes.draw do
     resources :published, :only => [:index] 
     resources :articles do
       get :autocomplete_tag_name, :on => :collection
+      get :autocomplete_issue_name, :on => :collection
       get :autocomplete_contributor_last_name, :on => :collection
     end
     resources :account_creates 

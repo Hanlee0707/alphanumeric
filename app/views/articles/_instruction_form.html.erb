@@ -101,7 +101,7 @@
       <div class="hr-input"></div>
     </div>
     <div id="tags" class="row span12">
-      <div class="row center span5">
+      <div class="center span5">
 	<div class="row span12">
 	  <strong>Article Category</strong>
 	</div>
@@ -113,25 +113,61 @@
 	    <% end %>
 	</div>
       </div>
-      <div class="row center span7">
+      <div class="center span7">
 	<div class="span12 center">
-	  <div class="span2"></div>
-	  <div class="span8 module-header">
-	    <%= f.hidden_field :tag_list %>
-	    <%= autocomplete_field_tag "throwaway", "",  autocomplete_tag_name_articles_path, 'data-delimiter' => ', ', :multiple=> true, class:"little-further-down input-tag", placeholder: "search for tags" %>
-	    <%= button_tag "Add", class: 'btn', type: 'button', id: 'add_tag_button' %>
-	  </div>
-	  <div class="span2"></div>
+	  <strong>Issue Tag</strong>
 	</div>
-	<div class="span12 center">
-	  <div class="span2"></div>
-	  <div class="span8">
-	    <div id="tag_icons" class="span12 tag_list module-body center">
-	    </div>
+	<div class="span12" id="issue-container" style="display:none;">
+	  <div class="span12"></div>
+	  <div class="span12 center"><strong><em id="issue"></em></strong></div>
+	  <div class="span12"></div>
+	  <div class="span12 center">
+	    <%= link_to "Remove", "#", id: 'remove_issue', class: 'btn little-up'%>
 	  </div>
-	  <div class="span2"></div>
+	</div>
+	<div id="issue-search-container" class="span12 center">
+	    <%= f.hidden_field :issue_list %>
+	    <%= autocomplete_field_tag "throwaway-issue", "",  autocomplete_issue_name_articles_path, :multiple=> false, class:"input-tag", placeholder: "search for a tag" %>
+	    <%= button_tag "Set", class: 'btn up', type: 'button', id: 'add_issue_tag_button' %>
 	</div>
       </div>
+
+      <div class="span12 center">
+      </div>
+      <div class="span12 center">
+      </div>
+
+  
+      <div clas="span12">
+	<div class="span5">
+	  <div class="center span12">
+	    <strong>General Tags</strong>
+	  </div>
+	  <div class="span1"></div>
+	  <div class="span11 center">
+	    <div class="span2"></div>
+	    <div class="span8 module-header">
+	      <%= f.hidden_field :tag_list %>
+	      <%= autocomplete_field_tag "throwaway", "",  autocomplete_tag_name_articles_path, 'data-delimiter' => ', ', :multiple=> true, class:"little-further-down input-tag", placeholder: "search for tags" %>
+	      <%= button_tag "Add", class: 'btn', type: 'button', id: 'add_tag_button' %>
+	    </div>
+	    <div class="span2"></div>
+	    <div class="span12 center">
+	      <div class="span2"></div>
+	      <div class="span8">
+		<div id="tag_icons" class="span12 tag_list module-body center">
+		</div>
+	      </div>
+	      <div class="span2"></div>
+	    </div>
+	  </div>
+	</div>
+	<div class="span7"></div>
+      </div>
+
+
+      
+      
       <div class="row span12"></div>
       <div class="row span12"></div>
       <div class="row span12 center"></div>

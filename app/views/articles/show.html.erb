@@ -21,13 +21,22 @@
 	<div class="row span12">
 	  <strong><%= @article.category %></strong>
 	</div>
-	<% @article.tag_list.to_s.split(", ").each do |tag| %>
-	<div class='tag_wrap_form'>
-	  <div class='tag triangle-obtuse'>
-	    <%=tag %>
+	<div class="span12">
+	  <div class='tag_wrap_form'>
+	    <div class='tag triangle-obtuse-red'>
+	      <%=@article.issue_list %>
+	    </div>
 	  </div>
 	</div>
-	<% end %>
+	<div class="span12">
+	  <% @article.tag_list.to_s.split(", ").each do |tag| %>
+	  <div class='tag_wrap_form'>
+	    <div class='tag triangle-obtuse'>
+	      <%=tag %>
+	    </div>
+	  </div>
+	  <% end %>
+	</div>
       </div>
     <div class="span3"></div>
     </div>

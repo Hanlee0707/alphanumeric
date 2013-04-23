@@ -1,8 +1,10 @@
 class ArticlesController < ApplicationController
   before_filter :logged_in?
-  helper_method :sort_column, :sort_direction
+  helper_method :sort_column, :sort_directio
   autocomplete :tag, :name, :full=> true, :class_name => 'ActsAsTaggableOn::Tag'
   autocomplete :contributor, :last_name, :class_name => 'Employee', :display_value => :full_name_with_email, :extra_data => [:first_name, :email], :scopes => [:contributor_only]
+  autocomplete :issue, :name, :full=> true, :class_name => 'ActsAsTaggableOn::Tag', :scopes => [:issues]
+
   before_filter :set_attribute
   def set_attribute
     if params[:editor_id] and employee_privilege("Editor") then
@@ -393,6 +395,16 @@ contributor = Employee.find(item.contributor_id)
           format.html {redirect_to user_published_index_url, notice: "Unselected articles were successfully archived."}
         end
       elsif params[:user_action] == "unarchive" then 
+        for key, value in params do
+          if key.include? "article_" and value=="1" then
+            article_id = key.split("article_")[1]
+            current_user.user_archived_articles.find_by_article_id(article_id).destroy
+          end
+        end
+        respond_to do |format|
+          format.html {redirect_to user_archived_index_url, notice: "Selected articles were successfully unarchived."}
+        end
+      elsif params[:user_action] == "playlist" then
         for key, value in params do
           if key.include? "article_" and value=="1" then
             article_id = key.split("article_")[1]

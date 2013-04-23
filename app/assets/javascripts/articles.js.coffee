@@ -4,6 +4,20 @@
 
 jQuery ($) ->
   $(document).on "ready", ->
+    hidden_element = $("#searched_contributor_id")
+    contributor_id = hidden_element.val()
+    if contributor_id && ((/^\s*$/.test(contributor_id)) == false)
+      $("#contributor_id").val(hidden_element.val())
+      $("#contributor_query").hide()
+      $("#contributor_container").show()
+      $("#contributor_container").html($("#article_contributor_last_name").val())
+      $("#remove_contributor_button_container").show()
+    existing_issue_tag = $("#article_issue_list").val()
+    if existing_issue_tag && ((/^\s*$/.test(existing_issue_tag)) == false)
+      $("#issue-search-container").hide()
+      hidden_element = $("#article_issue_list")
+      $("#issue").text(existing_issue_tag)
+      $("#issue-container").show()
     existing_tags = $("#article_tag_list").val()
     tag_list = $("#tag_icons")
     if (existing_tags) && ((/^\s*$/.test(existing_tags)) == false) 
@@ -94,7 +108,6 @@ jQuery ($) ->
     $("#article_delete_actions").hide()
     $("#article_actions").show()
     
-
   $(document).on "click", "#set_contributor",  (event)->
     event.preventDefault()
     hidden_element = $("#searched_contributor_id")
@@ -128,6 +141,35 @@ jQuery ($) ->
     existing_tags_array.splice(index, 1)
     hidden_element.val(existing_tags_array.join(", "))
     $(this).remove()
+
+
+  $(document).on "click", "#add_issue_tag_button", (event)-> 
+    tag_input = $("#throwaway-issue")
+    new_tag = tag_input.val().trim().toLowerCase()
+    temp_tag_array = new_tag.split(",")
+    new_tag = temp_tag_array.join(' ')
+    new_tag = new_tag.trim()
+    if new_tag !="" 
+      $("#issue-search-container").hide()
+      hidden_element = $("#article_issue_list")
+      hidden_element.val(new_tag)
+      $("#issue").text(new_tag)
+      $("#issue-container").show()
+    else
+      $("#throwaway-issue").attr("placeholder", "Invalid tag")
+
+  $(document).on "click", "#remove_issue", (event)-> 
+    event.preventDefault()
+    $("#issue-search-container").show()
+    tag_input = $("#throwaway-issue")
+    tag_input.val("")
+    hidden_element = $("#article_issue_list")
+    hidden_element.val("")
+    $("#issue-container").hide()
+    
+  $(document).on "click", "#throwaway-issue", (event)-> 
+    if $(this).attr("placeholder") != "tag (No Comma)" 
+      $(this).attr("placeholder", "tag (No Comma)")
 
   $(document).on "click", "#add_tag_button", (event)-> 
     tag_input = $("#throwaway")

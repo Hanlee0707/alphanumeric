@@ -1,8 +1,8 @@
 class Article < ActiveRecord::Base
-  attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id, :temporary_title, :instruction, :category
+  attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id, :temporary_title, :instruction, :category, :issue_list
   attr_accessor :contributor_last_name, :searched_contributor_id
 
-  validates_presence_of :instruction, :temporary_title, :contributor_id, :on=> :create
+  validates_presence_of :instruction, :temporary_title, :contributor_id, :issue_list, :on=> :create
   has_many :numbers, dependent: :destroy
   has_many :images, dependent: :destroy
   has_many :extra_informations, dependent: :destroy
@@ -20,8 +20,11 @@ class Article < ActiveRecord::Base
   accepts_nested_attributes_for :additional_texts, allow_destroy: true
   accepts_nested_attributes_for :citations, allow_destroy: true
 
-
   acts_as_taggable
+  acts_as_taggable_on :issues
+
+
+
 
   def previous_published(current_employee=nil, current_user=nil, path)
     if path.include?("published")
