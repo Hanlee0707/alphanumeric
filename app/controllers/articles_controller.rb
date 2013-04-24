@@ -58,10 +58,13 @@ class ArticlesController < ApplicationController
           @back_path = editor_review_index_path(current_employee)
           @edit_path = edit_editor_article_path(current_employee, @article)
         elsif @status == "Approved" then
+          @show_edit = true
           @back_path = editor_approved_index_path(current_employee)
         elsif @status == "Published" then
+          @show_edit = true
           @back_path = editor_published_index_path(current_employee)
         elsif @status == "Archived" then
+          @show_edit = true
           @back_path = history_editor_path
         end
         object = {:article => @article, :image =>@article.images, :numbers => @article.numbers, :extra_informations => @article.extra_informations, :additional_texts => @article.additional_texts, :citations => @article.citations}
