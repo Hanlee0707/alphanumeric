@@ -1,5 +1,6 @@
 CKEDITOR.editorConfig = function( config )
 {
+    config.extraPlugins = 'wordcount';
     config.filebrowserParams = function(){
         var csrf_token = $('meta[name=csrf-token]').attr('content'),
                 csrf_param = $('meta[name=csrf-param]').attr('content'),
@@ -14,6 +15,7 @@ CKEDITOR.editorConfig = function( config )
     config.toolbar = "MyToolbar";
     config.enterMode = CKEDITOR.ENTER_BR; 
 
+
     config.toolbar_MyToolbar =
     [
         ['Bold','Italic', 'Underline'],
@@ -26,5 +28,10 @@ CKEDITOR.editorConfig = function( config )
         ['Bold','Italic', 'Underline'],
 	['TextColor', 'FontSize', 'SpecialChar']
     ];
+
+    config.wordcount = {
+	showWordCount: true,
+	showCharCount: true
+    };
 
 }
