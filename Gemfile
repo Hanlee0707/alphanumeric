@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 gem 'rails'
 gem 'bootstrap-sass'
 gem 'json'
@@ -12,7 +12,7 @@ gem 'will_paginate-bootstrap'
 gem 'bootstrap-datetimepicker-rails'
 gem 'rails3-jquery-autocomplete'
 gem 'sass-rails',   '~> 3.2.3'
-
+gem 'rubber'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -29,7 +29,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
+  gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
   gem 'bootstrap-modal-rails'
@@ -57,3 +57,7 @@ end
 
 # To use debugger
 # gem 'debugger'
+gem 'open4'
+gem 'gelf'
+gem 'graylog2_exceptions', :git => 'git://github.com/wr0ngway/graylog2_exceptions.git'
+gem 'graylog2-resque'
