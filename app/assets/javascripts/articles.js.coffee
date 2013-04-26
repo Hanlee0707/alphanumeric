@@ -72,10 +72,17 @@ jQuery ($) ->
     $("#sidebar").animate
       width: "toggle"
     , 0
-    if $("#content").attr("class")=="span10 offset2"
-      $("#content").attr("class","span12")
-    else 
-      $("#content").attr("class","span10 offset2")
+    path = window.location.pathname
+    if path.indexOf("articles") != -1
+      if $("#content").attr("class")=="span12 offset2"
+        $("#content").attr("class","span12")
+      else 
+        $("#content").attr("class","span12 offset2")
+    else
+      if $("#content").attr("class")=="span10 offset2"
+        $("#content").attr("class","span12")
+      else 
+        $("#content").attr("class","span10 offset2")
 
   $(document).on "submit", "form", (event)->
     $(this).find("input[type='submit']").val("Working...")

@@ -12,9 +12,13 @@ class ReviewController < ApplicationController
   end
 
   def index
+    @isContributor = false
+    @isEditor = false
     if request.path.include?("editor") 
+      @isEditor = true
       @articles = Article.where("editor_id=? and status = ?", current_employee.id, "Need Review").paginate page: params[:page], order: 'created_at desc', per_page: 20
     elsif request.path.include?("contributor")
+      @isContributor = true
       @articles = Article.where("contributor_id=? and status = ?", current_employee.id, "Need Review").paginate page: params[:page], order: 'created_at desc', per_page: 20
     else
       respond_to do |format| 

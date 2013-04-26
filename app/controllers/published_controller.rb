@@ -14,6 +14,8 @@ class PublishedController < ApplicationController
   end  
 
   def index
+    @isContributor = false
+    @isEditor = false
     if current_user then
       archived_article_ids = current_user.user_archived_articles.select(:article_id).map { |archived_article| archived_article.article_id }
       followed_article_ids = current_user.user_followed_articles.select(:article_id).map { |followed_article| followed_article.article_id }
@@ -33,6 +35,7 @@ class PublishedController < ApplicationController
         end
       }        
     elsif request.path.include? "editor"
+      @isEditor = true
       @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
     else
       if params[:tag] then
@@ -50,6 +53,7 @@ class PublishedController < ApplicationController
       object[:extra_informations]=article.extra_informations
       object[:additional_texts]=article.additional_texts
       object[:tag_list]=article.tag_list
+      object[:issue_list]=article.issue_list
       object[:citations]=article.citations
       objects.append(object)
     }

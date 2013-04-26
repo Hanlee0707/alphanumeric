@@ -11,9 +11,13 @@ class IncompleteController < ApplicationController
   end
 
   def index
+    @isEditor = false
+    @isContributor = false
     if request.path.include?("editor") 
+      @isEditor = true
       @articles = Article.where("editor_id=? and (status = ? OR status = ? OR status =?)", current_employee.id, "Assigned", "Being Written", "Revoked").paginate page: params[:page], order: 'created_at desc', per_page: 20
     elsif request.path.include?("contributor")
+      @isContributor = true
       @articles = Article.where("contributor_id=? and (status = ? OR status = ? OR status =?)", current_employee.id, "Assigned", "Being Written", "Revoked").paginate page: params[:page], order: 'created_at desc', per_page: 20
     else
       respond_to do |format| 
