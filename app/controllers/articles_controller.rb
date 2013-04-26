@@ -8,9 +8,9 @@ class ArticlesController < ApplicationController
 
   before_filter :set_attribute
   def set_attribute
-    if request.path.include?("editor") and employee_privilege("Editor") then
+    if request.path.include?("editor") then
       @editor_layout = true
-    elsif request.path.include?("contributor") and employee_privilege("Contributor") then
+    elsif request.path.include?("contributor") then
       @contributor_layout = true
     elsif request.path.include?("published")
       @published_layout = true
@@ -122,7 +122,7 @@ class ArticlesController < ApplicationController
   # GET /articles/new
   # GET /articles/new.json
   def new
-    if request.path.include?("editor") and employee_privilege("Editor") then
+    if request.path.include?("editor") then
       @article = Article.new
       @back_path = editor_path
       @editor_id = current_employee.id
@@ -321,7 +321,7 @@ contributor = Employee.find(item.contributor_id)
     if @update then
       @article.update_attribute(:status, params[:status])
     end
-    if request.env['HTTP_REFERER'].include? "contributor" and employee_privilege("Contributor") then
+    if request.env['HTTP_REFERER'].include? "contributor" then
       if params[:status]=="Need Review" then
         if @update then
           editor = Employee.find(@article.editor_id)
@@ -335,7 +335,7 @@ contributor = Employee.find(item.contributor_id)
           format.html { redirect_to contributor_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
         end
       end
-    elsif request.env['HTTP_REFERER'].include? "editor" and employee_privilege("Editor") then
+    elsif request.env['HTTP_REFERER'].include? "editor" then
       if params[:status]=="Revoked" then
         if !@update then
           @article.update_attribute(:status, params[:status])

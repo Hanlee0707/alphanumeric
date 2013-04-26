@@ -4,7 +4,7 @@ class EmployeesController < ApplicationController
   before_filter :set_attributes
 
   def set_attributes
-    if request.path.include? "administrator" and employee_privilege("Administrator") then
+    if request.path.include? "administrator" then
       @administrator_layout = true
     else
       @employees_layout = true
