@@ -1,24 +1,25 @@
 class ReviewController < ApplicationController
   before_filter :logged_in?
+  before_filter :has_privilege?
   before_filter :select_layout
 
   def select_layout
-    if params[:editor_id] and employee_privilege("Editor") then
-      @editor_layout= true
-    elsif params[:contributor_id] and employee_privilege("Contributor") then
-      @contributor_layout= true
+    if request.path.include?("editor") and employee_privilege("Editor") then
+      @editor_layout = true
+    elsif request.path.include?("contributor") and employee_privilege("Contributor") then
+      @contributor_layout = true
     end
   end
 
   def index
     @isEditor = false
     @isContributor = false
-    if params[:editor_id] and current_employee.id.to_s == params[:editor_id]
+    if request.path.include?("editor") 
       @isEditor = true
-      @articles = Article.where("editor_id=? and status = ?", params[:editor_id], "Need Review").paginate page: params[:page], order: 'created_at desc', per_page: 20
-    elsif params[:contributor_id] and current_employee.id.to_s == params[:contributor_id]
+      @articles = Article.where("editor_id=? and status = ?", current_employee.id, "Need Review").paginate page: params[:page], order: 'created_at desc', per_page: 20
+    elsif request.path.include?("contributor")
       @isContributor = true
-      @articles = Article.where("contributor_id=? and status = ?", params[:contributor_id], "Need Review").paginate page: params[:page], order: 'created_at desc', per_page: 20
+      @articles = Article.where("contributor_id=? and status = ?", current_employee.id, "Need Review").paginate page: params[:page], order: 'created_at desc', per_page: 20
     else
       respond_to do |format| 
         format.html { redirect_to home_url, notice: "You can't access the page this way."}

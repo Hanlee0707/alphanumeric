@@ -1,8 +1,8 @@
-<div class="span12"><h1> Reset Password </h1></div>
-<div class="span12"></div>
-<div class="span12"></div>
-<div class="span12"></div>
-<div class="span12 center">
+<div class="row-fluid"><h1> Reset Password </h1></div>
+<div class="row-fluid"><div class="span12"></div></div>
+<div class="row-fluid"><div class="span12"></div></div>
+<div class="row-fluid"><div class="span12"></div></div>
+<div class="row-fluid center">
   <% if @employee then %>
   <%= form_for @employee, :url => reset_password_path(params[:id]) do |f| %>
   <div class="field">
@@ -11,7 +11,7 @@
   <div class="field">
     <%= f.password_field :password_confirmation, placeholder: "Password Confirmation" %>
   </div>
-  <div class="span12"></div>
+  <div class="row-fluid"><div class="span12"></div></div>
   <div class="actions"><%= f.submit "Reset Password", :class => "btn" %></div>
   <% end %>
   <% end %>
@@ -23,7 +23,7 @@
   <div class="field">
     <%= f.password_field :password_confirmation, placeholder: "Password Confirmation" %>
   </div>
-  <div class="span12"></div>
+  <div class="row-fluid"><div class="span12"></div></div>
   <div class="actions"><%= f.submit "Reset Password", :class => "btn" %></div>
   <% end %>
   <% end %>

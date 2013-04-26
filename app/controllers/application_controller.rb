@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_employee, :logged_in, :employee_privilege, :is_administrator, :is_editor, :is_contributor, :current_user, :adjacent_article_path
+  helper_method :current_employee, :logged_in, :has_privilege, :employee_privilege, :is_administrator, :is_editor, :is_contributor, :current_user, :adjacent_article_path
 
   def employee_privilege(option)
     current_employee.employee_positions.each do |position|
@@ -13,6 +13,29 @@ class ApplicationController < ActionController::Base
 
 
   private
+
+  def has_privilege?
+    if request.path.include?("editor")
+      if current_employee and employee_privilege("Editor") then
+        @fine = true
+      else
+        redirect_to home_path, notice: "You don't have the required privilege."
+      end
+    elsif request.path.include?("contributor")
+      if current_employee and employee_privilege("Contributor") then
+        @fine = true
+      else
+        redirect_to home_path, notice: "You don't have the required privilege."
+      end
+    elsif request.path.include?("administrator")
+      if current_employee and employee_privilege("Administrator") then
+        @fine = true
+      else
+        redirect_to home_path, notice: "You don't have the required privilege."
+      end
+    end
+
+  end
 
   def adjacent_article_path(article_id)
     if request.path.include?("published")

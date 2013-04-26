@@ -1,23 +1,18 @@
-<div class="row span12" id="basic_information">
-  <div class="row span12">
-    <div class="span12">
-      <h5><%= link_to raw("Basic Information <b id='basic-caret' class='up-caret little-down'></b>"), "#", class: 'hide-form-element' %>
-      </h5>
-    </div>
-    <div class="span12">
-      <div class="hr-input"></div>
-    </div>
-    
-    <div id="basic_fields" class="row span12">
-      <div class="row span12 center">
-	<%= f.text_field :title, :size => 80, maxlength: 80, class:"input-title", placeholder: "Enter title here" %>
-      </div>
-      <div class="row span12 center">
-	<%= f.text_field :city, size: 20, maxlength: 20, class:"input-city", placeholder: "city" %>
-	<%= f.text_field :country, size: 20, maxlength: 20, class:"input-country", placeholder: "country" %>
-      </div>
-      <div class="row span12 center"></div>
-      <div class="row span12 center"></div>
-    </div>
+<div class="row-fluid">
+  <div class="span12">
+    <%= f.text_field :title, :size => 80, maxlength: 80, class:"span11", placeholder: "Enter title here" %>
+    <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "This is the actual title that will be displayed for users."} %>
   </div>
 </div>
+<div class="row-fluid">
+  <div class="span5-5">
+    <%= f.text_field :city, size: 20, maxlength: 20, class:"span12", placeholder: "city" %>
+  </div>
+  <div class="span5-5">
+    <%= f.text_field :country, size: 20, maxlength: 20, class:"span12", placeholder: "country" %>
+  </div>
+    <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "City and Country where the event occurred."}, style: "margin-left:0.6%;" %>
+
+</div>
+
+

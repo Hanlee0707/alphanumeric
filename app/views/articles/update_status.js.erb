@@ -1,0 +1,11 @@
+jQuery.noConflict();
+
+jQuery(function($) {
+  $(document).ready(function() {
+    $("input[type='submit']").attr('disabled', false);
+    $("a").attr('disabled', false);
+    $("#notice").html("<%= escape_javascript(@notice) %>");
+    $("#notice").show();
+    $("input[type='submit']")
+  });
+});

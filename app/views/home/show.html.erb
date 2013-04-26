@@ -1,11 +1,13 @@
 <% provide(:title, "Home")%>
 
 <% if current_employee then %>
-<div class="span12">
-  <div class="span12 row center">
+<div class="row-fluid">
+  <div class="row-fluid center">
     <h3>List of Working Issues</h3>
   </div>
-  <div class="span12 row center"></div>
+</div>
+<div class="row-fluid"><div class="span12"></div></div>
+<div class="row-fluid center">
   <% if !@articles.empty? %>
   <div class="span1"></div>
   <div class="span10">
@@ -22,7 +24,11 @@
 	<% @articles.each do |article| %>
 	<tr>
 	  <td><%= article.temporary_title%></td>
+	  <% if article.editor.nil? then %>
+	  <td>NO EDITOR </td>
+	  <% else %>
 	  <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
+	  <% end %>
 	  <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
 	  <td><%= article.status %></td>
 	</tr>
@@ -39,8 +45,8 @@
   <% end %>
 </div>  
 <% elsif current_user %>
-<div class="span12">
-  <div class="span12 row center">
+<div class="row-fluid">
+  <div class="row-fluid center">
     <h3>User Home</h3>
   </div>
 </div>  

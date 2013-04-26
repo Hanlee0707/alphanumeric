@@ -18,9 +18,9 @@
   <body>
     <header class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
-        <div class="container-fluid no-space">
+        <div class="container-fluid">
 	  <div class="span1"></div>
-	  <div class="span11">
+	  <div class="span11" style="margin-left:0;">
             <%= link_to "Gist", home_path,class: "brand", id: "logo" %>
             <nav>
 	      <% if current_employee %>
@@ -37,13 +37,13 @@
 		  <% end %>
 		  <ul class="dropdown-menu" role="menu" aria-labelledby="history">
 		    <% if employee_privilege("Contributor") %>
-		    <li><%=link_to "Contributor", contributor_path(current_employee) %></li>
+		    <li><%=link_to "Contributor", contributor_path %></li>
 		    <% end %>
 		    <% if employee_privilege("Editor") %>
-		    <li><%=link_to "Editor", editor_path(current_employee) %></li>
+		    <li><%=link_to "Editor", editor_path %></li>
 		    <% end %>
 		    <% if employee_privilege("Administrator") %>
-		    <li><%=link_to "Administrator", administrator_path(current_employee)%></li>
+		    <li><%=link_to "Administrator", administrator_path%></li>
 		    <% end %>
 		  </ul>
 		</li>
@@ -148,45 +148,50 @@
         </div>
       </div>
     </header>
-    <div class="row-fluid no-space">
-      <% if @editor_layout or @contributor_layout %>
+    <div class="row-fluid">
+      <div id="content" class="span12">
+	<div class="row-fluid">
+	  <% if notice %>
+	  <div id="notice" class="span12 center" style="margin-left:0;">
+	    <%=notice %>
+	    <% else %>
+	    <div id="notice" class="span12 center" style="margin-left:0;display:none;">
+	      <% end %>
+	    </div>
+	</div>
+	<%= yield %><!-- <label id="code.depot.e.include"/> -->
+      </div>
+    </div>
+    <% if @editor_layout or @contributor_layout %>
+    <div class="row-fluid">
       <div id="sidebar" class="span2 bs-docs-sidebar" style="display:none;">
 	<div class="well sidebar-nav sidebar-nav-fixed">
 	  <ul class="nav nav-list bs-docs-sidenav">
 	    <li class="nav-header">Articles Options</li>
 	    <% if @contributor_layout %>
-	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_contributor_incomplete.to_s + raw("</span>"), contributor_incomplete_index_path(current_employee) %></li>
-	    <li class="nav-list-item"><%=link_to "View Pending Review", contributor_review_index_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_contributor_incomplete.to_s + raw("</span>"), contributor_incomplete_index_path %></li>
+	    <li class="nav-list-item"><%=link_to "View Pending Review", contributor_review_index_path %></li>
 	    <% elsif @editor_layout %>
-	    <li class="nav-list-item"><%=link_to "New", new_editor_article_path(current_employee) %></li>
-	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_incomplete.to_s + raw("</span>"), editor_incomplete_index_path(current_employee) %></li>
-	    <li class="nav-list-item"><%=link_to raw("Review<span class='round list-right less-up'>") + num_review.to_s + raw("</span>"), editor_review_index_path(current_employee) %></li>
-	    <li class="nav-list-item"><%=link_to raw("Publish<span class='round list-right less-up'>") + num_publish.to_s + raw("</span>"), editor_approved_index_path(current_employee) %></li>
-	    <li class="nav-list-item"><%=link_to "Manage Published", editor_published_index_path(current_employee) %></li>
+	    <li class="nav-list-item"><%=link_to "New", new_editor_article_path %></li>
+	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_incomplete.to_s + raw("</span>"), editor_incomplete_index_path %></li>
+	    <li class="nav-list-item"><%=link_to raw("Review<span class='round list-right less-up'>") + num_review.to_s + raw("</span>"), editor_review_index_path %></li>
+	    <li class="nav-list-item"><%=link_to raw("Publish<span class='round list-right less-up'>") + num_publish.to_s + raw("</span>"), editor_approved_index_path %></li>
+	    <li class="nav-list-item"><%=link_to "Manage Published", editor_published_index_path %></li>
 	    <% end %>
 	  </ul>
 	</div><!--/.well -->
       </div><!--/span-->
-      <% end %>
-      <div id="content" class="span12">
-	<% if notice %>
-	<div class="span12 row center">
-	  <%=notice %>
-	</div>
-	<% end %>
-	<%= yield %><!-- <label id="code.depot.e.include"/> -->
-      </div>
-      <% if @editor_layout or @contributor_layout %>
-      <div class="toggles-container-in">
-	<% if @editor_layout %>
-	  <a href="#" class="toggles editor">
+    </div>
+    <div class="toggles-container-in">
+      <% if @editor_layout %>
+      <a href="#" class="toggles editor">
 	<% else %>
 	<a href="#" class="toggles contributor">
-	<% end %>
-	<i class="icon-chevron-right"></i></a>
-      </div>
-      <% end %>
+	  <% end %>
+	  <i class="icon-chevron-right"></i></a>
+    </div>
+    <% end %>
   </body>
-<!-- <%= debug(params) if Rails.env.development? %> -->
+  <!-- <%= debug(params) if Rails.env.development? %> -->
 </html>
 

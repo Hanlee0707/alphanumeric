@@ -19,24 +19,28 @@ Alphanumeric::Application.routes.draw do
     resources :account_creates 
     resources :reset_password, :only => [:new, :create, :edit, :update]
     resources :sessions
-    resources :administrator, :only => [:show] do
-      resources :employees
-    end
-    match 'administrator/:id' => 'administrator#show', :via => :post
+    match '/administrator' => 'administrator#show', :via => :get, as: 'administrator'
+    match '/administrator' => 'administrator#show', :via => :post, as: 'administrator'
+    match '/administrator/employees/new' => 'employees#new', :via => :get, as: 'new_administrator_employee'
+    match '/administrator/employees/' => 'employees#create', :via => :post
+    match '/administrator/employees/:id/' => 'employees#show', :via => :get, as: 'administrator_employee'
+    match '/administrator/employees/:id/edit' => 'employees#edit', :via => :get, as: 'edit_administrator_employee'
+    match '/administrator/employees/:id' => 'employees#update', :via => :put
+    match '/administrator/employees/:id' => 'employees#destroy', :via => :delete
     resources :employees, :only => [:show, :edit, :update, :index]
-    resources :editor, :only => [:show] do
-      resources :articles, :except => [:index] 
-      resources :incomplete, :only => [:index]
-      resources :review, :only => [:index]
-      resources :approved, :only => [:index]
-      resources :published, :only => [:index]
+    match '/editor' => 'editor#show', :via => :get, as: 'editor'
+    scope "/editor" do
+      resources :articles, :except => [:index], as: 'editor_article'
+      resources :incomplete, :only => [:index], as: 'editor_incomplete' 
+      resources :review, :only => [:index], as: 'editor_review' 
+      resources :approved, :only => [:index], as: 'editor_approved' 
+      resources :published, :only => [:index], as: 'editor_published' 
     end
-    resources :contributor, :only => [:show] do
-      resources :articles, :except => [:new, :create, :index] 
-      resources :incomplete, :only => [:index]
-      resources :review, :only => [:index]
-      resources :approved, :only => [:index]
-      resources :published, :only => [:index]
+    match '/contributor' => 'contributor#show', :via => :get, as: 'contributor'
+    scope "/contributor" do 
+      resources :articles, :except => [:new, :create, :index], as: 'contributor_article'
+      resources :incomplete, :only => [:index], as: 'contributor_incomplete'
+      resources :review, :only => [:index], as: 'contributor_review'
     end
     match '/update_status', to: 'articles#update_status', :via => :post, as: 'update_status'
     match '/publish_articles', to: 'articles#publish_articles', :via => :post, as: 'publish_articles'
@@ -46,9 +50,6 @@ Alphanumeric::Application.routes.draw do
     match '/search_articles', to: 'articles#search_articles', :via => :get
     match "/assign_random", to:"articles#random", :via=> :post, as: "assign_random"
     match "/add_to_the_article", to:"articles#add_to_the_article", :via => :get
-    match '/previous', to:'articles#previous', :via => :get, as: 'show_previous'
-    match '/details', to:'articles#details', :via => :get, as: 'show_details'
-    match '/recent', to:'articles#recent', :via => :get, as: 'show_recent'
     get 'tags/:tag', to: 'list#index', as: :tag
     match '/employees', to: 'employees#index', :via => :post, as: 'employees'
     match '/list', to: 'list#index', as: 'list'
@@ -64,9 +65,6 @@ Alphanumeric::Application.routes.draw do
   match '/archived/articles/:id' => 'articles#show', :via => :get, as: 'user_archived_article'
   get 'tags/:tag', to: 'list#index', as: 'user_tag'
   resources :users, :only => [:create, :edit, :update, :show]
-  match '/previous', to:'articles#previous', :via => :get, as: 'show_previous'
-  match '/details', to:'articles#details', :via => :get, as: 'show_details'
-  match '/recent', to:'articles#recent', :via => :get, as: 'show_recent'
   match '/archive_for_user', to: 'articles#archive_for_user', as: 'archive_for_user'
   root to: 'sessions#new'  
   resources :reset_password, :only => [:new, :create, :edit, :update], as: 'user_reset_password'

@@ -1,7 +1,7 @@
 <% provide(:title, "New User") %>
 
 <%= form_for(@user) do |f| %>
-  <div class="span12 row center">
+  <div class="row-fluid center">
     <div class="span3"></div>
     <div class="span6">
       <% if @user.errors.any? %>
@@ -17,17 +17,18 @@
     </div>
     <div class="span3"></div>
   </div>
-  <div class="span12 row center">
+  <div class="row-fluid center">
     <div class="span3"></div>
     <div class="span6">
       <h1>New User</h1>
     </div>
     <div class="span3"></div>
   </div>
-  <div class="span12 row"></div>
-  <div class="span12 row"></div>
+  <div class="row-fluid"><div class="span12"></div></div>
+  <div class="row-fluid"><div class="span12"></div></div>
 
-  <div class="span12 row">
+
+  <div class="row-fluid">
     <div class="span3">
     </div>
     <div class="span6 field center">
@@ -36,23 +37,25 @@
     </div>
     <div class="span3"></div>
   </div>
-  <div class="span12 row">
+  <div class="row-fluid">
     <div class="span3">
     </div>
     <div class="span6 field center">
-      <div class="span12">
+      <div class="row-fluid">
 	<%= f.text_field :email, placeholder: "email", class:'input-user-field' %>
       </div>
-      <div class="span12">
+      <div class="row-fluid">
 	<%= f.password_field :password, placeholder: "password", class:'input-user-field' %>
       </div>
-      <div class="span12">
+      <div class="row-fluid">
 	<%= f.password_field :password_confirmation, placeholder: "password confirmation", class:'input-user-field' %>
       </div>
-      <div class="span12"></div>
-      <div class="span12"></div>
-      <%= f.submit "Create", class:'btn btn-primary' %>
-      <%= link_to "Back", root_path, class: 'btn btn-primary make-white' %>
+      <div class="row-fluid"><div class="span12"></div></div>
+      <div class="row-fluid"><div class="span12"></div></div>
+      <div class="row-fluid">
+	<%= f.submit "Create", class:'btn btn-primary' %>
+	<%= link_to "Back", root_path, class: 'btn btn-primary make-white' %>
+      </div>
     </div>
     <div class="span3"></div>
   </div>

@@ -1,7 +1,17 @@
+<% if @administrative then %>
 <% provide(:title, "Edit Employee") %>
+<% else %>
+<% provide(:title, "Edit Your Account") %>
+<% end %>
 
-<%= form_for @employee, :url=>{:action => 'update'} do |f| %> 
-<div class="span12 row center">
+<% if @administrative then %>
+<% to_url = administrator_employee_path(@employee) %>
+<% else %>
+<% to_url = employee_path(@employee) %>
+<% end %>
+
+<%= form_for @employee, :url=> to_url do |f| %> 
+<div class="row-fluid center">
   <div class="span3"></div>
   <div class="span6">
     <% if @employee.errors.any? %>
@@ -24,7 +34,7 @@
 <%= render 'edit_employee', :f => f, :employee=> @employee %>
 <% end %>
 
-<div class="span12 row">
+<div class="row-fluid">
   <div class="span3"></div>    
   <div class="actions span6 center">
     <%= f.submit "Apply", class: 'btn btn-primary' %>
@@ -34,7 +44,7 @@
 </div>
 
 <% end %>
-</div>
+
 
 
 

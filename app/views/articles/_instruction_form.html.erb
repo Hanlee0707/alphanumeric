@@ -1,176 +1,111 @@
-<div class="row span12" id="instruction">
-  <% if editor then %>
-  <%= f.hidden_field :editor_id, value: editor %>
-  <% end %>
-  
+<div class="row-fluid" id="instruction">
   <% article = f.object %>
   <% if edit %>
   <% else %>
-  <div class="row span12">
-    <div class="span12">
-      <h5><%= link_to raw("Assigned Contributor <b id='basic-caret' class='up-caret little-down'></b>"), "#", class: 'hide-form-element' %>
-      </h5>
-    </div>
-    <div class="span12">
-      <div class="hr-input"></div>
-    </div>
-    <div id="assigned-contributor" class="row span12">
-      <% if f.object.contributor_id.nil? or f.object.contributor_id="" %>
-      <div class="span6" id="contributor_container" style="display:none;"></div>
-      <div class="span6" id="remove_contributor_button_container" style="display:none;">
-	<%= link_to "Remove", "#", id: 'remove_contributor', class: 'btn little-up' %>
-      </div>
-      <div class="span12" id="contributor_query">
-	<div class="span12">
-	<%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
-	<%= f.hidden_field :contributor_id, id: "contributor_id" %>
-	<%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down input-title", placeholder: "Search by last name", :id_element =>'#searched_contributor_id' %>
-	<%= link_to "Set", "#", id: 'set_contributor', class: 'btn'%>
-	&nbsp;&nbsp;OR&nbsp;&nbsp; 
-	<%= link_to "Assign Random", assign_random_path, id:'assign_random_contributor', method: :post, remote: true, class: 'btn'%>
+  <div class="span1"></div>
+  <div id="assign-issue" style="margin-left:0;" class="span7">
+    <div class="row-fluid">
+    	<%= f.hidden_field :editor_id, value: editor %>
+	<div class="row-fluid">
+	<% if !@assigned_contributor_name.present? %>
+	  <div class="span6" id="contributor_container" style="margin-top:20px;display:none;"></div>
+	  <div class="span6"  id="remove_contributor_button_container" style="display:none;margin-top:20px;">
+	    <% else %>
+	  <div class="span6" id="contributor_container">
+	    <%= @assigned_contributor_name %></div>
+	  <div class="span6" id="remove_contributor_button_container">
+
+	    <% end %>
+	    <%= link_to "Remove", "#", id: 'remove_contributor', class: 'btn little-up' %>
+	  </div>
 	</div>
-	<div class="span12">
-	  You need to press the set button to assign this article to the contributor.
+	<div class="row-fluid">
+	  <% if !@assigned_contributor_name.present? %>
+	  <div class="span12" id="contributor_query">
+	    <% else %>
+	  <div class="span12" id="contributor_query" style="display:none;">
+	    <% end %>
+	    <%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
+	    <%= f.hidden_field :contributor_id, id: "contributor_id" %>
+	    <%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down span6", placeholder: "Contributor(Search by last name)", :id_element =>'#searched_contributor_id' %>
+	    <span class="down" style="float:right;">
+	    <%= link_to "Set", "#", id: 'set_contributor', class: 'btn'%>
+	    &nbsp;&nbsp;OR&nbsp;&nbsp; 
+	    <%= link_to "Assign Random", assign_random_path, id:'assign_random_contributor', method: :post, remote: true, class: 'btn'%>
+	    <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Find a contributor by typing in his last name. You need to press the set button to actually assign this article to the found contributor."} %>
+	    </span>
+	  </div>
 	</div>
-      </div>
-      <% else %>
-      <div class="span6" id="contributor_container">
-	<%= get_contributor(f.object.contributor_id) %>
-      </div>
-      <div class="span6"id="remove_contributor_button_container">
-	<%= link_to "Remove", "#", id: 'remove_contributor', class: 'btn little-up'%>
-      </div>
-      <div class="span12" id="contributor_query" style="display:none;">
-	<%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
-	<%= f.hidden_field :contributor_id, id: "contributor_id" %>
-	<%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down input-title", placeholder: "Search by last name", :id_element =>'#searched_contributor_id' %>
-	<%= link_to "Set", "#", id:'set_contributor', class: 'btn'%>
-	&nbsp;&nbsp;OR&nbsp;&nbsp; 
-	<%= link_to "Assign Random", "#", id:'assign_random_contributor', class: 'btn'%>
-      </div>
-      <% end %>
-      <div class="span12">
-	<div style="display:none;" id="contributor_error">Select a contributor from the search result.
+	<div class="row-fluid">
+	  <div class="span12" style="display:none;" id="contributor_error">Select a contributor from the search result.
+	  </div>
 	</div>
-      </div>	
-      <div class="row span12"></div>
+	<div class="row-fluid">
+	    <%= f.text_field :temporary_title, :size => 80, maxlength: 80, placeholder: "Enter temporary title(issue) here", class: "span11-5" %>
+	    <span style="float:right;">
+	      <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "enter a temporary title for the article."} %>
+	    </span>
+	</div>
+	<div class="row-fluid">
+	  <%= f.text_area :instruction, rows: 15, class:"input-xxlarge span11-5", placeholder: "instructions for the article" %>
+	  <span style="float:right;">
+	    <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Write an instruction for the contributor. What kind of approach should the contributor take?"} %>
+	  </span>
+	</div>
     </div>
+  </div>
+  <div class="span1"></div>
+  <div class="span3" style="margin-left:0;">
+    <div class="row-fluid down">
+      <div id="tags" class="span12">
+	<div class="postbox center">
+	  <h3>Article Category<%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Select the most relevant category for the article."} %></h3>
+	  <div class="down inside">
+	    <% if f.object.category.nil? then %>
+	    <%= f.select :category, options_for_select(list_of_categories), class:"input-country down" %>
+	    <% else %>
+	    <%= f.select :category, options_for_select(list_of_categories, f.object.category), class: "input-country down" %>
+	    <% end %>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <div class="row-fluid down">
+      <div id="tags" class="span12">
+	<div class="postbox center">
+	  <h3>Issue Tag<%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Enter a specific tag that will be used to find articles with the same topic."} %></h3>
+	  <div>
+	    <div id="issue-container" class="row-fluid down inside" style="display:none;">
+	      <strong><em id="issue"></em></strong>
+	      <%= link_to "Remove", "#", id: 'remove_issue', class: 'btn'%>
+	    </div>
+	    <div id="issue-search-container" class="row-fluid down inside">
+	      <%= f.hidden_field :issue_list %>
+	      <%= autocomplete_field_tag "throwaway-issue", "",  autocomplete_issue_name_articles_path, :multiple=> false, class:"input-tag", placeholder: "search for a tag" %>
+	      <%= button_tag "Set", class: 'btn up', type: 'button', id: 'add_issue_tag_button' %>
+	    </div>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <div class="row-fluid down">
+      <div id="tags" class="span12">
+	<div class="postbox center">
+	  <h3>General Tags<%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Enter general tags you want associated with this article."} %></h3>
+	  <div class="down inside">
+	    <%= f.hidden_field :tag_list %>
+	    <%= autocomplete_field_tag "throwaway", "",  autocomplete_tag_name_articles_path, 'data-delimiter' => ', ', :multiple=> true, class:"little-further-down input-tag", placeholder: "search for tags" %>
+	    <%= button_tag "Add", class: 'btn', type: 'button', id: 'add_tag_button' %>
+	  </div>
+	  <div id="tag_icons" style="min-height:0px;">
+	  </div>
+	</div>
+      </div>
+    </div>
+
   </div>
   <% end %>
 
-  <div class="row span12">
-    <div class="span12">
-      <h5><%= link_to raw("Instructions <b id='basic-caret' class='up-caret little-down'></b>"), "#", class: 'hide-form-element' %>
-      </h5>
-    </div>
-    <div class="span12">
-      <div class="hr-input"></div>
-    </div>
-    <% if edit %>
-    <div id="write-instruction" class="row span12 center">
-      <div class="row span12">
-	<strong><%= article.temporary_title %></strong>
-      </div>
-      <div class="row span12"></div>
-      <div class="row span12">
-	<%= article.instruction %>
-      </div>
-      <div class="row span12"></div>
-      <div class="row span12 center"></div>
-    </div>  
-    <% else %>
-    <div id="write-instruction" class="row span12 center">
-      <div class="row span12">
-	<%= f.text_field :temporary_title, :size => 80, maxlength: 80, placeholder: "Enter temporary title(issue) here", class: "input-temporary-title" %>
-      </div>
-      <div class="row span12">
-	<%= f.text_area :instruction, rows: 10, class:"input-xxlarge", placeholder: "instructions for the article" %>
-      </div>
-      <div class="row span12"></div>
-      <div class="row span12 center"></div>
-    </div>  
-    <% end %>
-  </div>  
-
-  <div class="row span12">
-    <div class="span12">
-      <h5><%= link_to raw("Category and Tags <b id='basic-caret' class='up-caret little-down'></b>"), "#", class: 'hide-form-element' %>
-      </h5>
-    </div>
-    <div class="span12">
-      <div class="hr-input"></div>
-    </div>
-    <div id="tags" class="row span12">
-      <div class="center span5">
-	<div class="row span12">
-	  <strong>Article Category</strong>
-	</div>
-	<div class="row span12">
-	  <% if f.object.category.nil? then %>
-	    <%= f.select :category, options_for_select(list_of_categories), {class: "input-time"} %>
-	    <% else %>
-	    <%= f.select :category, options_for_select(list_of_categories, f.object.category), {class: "input-time"} %>
-	    <% end %>
-	</div>
-      </div>
-      <div class="center span7">
-	<div class="span12 center">
-	  <strong>Issue Tag</strong>
-	</div>
-	<div class="span12" id="issue-container" style="display:none;">
-	  <div class="span12"></div>
-	  <div class="span12 center"><strong><em id="issue"></em></strong></div>
-	  <div class="span12"></div>
-	  <div class="span12 center">
-	    <%= link_to "Remove", "#", id: 'remove_issue', class: 'btn little-up'%>
-	  </div>
-	</div>
-	<div id="issue-search-container" class="span12 center">
-	    <%= f.hidden_field :issue_list %>
-	    <%= autocomplete_field_tag "throwaway-issue", "",  autocomplete_issue_name_articles_path, :multiple=> false, class:"input-tag", placeholder: "search for a tag" %>
-	    <%= button_tag "Set", class: 'btn up', type: 'button', id: 'add_issue_tag_button' %>
-	</div>
-      </div>
-
-      <div class="span12 center">
-      </div>
-      <div class="span12 center">
-      </div>
-
-  
-      <div clas="span12">
-	<div class="span5">
-	  <div class="center span12">
-	    <strong>General Tags</strong>
-	  </div>
-	  <div class="span1"></div>
-	  <div class="span11 center">
-	    <div class="span2"></div>
-	    <div class="span8 module-header">
-	      <%= f.hidden_field :tag_list %>
-	      <%= autocomplete_field_tag "throwaway", "",  autocomplete_tag_name_articles_path, 'data-delimiter' => ', ', :multiple=> true, class:"little-further-down input-tag", placeholder: "search for tags" %>
-	      <%= button_tag "Add", class: 'btn', type: 'button', id: 'add_tag_button' %>
-	    </div>
-	    <div class="span2"></div>
-	    <div class="span12 center">
-	      <div class="span2"></div>
-	      <div class="span8">
-		<div id="tag_icons" class="span12 tag_list module-body center">
-		</div>
-	      </div>
-	      <div class="span2"></div>
-	    </div>
-	  </div>
-	</div>
-	<div class="span7"></div>
-      </div>
 
 
-      
-      
-      <div class="row span12"></div>
-      <div class="row span12"></div>
-      <div class="row span12 center"></div>
-    </div>
-  </div>
-</div>

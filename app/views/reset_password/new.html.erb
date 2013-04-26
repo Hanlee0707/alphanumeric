@@ -1,17 +1,17 @@
-<div class="span12"><h1> Reset Password </h1></div>
-<div class="span12"></div>
-<div class="span12 center">Request a link via email to reset your password.
+<div class="row-fluid"><h1> Reset Password </h1></div>
+<div class="row-fluid"><div class="span12"></div></div>
+<div class="row-fluid center">Request a link via email to reset your password.
 </div>
 <% if @through_user then %>
 <%= form_tag user_reset_password_index_path, :method => :post do %>
-<div class="span12 fields center">
+<div class="row-fluid fields center">
   <%= text_field_tag :email, params[:email], placeholder: "email", class: 'down' %>
   <%= submit_tag "Request", :class => "btn"%>
 </div>
 <% end %>
 <% else %>
 <%= form_tag reset_password_index_path, :method => :post do %>
-<div class="span12 fields center">
+<div class="row-fluid fields center">
   <%= text_field_tag :email, params[:email], placeholder: "email", class: 'down' %>
   <%= submit_tag "Request", :class => "btn"%>
 </div>

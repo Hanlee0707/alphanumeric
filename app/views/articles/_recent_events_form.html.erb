@@ -1,53 +1,49 @@
-  <div class="row span12" id="recent_events">
-    <div class="row span12">
-      <div class="span12">
-	<h5><%= link_to raw("Recent Events <b id='basic-caret' class='up-caret little-down'></b>"), "#", class: 'hide-form-element' %>
-	</h5>
-      </div>
-      <div class="span12">
-	<div class="hr-full"></div>
-      </div>
-      <div id="recent-fields" class="row span12">
-	<div class="span6">
-	  <div class="span2"></div>
-	  <div class="span10">
-	    <div class="span1"></div>
-	    <div class="span11">
-	      <%= f.cktext_area :current_content, :ckeditor=>{ :width => 350, :height=> 150 } %>
-	    </div>
-	  </div>
-	  <div class="span12"></div>
-	  <div class="span12 center">      
-	    <div id="extra_information" class="span12">
-	      <%= f.fields_for :extra_informations do |builder| %>
-	      <div class="fields span12">
-		<%= render 'extra_information_fields', :f=> builder %>
-	      </div>
-	      <% end %>
-	    </div>
-	    <div class="span12 center">
-	      <%= link_to_add_fields "New Popup", f, :extra_informations, target: "extra_information", delete: false, hide: false, class: 'btn btn-large' %>
-	    </div>
-	  </div>
-	</div>
-	<div class="span6 center">
-	  <div>
-	    <% if @article.images.nil? or @article.images.size ==0 then %>
-            <%= link_to_add_fields "New Image", f, :images, image_type: "GIST", target: "current_image", delete: true, hide: false, class: 'btn btn-large add_gist_image' %>
-	    <% else %>
-            <%= link_to_add_fields "New Image", f, :images, image_type: "GIST", target: "current_image", delete: true, hide: true, class: 'btn btn-large add_gist_image' %>
-	    <% end %>
-	  </div>
-	  <div id="current_image" class="center">
-            <% if @article.images.size >0 and @article.images.first.image_type == "GIST" then %>
-	    <%= f.fields_for :images do |builder| %>
-	    <div class="fields">
-	      <%= render 'image_fields', :f => builder, :image_type => "GIST" %>
-	    </div>
-	    <% end %>
-	    <% end %>
-	  </div>
-	</div>
-      </div>
-    </div>
+<div class="row-fluid">
+  <div class="span12" id="background">
+    <h5>Recent Events<%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Today's events regarding this topic should be entered here. To add a pop up for a certain word, press 'New Popup' button, and enter the word in 'phrase', as written in the article, and enter the content for the popup in the editor. You can also add an image by clicking 'New Image' button."} %></h5>
   </div>
+</div>
+<div class="row-fluid">
+  <div class="span12">
+    <div class="hr-full"></div>
+  </div>
+</div>
+<div class="row-fluid center">
+  <%= f.cktext_area :current_content, :ckeditor=>{ :height=> 150 }, class:"span12" %>
+</div>
+<div class="row-fluid">
+  <div id="extra_information" class="row-fluid">
+    <%= f.fields_for :extra_informations do |builder| %>
+    <div class="fields row-fluid"><div class="span12"></div></div>
+    <div class="fields row-fluid">
+      <%= render 'extra_information_fields', :f=> builder %>
+    </div>
+    <% end %>
+  </div>
+</div>
+<div class="row-fluid"><div class="span12"></div></div>
+<div class="row-fluid center">
+  <div class="span12">
+    <%= link_to_add_fields "New Popup", f, :extra_informations, target: "extra_information", delete: false, hide: false, class: 'btn btn-large' %>
+  </div>
+</div>
+<div class="row-fluid center"><div class="span12"></div></div>
+
+<div class="row-fluid center">
+  <% if @article.images.nil? or @article.images.size ==0 then %>
+  <%= link_to_add_fields "New Image", f, :images, image_type: "GIST", target: "current_image", delete: true, hide: false, class: 'btn btn-large add_gist_image' %>
+  <% else %>
+  <%= link_to_add_fields "New Image", f, :images, image_type: "GIST", target: "current_image", delete: true, hide: true, class: 'btn btn-large add_gist_image' %>
+  <% end %>
+</div>
+<div id="current_image" class="center row-fluid">
+  <% @article.images.each do |image| %>
+  <% if image.image_type == "GIST" then %>
+  <%= f.fields_for :images, image do |builder| %>
+  <div class="row-fluid fields">
+    <%= render 'image_fields', :f => builder, :image_type => "DETAIL" %>
+  </div>
+  <% end %>
+  <% end %>
+  <% end %>
+</div>

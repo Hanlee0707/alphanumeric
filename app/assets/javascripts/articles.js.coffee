@@ -4,13 +4,14 @@
 
 jQuery ($) ->
   $(document).on "ready", ->
-    hidden_element = $("#searched_contributor_id")
-    contributor_id = hidden_element.val()
-    if contributor_id && ((/^\s*$/.test(contributor_id)) == false)
-      $("#contributor_id").val(hidden_element.val())
+    $("input[type='submit']").attr('disabled', false)
+    $("a").attr('disabled', false)
+    contributor_id = $("#searched_contributor_id").val()
+    contributor_name = $("#article_contributor_last_name").val()
+    if contributor_id && ((/^\s*$/.test(contributor_id)) == false) && contributor_name && ((/^\s*$/.test(contributor_name)) == false) 
       $("#contributor_query").hide()
       $("#contributor_container").show()
-      $("#contributor_container").html($("#article_contributor_last_name").val())
+      $("#contributor_container").html($("#article_contributor_last_name").val())     
       $("#remove_contributor_button_container").show()
     existing_issue_tag = $("#article_issue_list").val()
     if existing_issue_tag && ((/^\s*$/.test(existing_issue_tag)) == false)
@@ -68,14 +69,13 @@ jQuery ($) ->
     else 
       $(this).parent().attr("class", "toggles-container-in")
       $(this).parent().css({'left':('0px')})
-
     $("#sidebar").animate
       width: "toggle"
     , 0
-    if $("#content").attr("class")=="span10"
+    if $("#content").attr("class")=="span10 offset2"
       $("#content").attr("class","span12")
     else 
-      $("#content").attr("class","span10")
+      $("#content").attr("class","span10 offset2")
 
   $(document).on "submit", "form", (event)->
     $(this).find("input[type='submit']").val("Working...")
@@ -113,7 +113,7 @@ jQuery ($) ->
     hidden_element = $("#searched_contributor_id")
     if hidden_element.val()==""
       $("#contributor_error").show()	
-      $("#contributor_error").fadeOut(1000)
+      $("#contributor_error").fadeOut(2000)
     else 
       $("#contributor_id").val(hidden_element.val())
       $("#contributor_query").hide()
@@ -238,6 +238,37 @@ jQuery ($) ->
       event.stopPropagation()
       return false      
 
+  $(document).on "click", ".show_tip", (event)-> 
+    event.preventDefault()
+    event.stopPropagation()
+    target= $(this)
+    left = $(this).offset().left - $("#tip_window").width()/2 
+    bottom = $(this).offset().top + $(this).height()
+    $("#tip_window").css({'top': bottom, 'left': left})
+    $("#tip_window").children().text($(this).data("tip"))
+    $("#tip_window").show()
+    $(document).on "click", ->
+      $("#tip_window").hide()
+    $(document).on "click", "#tip_window", (event) ->
+      event.stopPropagation()
+      return false      
+
+
+  $(document).on "click", ".show_instruction_window", (event)-> 
+    event.preventDefault()
+    event.stopPropagation()
+    target= $(this)
+    left = $(this).offset().left 
+    bottom = $(this).offset().top + $(this).height()
+    $("#instruction_window").css({'top': bottom, 'left': left})
+    $("#instruction_window").show()
+    $(document).on "click", ->
+      $("#instruction_window").hide()
+    $(document).on "click", "#instruction_window", (event) ->
+      event.stopPropagation()
+      return false      
+
+
   $(document).on "click", ".show_citations_window", (event)-> 
     event.preventDefault()
     event.stopPropagation()
@@ -296,14 +327,14 @@ jQuery ($) ->
 
   $(document).on "click", ".remove_nested_attributes_button", (event)-> 
     event.preventDefault()
-    $(this).prev("input[name*='_destroy']").val("1")
+    $(this).closest(".fields").find("input[name*='_destroy']").val("1")
     $(".add_gist_image").show()  if $(this).attr("show_gist_link") is "true"
     $(".add_detail_image").show() if $(this).attr("show_detail_link") is "true"
     $(this).closest(".fields").hide()
     if $(this).closest(".fields").parent().attr("id")=="detail_fields"
       $(this).closest(".fields").nextAll(".fields").each ->
-        count = parseInt($(this).children("input[id*='location']").val())
-        $(this).children("input[id*='location']").val(count-1)
+        count = parseInt($(this).find("input[id*='location']").val())
+        $(this).find("input[id*='location']").val(count-1)
       count = parseInt($("#num_details").val())
       $("#num_details").val(count-1)
 
@@ -321,11 +352,11 @@ jQuery ($) ->
     target_id = "#" + target
     html = []
     if association =="numbers"
-      html.push "<div class=\"fields span12\" "
+      html.push "<div class=\"fields row-fluid\" "
     else if association =="extra_informations"
-      html.push "<div class=\"fields span12\" "
+      html.push "<div class=\"fields row-fluid\" "
     else
-      html.push "<div class=\"fields\" "
+      html.push "<div class=\"fields row-fluid\" "
     html.push "id="
     html.push new_id
     html.push ">"
@@ -335,9 +366,9 @@ jQuery ($) ->
     new_id = "#" + new_id
     $(this).hide()  if del=="true"
     if target == "detail_fields" 
-      count = parseInt($(this).siblings("#num_details").val())
-      $(this).siblings("#num_details").val(count+1)
-      $(new_id).children("input[id*='location']").val(count)
+      count = parseInt($("#num_details").val())
+      $("#num_details").val(count+1)
+      $(new_id).find("input[id*='location']").val(count)
     if association == "citations"
       $(".datetimepicker2").datetimepicker
         maskInput: false,

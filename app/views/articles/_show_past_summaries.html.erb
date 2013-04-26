@@ -1,28 +1,24 @@
+<div class="row-fluid">
+<div class="span1"></div>
 <div class="span11">
-  <div class="row span12">
-    <div class="span12 center">
-      <% if user %>
-      <%=link_to raw("<i class='icon-arrow-left'></i>"), show_previous_path(:article_id=> article.id), id:'show_previous_summaries_button', class:'btn up', disabled: true, style:"float:left;", remote: true %>
-      <% end %>
+  <div class="row-fluid">
+    <div class="row-fluid center">
       <strong>Past Summaries</strong>
-      <% if user %>
-      <%=link_to raw("<i class='icon-arrow-right'></i>"), show_recent_path(:article_id => article.id), id:'show_details_button', class:'btn up', style:"float:right;", remote: true %>
-      <% end %>
       <div class="hr-full center"></div>
     </div>
   </div>
-  <div class="row span12">
-    <div class="span12"></div>
-    <div class="span12">
+  <div class="row-fluid">
+    <div class="row-fluid"><div class="span12"></div></div>
+    <div class="row-fluid">
 	<%= raw(article.previous_summary) %>
     </div>
   </div>
 
-  <div class="span12 row"></div>
-  <div class="span12 row">
+  <div class="row-fluid"><div class="span12"></div></div>
+  <div class="row-fluid">
     <% count = 0 %>
     <% article.issue_list.each do |tag| %>
-    <div class="span12">
+    <div class="row-fluid">
       <% if current_user then %>
       <%= link_to "More on "+tag, user_tag_path(tag) %>
       <% else %>
@@ -32,7 +28,7 @@
     <% end %>
     <% article.tag_list.each do |tag| %>
       <% if count < 3 then %>
-        <div class="span12">
+        <div class="row-fluid">
 	  <% if current_user then %>
 	  <%= link_to "More on "+tag, user_tag_path(tag) %>
 	  <% else %>
@@ -43,9 +39,8 @@
       <% end %>
     <% end %>
   </div>
-
-  <div class="span12 row"></div>
-  <div class="span12 row"></div>
+  <div class="row-fluid"><div class="span12"></div></div>
+  <div class="row-fluid"><div class="span12"></div></div>
 
 </div>
-<div class="span1"></div>
+</div>

@@ -1,18 +1,28 @@
-  <%= f.file_field :image_name, class:"input-city field" %>
+<div class="row-fluid">
+  <div class="span12">
+    <%= f.file_field :image_name %>
+    <% if image_type == "GIST" then %>
+    <%= link_to raw("<i class='icon-remove'></i>"), "#", class:'btn remove_nested_attributes_button', show_gist_link: true %>
+    <% else %>
+    <%= link_to raw("<i class='icon-remove'></i>"), "#", class:'btn remove_nested_attributes_button', show_detail_link: true %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row-fluid">
   <%= f.hidden_field :image_type, value: image_type %>
   <%= f.hidden_field :_destroy, value: "0" %>
-  <% if image_type == "GIST" then %>
-    <%= link_to "Remove", "#", class:'btn remove_nested_attributes_button', show_gist_link: true %>
-  <% else %>
-    <%= link_to "Remove", "#", class:'btn remove_nested_attributes_button', show_detail_link: true %>
-    <%= f.hidden_field :location %>
-  <% end %>
-  <div class="span12"></div>
-  <% if !f.object.image_name_url.nil? %>
-    Current Thumbnail
-    <div class="hr center"></div>
-    <%= image_tag f.object.image_name.thumb.url.to_s %>
-  <div class="span12"></div>
-  <% end %>
+  <%= f.hidden_field :location %>
+</div>
+
+<% if !f.object.image_name_url.nil? %>
+<div class="row-fluid"><div class="span12"></div></div>
+<div class="row-fluid">
+  Current Thumbnail
+  <div class="hr center"></div>
+  <%= image_tag f.object.image_name.thumb.url.to_s %>
+</div>
+<% end %>
 
 
+<div class="row-fluid"><div class="span12"></div></div>

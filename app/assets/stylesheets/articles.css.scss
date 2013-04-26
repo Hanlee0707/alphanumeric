@@ -100,6 +100,25 @@ a.editor {
    padding: 10px 5px 10px 5px;
 }
 
+#instruction_window {
+   position: absolute;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   border-radius: 6px 6px 6px 6px;
+   width: 480px;
+   background: #DCDCDC;
+   padding: 10px 5px 10px 5px;
+}
+
+#tip_window {
+   position: absolute;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   border-radius: 6px 6px 6px 6px;
+   width: 300px;
+   background: #DCDCDC;
+   padding: 10px 5px 10px 5px;
+}
+
+
 #citations_window {
    position: absolute;
    border: 1px solid rgba(0, 0, 0, 0.1);

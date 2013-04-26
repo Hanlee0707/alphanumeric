@@ -8,10 +8,12 @@ class EditorController < ApplicationController
   end
 
   def show
-    @articles = Article.joins(:published_item).paginate page: params[:page], per_page: 20
-    respond_to do |format| 
-      format.html 
-      format.json { render json: @articles }
+    if current_employee then
+      @articles = Article.joins(:published_item).paginate page: params[:page], per_page: 20
+      respond_to do |format| 
+        format.html 
+        format.json { render json: @articles }
+      end
     end
   end
 

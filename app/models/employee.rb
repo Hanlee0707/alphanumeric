@@ -1,8 +1,5 @@
 class Employee < ActiveRecord::Base
   has_secure_password
-
-
-
   attr_accessible :email, :first_name, :last_name, :password, :password_confirmation, :employee_positions_attributes, :email_confirmation, :account_create_time, :updating_password
   attr_accessor :email_confirmation, :updating_password, :name
   validates_presence_of :email, :password, :first_name, :last_name, :on => :create
@@ -13,7 +10,9 @@ class Employee < ActiveRecord::Base
   has_many :articles, :foreign_key => 'contributor_id'
   
   validates :password, presence: true, length: {minimum: 8}, :if => :should_validate_password?
+  VALID_PASSWORD_REGEX = /^[\S]+$/
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :password, format: { with: VALID_PASSWORD_REGEX }
   validates :email, format: { with: VALID_EMAIL_REGEX }
 
   validate :check_email_confirmation, :on => :create
@@ -27,14 +26,14 @@ class Employee < ActiveRecord::Base
   def send_password_reset
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
-    save!
+    save(:validate => false)
     EmployeeMailer.reset_password(self).deliver
   end
 
   def send_create_account
     generate_token(:create_account_token)
     self.create_account_sent_at = Time.zone.now
-    save!
+    save(:validate => false)
     EmployeeMailer.create_account(self).deliver
   end
 
@@ -84,7 +83,7 @@ class Employee < ActiveRecord::Base
 
   def self.search(search)
     if search then 
-      where('first_name LIKE ? or last_name LIKE ? or email LIKE ?', "%#{search}%","%#{search}%","%#{search}%")
+      where("first_name LIKE ? or last_name LIKE ? or email LIKE ? or concat(first_name,' ',last_name) LIKE ?", "%#{search}%","%#{search}%","%#{search}%","%#{search}%")
     else
       scoped
     end

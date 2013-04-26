@@ -16,6 +16,23 @@
      }
  }
 
+.row-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.row {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+@media (max-width: 797px) {
+    body { 
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+
 .input-name {
   width: 10em;
 }
@@ -40,6 +57,10 @@ ul.nav li.dropdown:hover > ul.dropdown-menu{
     display: block;    
 }
 
+div {
+    word-wrap: break-word;
+}
+
 .dropdown-divider
 {
     border-bottom: 1px solid #DDDDDD;
@@ -51,9 +72,67 @@ ul.nav li.dropdown:hover > ul.dropdown-menu{
     background-image: url(/assets/glyphicons-halflings-white.png);
 }
 
+
+
 .no-space [class*="span"] {
-    margin-left: 0;
+    padding: 0;
+
 }
+
+.row-fluid .span11-5 {
+  width: 97.5%;
+}
+
+.row-fluid .span11-4 {
+  width: 95.5%;
+}
+
+
+.row-fluid .span5-5 {
+  width: 44.5%;
+
+}
+
+.row-fluid .span-5 {
+  width: 1.8%;
+
+}
+
+
+.postbox {
+   border-radius: 3px 3px 3px 3px;
+   border-color: #DFDFDF;
+   border-style: solid;
+   border-width: 1px;
+   font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+   font-size: 15px;
+   font-weight: normal;
+   line-height: 1;
+   color: #464646;
+   padding-bottom: 5px;
+}
+
+.postbox .inside {
+  padding-top: 5px;
+  min-height: 50px;
+    color: #464646;
+}
+
+.postbox h3 {
+  font-size: 15px;
+   font-weight: normal;
+   line-height: 1;
+    margin: 0;
+    padding: 7px 10px;
+    border-top-left-radius: 3px;	
+    border-top-right-radius: 3px;
+    color: #464646;
+    border-bottom-color: #DFDFDF;
+    box-shadow: 0 1px 0 #FFFFFF;
+    text-shadow: 0 1px 0 #FFFFFF;
+    background: linear-gradient(to top, #ECECEC, #F9F9F9) repeat scroll 0 0 #F1F1F1;
+}
+
 
 .move-right{
    margin-left: 16px;
