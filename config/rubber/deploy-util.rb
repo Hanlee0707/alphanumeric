@@ -53,7 +53,7 @@ namespace :rubber do
 
         # Dump Local to tmp folder
         filename = "#{application}.local.#{Time.now.to_i}.sql.gz" 
-        backup_file = "/tmp/#{filename}" 
+        backup_file = "./tmp/#{filename}" 
         on_rollback { delete file }
         FileUtils.mkdir_p(File.dirname(backup_file))
 
@@ -68,7 +68,10 @@ namespace :rubber do
         raise "No db_backup_cmd defined in rubber.yml, cannot backup!" unless rubber_env.db_backup_cmd
         db_backup_cmd = rubber_env.db_backup_cmd.gsub(/%([^%]+)%/, '#{\1}')
         db_backup_cmd = eval('%Q{' + db_backup_cmd + '}')
+        db_backup_cmd = "sudo -S -u postgres pg_dumpall -U postgres | gzip -c > "+ backup_file
+        db_backup_cmd = "echo '0!Dlgksruf' | " + db_backup_cmd
 
+        puts db_backup_cmd
         # dbdump (or backup app) needs to be in your path
         puts "Backing up database with command:"
         system(db_backup_cmd)
@@ -80,7 +83,6 @@ namespace :rubber do
           
         puts "Saving db dump to cloud: #{backup_bucket}:#{dest}"
         Rubber.cloud.storage(backup_bucket).store(dest, open(backup_file))
-        
         send :restore_cloud
 
       end

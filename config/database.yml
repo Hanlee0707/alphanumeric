@@ -28,8 +28,9 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: gist_production
+  database: gist_development
   pool: 5
+  host: localhost
   username: gist
   password: gistandglowbe
 

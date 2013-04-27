@@ -76,7 +76,7 @@ cloud_providers:
     # image_bucket: "#{app_name}-images"
 
     # OPTIONAL: Needed for backing up database to s3
-    # backup_bucket: "#{app_name}-backups"
+    backup_bucket: "#{app_name}-backups"
 
     # REQUIRED: the ami and instance type for creating instances
     # The Ubuntu images at http://alestic.com/ work well
@@ -134,7 +134,7 @@ cloud_provider: aws
 # store, the instance file is typically under version control with
 # your project code, so that provides some safety.
 #
-# instance_storage_backup: "storage:#{cloud_providers.aws.backup_bucket}/RubberInstances_#{app_name}/instance-#{Rubber.env}-#{Time.now.strftime('%Y%m%d-%H%M%S')}.yml"
+#instance_storage_backup: "storage:#{cloud_providers.aws.backup_bucket}/RubberInstances_#{app_name}/instance-#{Rubber.env}-#{Time.now.strftime('%Y%m%d-%H%M%S')}.yml"
 
 # OPTIONAL: Default ports for security groups
 web_port: 80
