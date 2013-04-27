@@ -1,3 +1,111 @@
 ---
+- !ruby/object:Rubber::Configuration::InstanceItem
+  name: db01
+  domain: gist.gs
+  roles:
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: db
+    options:
+      primary: true
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: postgresql
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: postgresql_master
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: collectd
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: monit
+    options: {}
+  instance_id: i-0e49d062
+  image_type: c1.medium
+  image_id: ami-b6089bdf
+  security_groups:
+  - GIST_production_default
+  - GIST_production_db01
+  - GIST_production_db
+  - GIST_production_postgresql
+  - GIST_production_postgresql_master
+  - GIST_production_collectd
+  - GIST_production_monit
+  external_host: ec2-75-101-211-204.compute-1.amazonaws.com
+  external_ip: 75.101.211.204
+  internal_host: ip-10-36-254-172.ec2.internal
+  internal_ip: 10.36.254.172
+  zone: us-east-1c
+  platform: linux
+  root_device_type: instance-store
+- !ruby/object:Rubber::Configuration::InstanceItem
+  name: app01
+  domain: gist.gs
+  roles:
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: app
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: passenger
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: apache
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: collectd
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: monit
+    options: {}
+  instance_id: i-407f762a
+  image_type: c1.medium
+  image_id: ami-b6089bdf
+  security_groups:
+  - GIST_production_default
+  - GIST_production_app01
+  - GIST_production_app
+  - GIST_production_passenger
+  - GIST_production_apache
+  - GIST_production_collectd
+  - GIST_production_monit
+  external_host: ec2-54-234-124-146.compute-1.amazonaws.com
+  external_ip: 54.234.124.146
+  internal_host: ip-10-195-5-114.ec2.internal
+  internal_ip: 10.195.5.114
+  zone: us-east-1c
+  platform: linux
+  root_device_type: instance-store
+- !ruby/object:Rubber::Configuration::InstanceItem
+  name: web01
+  domain: gist.gs
+  roles:
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: web
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: haproxy
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: collectd
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: monit
+    options: {}
+  instance_id: i-1d263976
+  image_type: c1.medium
+  image_id: ami-b6089bdf
+  security_groups:
+  - GIST_production_default
+  - GIST_production_web
+  - GIST_production_web01
+  - GIST_production_haproxy
+  - GIST_production_collectd
+  - GIST_production_monit
+  external_host: ec2-23-22-123-84.compute-1.amazonaws.com
+  external_ip: 23.22.123.84
+  internal_host: ip-10-196-225-87.ec2.internal
+  internal_ip: 10.196.225.87
+  zone: us-east-1c
+  platform: linux
+  root_device_type: instance-store
 - volumes: {}
   static_ips: {}
