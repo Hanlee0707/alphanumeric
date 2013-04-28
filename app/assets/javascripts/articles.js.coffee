@@ -37,6 +37,8 @@ jQuery ($) ->
       maskInput: false,
       language: 'en',
       pickTime: false
+    ht = $(".navbar").height()
+    $(".side-contents-bar").css({'top':(ht+'px')})
 
   $(document).on "change", "#check_all",  (event)->
     if $(this).is(':checked')

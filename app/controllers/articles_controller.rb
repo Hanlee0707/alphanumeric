@@ -438,6 +438,19 @@ contributor = Employee.find(item.contributor_id)
     end
   end
 
+  def insert_article 
+    article_id = params[:id] 
+    begin
+      @article = Article.find(article_id)
+      respond_to do |format|
+        format.js
+      end
+    rescue ActiveRecord::RecordNotFound
+    
+    end
+  end
+
+
   private
 
   def sort_column
@@ -447,5 +460,7 @@ contributor = Employee.find(item.contributor_id)
   def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
+
+
 
 end

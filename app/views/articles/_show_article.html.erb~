@@ -1,0 +1,88 @@
+<div id="definition_window" style="display:none;">
+</div>
+
+<div id="citations_window" style="display:none;" class="row-fluid">
+  <% @article.citations.each do |citation| %>
+  <div class="row-fluid">
+    <%= citation.author%>. &quot;<%=citation.title%>&quot; <u><%=citation.publisher%></u> <%=citation.published_date.strftime "%e %b. %Y."%> <%=citation.accessed_date.strftime "%e %b. %Y."%> &lt;<%=citation.link%>&gt;
+  </div>
+  <% end %>
+</div>
+
+<div class="row-fluid">
+  <div class="span12">
+    
+    <div class="row-fluid">
+      <div class="span3"></div>
+      <div class="center span6">
+	<div class="row-fluid">
+	  <div class="span12">
+	    <% @article.tag_list.to_s.split(", ").each do |tag| %>
+	    <div class='tag_wrap_form'>
+	      <div class='tag triangle-obtuse'>
+		<%=tag %>
+	      </div>
+	    </div>
+	    <% end %>
+	  </div>
+	</div>
+	<div class="row-fluid">
+	  <div class="span12">
+	    <strong><%= @article.category %></strong>
+	  </div>
+	</div>
+      </div>
+      <div class="span3"></div>
+    </div>
+
+    <div class="row-fluid">
+	<div style="float:left;position:relative;left:50%;">
+	  <% if (request.path.include?("editor") and @status=="Assigned") or (request.path.include?("contributor") and @status=="Assigned") %>
+	  <h6><%= @article.issue_list %></h6>
+	  <h3 id="title">
+	    <%= @article.temporary_title %>
+	  </h3>
+	  <% else %>
+	  <div style="float:left;position:relative;left: -50%;">
+	    <h6><%= @article.issue_list %></h6>
+	    <h3 id="title">
+	      <%= @article.title %><%= link_to raw("<i class='icon-info-sign'></i>"), "#",  class: 'show_citations_window' %>	  
+	    </h3>
+	  </div>
+	  <% end %>
+	</div>
+    </div>
+    
+     <div class="row-fluid">
+      <div class="span12"></div>
+    </div>
+
+     <div class="row-fluid center">
+       <div class="span2"></div>
+       <div class="span8">
+	 <em><%=distance_of_time_in_words(@article.published_at, Time.now)%> ago in <%= @article.city %>, <%= @article.country %>,</em>
+       </div>
+       <div class="span2"></div>
+     </div>
+     
+     <div class="row-fluid"><div class="span12"></div></div>
+     
+     <div class="row-fluid">
+       <div class="span1-5"></div>
+       <div class="span3">
+	 <%= render 'show_past_summaries', :article => @article, :user => false %>
+       </div>
+       <div id="content_container" class="span3">
+	 <%=render 'show_recent_events', :article => @article, :user => false %>
+       </div>
+       <div class="span3">
+	 <%= render 'show_details', :article => @article, :user => false %>
+       </div>
+       <div class="span1-5"></div>
+     </div>
+     <div class="row-fluid"><div class="span12"></div></div>
+     <div class="row-fluid"><div class="span12"></div></div>
+     <div class="row-fluid"><div class="span12"></div></div>
+     <div class="row-fluid"><div class="span12"></div></div>
+  </div>
+</div>
