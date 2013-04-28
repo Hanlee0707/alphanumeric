@@ -26,6 +26,12 @@
   padding-right: 0px;
 }
 
+.no-margin {
+  margin-top:-10px;
+  padding: 0;
+  margin: 0 0 0 0;
+}
+
 .side-contents-bar {
   position: fixed;
   padding-top: 10px;
@@ -36,21 +42,55 @@
 
 .little-padding {
   padding-left:5px;
+  padding-top:5px;
 
 }
 
+.location-color {
+ color: rgba(197,189,153, 255/255);
+}
 
-.read-article {
-  color: gray;  
+.category-color {
+ color: rgba(120,120,120, 255/255);
+}
 
+.published-time-color {
+ color: rgba(255,255,255, 255/255);
+}
+
+.little-margin-bottom {
+  margin-bottom: 5px;
+  margin-top: 8px;
+}
+
+.little-padding-all-around {
+  padding:8px 10px 3px 10px;
+}
+
+.unread-article, .unread-article a {
+  color: rgba(255,255,255, 255/255);
+  background-color: rgba(0,255,255,150/255);
+  text-decoration:none;
+  outline:none;
+}
+
+.read-article, .read-article a {
+  color: rgba(180,180,180, 240/255);  
+  background-color: rgba(44,44,44,140/255);
+  text-decoration: none;
+  outline:none;
 }
 
 .title-background {
-  background: rgb(55,55,55);
+  font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
   margin-top: 10px;
   margin-bottom: 10px;
   vertical-align: middle;
-
+  background-image: url("blackorchid.png");
+  border-radius: 12px 12px 12px 12px;
+  border-color: #DFDFDF;
+  border-style: solid;
+  border-width: 1px;
 }
 
 .margin-children .div {
@@ -58,10 +98,6 @@
   margin-bottom: 2px;
 }
 
-.little-padding-right {
-  padding-right:10px;
-
-}
 
 @media (max-width: 797px) {
     body { 

@@ -9,8 +9,10 @@ class SessionsController < ApplicationController
     else
       @user_layout = true
     end
-    if current_employee or current_user
+    if current_employee then
       redirect_to home_path
+    elsif current_user then
+      redirect_to user_home_path
     else
       render "new"
     end

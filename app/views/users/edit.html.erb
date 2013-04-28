@@ -1,7 +1,7 @@
 <% provide(:title, "Edit User") %>
 
 <%= form_for @user, :url=>{:action => 'update'} do |f| %> 
-<div class="span12 row center">
+<div class="row-fluid center">
   <% if @user.errors.any? %>
   <h2>There were some errors.</h2>
   <ul>
@@ -12,28 +12,29 @@
   <% end %>
 </div>
 
-<div class="span12 row center">
+<div class="row-fluid center">
   <h3><%= @user.first_name%> <%= @user.last_name %></h3>
   <%= @user.email %>
+  <%= f.hidden_field :updating_password, value: true %>
 </div>
 
-<div class="span12 row"></div>
-<div class="span12 row center">
-  <div class="span12">
+<div class="row-fluid"><div class="span12"></div></div>
+<div class="row-fluid center">
+  <div class="row-fluid">
     <%= f.password_field :password, placeholder: "password" %>
   </div>
-  <div class="span12">
+  <div class="row-fluid">
     <%= f.password_field :password_confirmation, placeholder:"password confirmation" %>
   </div>
 </div>
 
-<div class="span12 row center">
+<div class="row-fluid center">
   <%= f.submit "Apply", class: 'btn btn-primary' %>
   <%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
 </div>
 
 <% end %>
-</div>
+
 
 
 

@@ -21,7 +21,11 @@
         <div class="container-fluid">
 	  <div class="span1"></div>
 	  <div class="span11" style="margin-left:0;">
+	    <% if request.path.include? "uploaders" %>
             <%= link_to "Gist", home_path,class: "brand", id: "logo" %>
+	    <% else %>
+            <%= link_to "Gist", user_home_path,class: "brand", id: "logo" %>
+	    <% end %>
             <nav>
 	      <% if current_employee %>
               <ul class="nav pull-left">
@@ -89,19 +93,7 @@
 		<% else %>
 		<li>
 		<% end %>
-		<%= link_to "NEW", user_published_index_path %></li>
-		<% if @followed_layout then %>
-		<li class="active">
-		<% else %>
-		<li>
-		<% end %>
-		<%= link_to "FOLLOWED", user_published_index_path %></li>		
-		<% if @archived_layout then %>
-		<li class="active">
-		<% else %>
-		<li>
-		<% end %>
-		<%= link_to "ARCHIVED", user_archived_index_path %></li>
+		<%= link_to "NEWSBOX", user_published_index_path %></li>
               </ul>
 	      <% end %>
               <ul class="nav pull-right">
@@ -113,8 +105,6 @@
 		<% end %>
 		<% if current_employee %>
 		<%=link_to "HOME", home_path %></li>
-		<% else %>
-		<%=link_to "HOME", user_home_path %></li>
 		<% end %>
 		<li class="dropdown">
 		    <%= link_to image_tag("Control Panel.png", alt: "Settings") + raw("&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>

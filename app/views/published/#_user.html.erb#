@@ -4,21 +4,19 @@
     <% if !@articles.empty? %>
     <% articles.each do |article| %>
     <% if article.read %>
-    <div id=<%= article.id %> class="row-fluid no-margin">
+    <div id=<%= article.id %> class="row-fluid little-padding margin-childre">
       <div class="span11-5 title-background little-padding-all-around read-article">
 	<%= link_to(insert_article_path(:id => article.id), method: :post, remote: true) do %>
-	<div class="row-fluid">
-	  <div class='row-fluid'>
-	    <%= article.title %>
-	  </div>
-	  <div class='row-fluid little-margin-bottom'>
-	    <span class="category-color"><%= article.category + " | "%></span><span class="location-color"><%= article.country %></span>
-	    <!-- </div> -->
-	    <!-- <span class='span5 right little-padding-right'> -->
-	    <span class="published-time-color" style="float:right;">
-	      <%= distance_of_time_in_words_to_now(article.published_at.localtime) %>
-	    </span>
-	  </div>
+	<div class='row-fluid'>
+	  <%= article.title %>
+	</div>
+	<div class='row-fluid little-margin-bottom'>
+	  <span class="category-color"><%= article.category + " | "%></span><span class="location-color"><%= article.country %></span>
+	<!-- </div> -->
+	<!-- <span class='span5 right little-padding-right'> -->
+	<span class="published-time-color" style="float:right;">
+	  <%= distance_of_time_in_words_to_now(article.published_at.localtime) %>
+	</span>
 	</div>
 	<% end %>
       </div>
@@ -27,16 +25,14 @@
     <div id=<%= article.id %> class="row-fluid little-padding margin-children">
       <div class="span11-5 title-background little-padding-all-around unread-article">
 	<%= link_to(insert_article_path(:id => article.id), method: :post, remote: true) do %>
-	<div class="row-fluid">
-	  <div class='row-fluid'>
-	    <%= article.title %>
-	  </div>
-	  <div class='row-fluid little-margin-bottom'>
-	    <span class="category-color"><%= article.category + " | "%></span><span class="location-color"><%= article.country %></span>
-	    <span class="published-time-color" style="float:right;">
-	      <%= distance_of_time_in_words_to_now(article.published_at.localtime) %>
-	    </span>
-	  </div>
+	<div class='row-fluid'>
+	  <%= article.title %>
+	</div>
+	<div class='row-fluid little-margin-bottom'>
+	  <span class="category-color"><%= article.category + " | "%></span><span class="location-color"><%= article.country %></span>
+	  <span class="published-time-color" style="float:right;">
+	    <%= distance_of_time_in_words_to_now(article.published_at.localtime) %>
+	  </span>
 	</div>
       </div>
       <% end %>

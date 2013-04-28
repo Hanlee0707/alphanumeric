@@ -57,7 +57,7 @@ Alphanumeric::Application.routes.draw do
   end
 
   match '/sign_out', to: 'sessions#destroy', as: 'log_out'
-  match '/home', to: 'home#show', as: 'user_home'
+  match '/newsbox', to: 'published#index', as: 'user_home'
   match '/signup', to: 'users#new', :via=> :get, as: 'signup'
   match '/published', to: 'published#index', :via => :get, as:'user_published_index' 
   match '/published/articles/:id' => 'articles#show', :via => :get, as: 'user_published_article'

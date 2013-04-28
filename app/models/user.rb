@@ -7,13 +7,15 @@ class User < ActiveRecord::Base
                     :uniqueness => {:case_sensitive => false},
                     :length => {:minimun => 3, :maximum => 50},
                     :format => {:with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
-  validates_length_of :password, :minimum => 8, :maximum => 20,:if => :should_validate_password?
+  validates :password, presence: true,  length: {:minimum => 8, :maximum => 20},:if => :should_validate_password?
   validates :first_name, :presence => :true
   validates :last_name, :presence => :true
   has_many :user_archived_articles, :dependent => :destroy
   has_many :user_read_articles, :dependent => :destroy
   has_many :user_followed_articles, :dependent => :destroy
 
+  VALID_PASSWORD_REGEX = /^[\S]+$/
+  validates :password, format: { with: VALID_PASSWORD_REGEX }
 
   def should_validate_password?
     updating_password==true || new_record?
