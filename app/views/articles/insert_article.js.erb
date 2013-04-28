@@ -4,5 +4,6 @@ jQuery(function($) {
   $(document).ready(function() {
     $("#content_container").html("<%= escape_javascript(render('show_article', :article=> @article)) %>");
     $("#<%= @article.id %>").children().removeClass("unread-article").addClass("read-article");
+    $("#notice").remove();
   });
 });

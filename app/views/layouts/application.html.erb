@@ -144,6 +144,7 @@
       <% else %>
       <div id="content" class="span12" style="overflow-x:hidden;">
       <% end %>
+      <% if !request.path.include? "newsbox" then %>
 	<div class="row-fluid">
 	  <% if notice %>
 	  <div id="notice" class="span12 center" style="margin-left:0;">
@@ -153,6 +154,7 @@
 	      <% end %>
 	    </div>
 	</div>
+       <% end %>
 	<%= yield %><!-- <label id="code.depot.e.include"/> -->
       </div>
     </div>
