@@ -83,7 +83,8 @@ namespace :rubber do
           
         puts "Saving db dump to cloud: #{backup_bucket}:#{dest}"
         Rubber.cloud.storage(backup_bucket).store(dest, open(backup_file))
-        send :restore_cloud
+        puts "damn"
+      #  send :restore_cloud
 
       end
       send task_name
