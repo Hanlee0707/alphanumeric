@@ -149,7 +149,11 @@
       </div>
     </header>
     <div class="row-fluid">
+      <% if current_employee %>
       <div id="content" class="span12">
+      <% else %>
+      <div id="content" class="span12" style="overflow-x:hidden;">
+      <% end %>
 	<div class="row-fluid">
 	  <% if notice %>
 	  <div id="notice" class="span12 center" style="margin-left:0;">

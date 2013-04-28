@@ -4,7 +4,7 @@
     <% if !@articles.empty? %>
     <% articles.each do |article| %>
     <% if article.read %>
-    <div class="row-fluid little-padding margin-children title-background">
+    <div id=<%= article.id %> class="row-fluid little-padding margin-children title-background">
       <%= link_to(insert_article_path(:id => article.id), method: :post, remote: true, style:"color:gray;") do %>
       <div class='row-fluid'>
 	<%= article.title %>
@@ -43,7 +43,10 @@
     </div>
     <% end %>
   </div>
-  <div class="span12 offset2" id="content_container">
+  <div class="row-fluid">
+    <div class="span3"></div>
+    <div class="span9" id="content_container">
+    </div>
   </div>
 </div>
 

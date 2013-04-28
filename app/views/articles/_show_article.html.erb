@@ -68,17 +68,15 @@
      <div class="row-fluid"><div class="span12"></div></div>
      
      <div class="row-fluid">
-       <div class="span1-5"></div>
-       <div class="span3">
+       <div class="span4">
 	 <%= render 'show_past_summaries', :article => @article, :user => false %>
        </div>
-       <div id="content_container" class="span3">
+       <div id="content_container" class="span4">
 	 <%=render 'show_recent_events', :article => @article, :user => false %>
        </div>
-       <div class="span3">
+       <div class="span4">
 	 <%= render 'show_details', :article => @article, :user => false %>
        </div>
-       <div class="span1-5"></div>
      </div>
   </div>
 </div>

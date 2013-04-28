@@ -440,6 +440,11 @@ contributor = Employee.find(item.contributor_id)
 
   def insert_article 
     article_id = params[:id] 
+   if current_user then 
+      if current_user.user_read_articles.find_by_article_id(params[:id]).nil? 
+        UserReadArticle.create(:user_id => current_user.id, :article_id => article_id)
+      end
+    end
     begin
       @article = Article.find(article_id)
       respond_to do |format|
