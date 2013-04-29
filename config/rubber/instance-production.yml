@@ -19,9 +19,9 @@
   - !ruby/object:Rubber::Configuration::RoleItem
     name: monit
     options: {}
-  instance_id: i-582b7331
-  image_type: c1.medium
-  image_id: ami-b6089bdf
+  instance_id: i-2a861e44
+  image_type: t1.micro
+  image_id: ami-a29943cb
   security_groups:
   - GIST_production_default
   - GIST_production_db01
@@ -30,13 +30,13 @@
   - GIST_production_postgresql_master
   - GIST_production_collectd
   - GIST_production_monit
-  external_host: ec2-50-16-151-44.compute-1.amazonaws.com
-  external_ip: 50.16.151.44
-  internal_host: ip-10-245-102-208.ec2.internal
-  internal_ip: 10.245.102.208
-  zone: us-east-1c
+  external_host: ec2-184-73-79-206.compute-1.amazonaws.com
+  external_ip: 184.73.79.206
+  internal_host: domU-12-31-39-12-F8-FF.compute-1.internal
+  internal_ip: 10.200.251.13
+  zone: us-east-1b
   platform: linux
-  root_device_type: instance-store
+  root_device_type: ebs
 - !ruby/object:Rubber::Configuration::InstanceItem
   name: web01
   domain: gist.gs
@@ -53,9 +53,9 @@
   - !ruby/object:Rubber::Configuration::RoleItem
     name: monit
     options: {}
-  instance_id: i-5c7a1832
-  image_type: c1.medium
-  image_id: ami-b6089bdf
+  instance_id: i-6e2c2a0d
+  image_type: t1.micro
+  image_id: ami-a29943cb
   security_groups:
   - GIST_production_default
   - GIST_production_web
@@ -63,13 +63,13 @@
   - GIST_production_haproxy
   - GIST_production_collectd
   - GIST_production_monit
-  external_host: ec2-23-22-103-137.compute-1.amazonaws.com
-  external_ip: 23.22.103.137
-  internal_host: ip-10-38-191-182.ec2.internal
-  internal_ip: 10.38.191.182
-  zone: us-east-1c
+  external_host: ec2-23-20-224-178.compute-1.amazonaws.com
+  external_ip: 23.20.224.178
+  internal_host: domU-12-31-39-02-75-57.compute-1.internal
+  internal_ip: 10.248.122.165
+  zone: us-east-1b
   platform: linux
-  root_device_type: instance-store
+  root_device_type: ebs
 - !ruby/object:Rubber::Configuration::InstanceItem
   name: app01
   domain: gist.gs
@@ -89,9 +89,9 @@
   - !ruby/object:Rubber::Configuration::RoleItem
     name: monit
     options: {}
-  instance_id: i-3c2b7355
-  image_type: c1.medium
-  image_id: ami-b6089bdf
+  instance_id: i-c6861ea8
+  image_type: t1.micro
+  image_id: ami-a29943cb
   security_groups:
   - GIST_production_default
   - GIST_production_app01
@@ -100,12 +100,12 @@
   - GIST_production_apache
   - GIST_production_collectd
   - GIST_production_monit
-  external_host: ec2-107-20-62-99.compute-1.amazonaws.com
-  external_ip: 107.20.62.99
-  internal_host: ip-10-194-58-168.ec2.internal
-  internal_ip: 10.194.58.168
-  zone: us-east-1c
+  external_host: ec2-107-22-89-32.compute-1.amazonaws.com
+  external_ip: 107.22.89.32
+  internal_host: domU-12-31-39-02-E5-59.compute-1.internal
+  internal_ip: 10.248.234.167
+  zone: us-east-1b
   platform: linux
-  root_device_type: instance-store
+  root_device_type: ebs
 - volumes: {}
   static_ips: {}
