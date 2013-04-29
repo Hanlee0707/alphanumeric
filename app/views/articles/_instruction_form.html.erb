@@ -31,7 +31,21 @@
 	    <% end %>
 	    <%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
 	    <%= f.hidden_field :contributor_id, id: "contributor_id" %>
+	    <% if @article.errors.any? %>
+	    <% contains = false %>  
+	    <% if @article.errors.each |msg| %>
+	    <% if msg.include? "contributor_id" then %>
+	    <% contains = true %>
+	    <% end %>
+	    <% end %>
+	    <% end %>
+	    <% if contains then %>
+	    <div class="field_with_errors">
+	      <% end %>
 	    <%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down span6", placeholder: "Contributor(Search by last name)", :id_element =>'#searched_contributor_id' %>
+	    <% if contains then %>
+	    </div>
+	    <% end %>
 	    <span class="down" style="float:right;">
 	    <%= link_to "Set", "#", id: 'set_contributor', class: 'btn'%>
 	    &nbsp;&nbsp;OR&nbsp;&nbsp; 
@@ -87,7 +101,21 @@
 	    </div>
 	    <div id="issue-search-container" class="row-fluid down inside">
 	      <%= f.hidden_field :issue_list %>
+	      <% if @article.errors.any? %>
+	      <% contains = false %>  
+	      <% if @article.errors.each |msg| %>
+	      <% if msg.include? "issue_list" then %>
+	      <% contains = true %>
+	      <% end %>
+	      <% end %>
+	      <% end %>
+	      <% if contains %>
+	      <div class="field_with_errors" >
+		<% end %>
 	      <%= autocomplete_field_tag "throwaway-issue", "",  autocomplete_issue_name_articles_path, :multiple=> false, class:"input-tag", placeholder: "search for a tag" %>
+	      <% if contains %>
+	      </div>
+	      <% end %>
 	      <%= button_tag "Set", class: 'btn up', type: 'button', id: 'add_issue_tag_button' %>
 	    </div>
 	  </div>

@@ -2,7 +2,11 @@ class Article < ActiveRecord::Base
   attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id, :temporary_title, :instruction, :category, :issue_list, :searched_editor_id, :editor_last_name
   attr_accessor :contributor_last_name, :editor_last_name, :searched_contributor_id, :searched_editor_id
 
-  validates_presence_of :instruction, :temporary_title, :contributor_id, :issue_list, :on=> :create, :message => "^Required fields are missing."
+  validates_presence_of :instruction, :message => "^Please explain how the article will/should be written.", :on=> :create
+  validates_presence_of :temporary_title, :message => "^Please give the article a temporary title.", :on=> :create
+  validates_presence_of :contributor_id, :message => "^Please choose a contributor for the article. (You must press the Set button.)", :on=> :create
+  validates_presence_of :editor_id, :message => "^Please choose an editor for the article. (You must press the Set button.)", :on=> :create
+  validates_presence_of :issue_list, :message => "^Please enter an issue tag for this article. (You must press the Set button.)", :on=> :create
   has_many :numbers, dependent: :destroy
   has_many :images, dependent: :destroy
   has_many :extra_informations, dependent: :destroy

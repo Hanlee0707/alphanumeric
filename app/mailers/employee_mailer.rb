@@ -1,5 +1,5 @@
 class EmployeeMailer < ActionMailer::Base
-  default from: "han.lee0707@gmail.com"
+  default from: "support@gist.gs"
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:

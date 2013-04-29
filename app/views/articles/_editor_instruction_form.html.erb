@@ -31,8 +31,22 @@
 	    <% end %>
 	    <%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
 	    <%= f.hidden_field :contributor_id, id: "contributor_id" %>
+	    <% if @article.errors.any? %>
+	    <% contains = false %>  
+	    <% @article.errors.full_messages.each do |msg| %>
+	    <% if msg.include? "contributor" then %>
+	    <% contains = true %>
+	    <% end %>
+	    <% end %>
+	    <% end %>
+	    <% if contains %>
+	    <div class="field_with_errors" >
+	      <% end %>
 	    <%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down span6", placeholder: "Contributor(Search by last name)", :id_element =>'#searched_contributor_id' %>
 	    <span class="down" style="float:right;">
+	      <% if contains %>
+	      </div>
+	    <% end %>
 	    <%= link_to "Set", "#", id: 'set_contributor', class: 'btn'%>
 	    &nbsp;&nbsp;OR&nbsp;&nbsp; 
 	    <%= link_to "Assign Random", assign_random_path, id:'assign_random_contributor', method: :post, remote: true, class: 'btn'%>
@@ -87,7 +101,21 @@
 	    </div>
 	    <div id="issue-search-container" class="row-fluid down inside">
 	      <%= f.hidden_field :issue_list %>
+	      <% if @article.errors.any? %>
+	      <% contains = false %>  
+	      <% @article.errors.full_messages.each do |msg| %>
+	      <% if msg.include? "issue" then %>
+	      <% contains = true %>
+	      <% end %>
+	      <% end %>
+	      <% end %>
+	      <% if contains %>
+	      <div class="field_with_errors" >
+		<% end %>
 	      <%= autocomplete_field_tag "throwaway-issue", "",  autocomplete_issue_name_articles_path, :multiple=> false, class:"input-tag", placeholder: "search for a tag" %>
+	      <% if contains %>
+	      </div>
+	      <% end %>
 	      <%= button_tag "Set", class: 'btn up', type: 'button', id: 'add_issue_tag_button' %>
 	    </div>
 	  </div>
