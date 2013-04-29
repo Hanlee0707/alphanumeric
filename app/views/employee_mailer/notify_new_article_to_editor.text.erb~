@@ -1,0 +1,17 @@
+A contributor has begun writing a new article and named you as its editor!
+
+
+
+          Title:
+       
+     <%= @title %>
+
+
+
+
+Gist it up now!
+
+<%= root_uploader_url(:host => "clklc.herokuapp.com") %>
+
+
+

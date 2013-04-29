@@ -67,6 +67,7 @@ module ArticlesHelper
 
   def list_of_categories
     categories = []
+    categories.append("US")
     categories.append("World")
     categories.append("Politics")
     categories.append("Economy")

@@ -1,11 +1,26 @@
 jQuery.noConflict();
 jQuery(document).ready(function($) { 
-  var hidden_element = $('#searched_contributor_id');
-  hidden_element.val("<%= @employee.id %>");
-  $("#contributor_id").val(hidden_element.val());	
-  $("#contributor_query").hide();
-  $("#contributor_container").show();
-  $("#contributor_container").html("<%= @employee.full_name_with_email %>");
-  $("#remove_contributor_button_container").show();
+  var isEditor = <%= @isEditor %>;
+  var isContributor = <%= @isContributor %>;
+  if (isContributor) {
+    var hidden_element = $('#searched_contributor_id');
+    hidden_element.val("<%= @employee.id %>");
+    $("#contributor_id").val(hidden_element.val());	
+    $("#contributor_query").hide();
+    $("#contributor_container").show();
+    $("#contributor_container").html("<%= @employee.full_name_with_email %>");
+    $("#remove_contributor_button_container").show();
+  }
+
+  if (isEditor) {
+    var hidden_element = $('#searched_editor_id');
+    hidden_element.val("<%= @employee.id %>");
+    $("#editor_id").val(hidden_element.val());	
+    $("#editor_query").hide();
+    $("#editor_container").show();
+    $("#editor_container").html("<%= @employee.full_name_with_email %>");
+    $("#remove_editor_button_container").show();
+  }
+
 });
 

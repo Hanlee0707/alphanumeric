@@ -13,6 +13,13 @@ jQuery ($) ->
       $("#contributor_container").show()
       $("#contributor_container").html($("#article_contributor_last_name").val())     
       $("#remove_contributor_button_container").show()
+    editor_id = $("#searched_editor_id").val()
+    editor_name = $("#article_editor_last_name").val()
+    if editor_id && ((/^\s*$/.test(editor_id)) == false) && editor_name && ((/^\s*$/.test(editor_name)) == false) 
+      $("#editor_query").hide()
+      $("#editor_container").show()
+      $("#editor_container").html($("#article_editor_last_name").val())     
+      $("#remove_editor_button_container").show()
     existing_issue_tag = $("#article_issue_list").val()
     if existing_issue_tag && ((/^\s*$/.test(existing_issue_tag)) == false)
       $("#issue-search-container").hide()
@@ -138,6 +145,29 @@ jQuery ($) ->
     $("#contributor_query").show()
     $("#contributor_container").hide()
     $("#article_contributor_last_name").val("")
+    $(this).parent().hide()
+
+  $(document).on "click", "#set_editor",  (event)->
+    event.preventDefault()
+    hidden_element = $("#searched_editor_id")
+    if hidden_element.val()==""
+      $("#editor_error").show()	
+      $("#editor_error").fadeOut(2000)
+    else 
+      $("#editor_id").val(hidden_element.val())
+      $("#editor_query").hide()
+      $("#editor_container").show()
+      $("#editor_container").html($("#article_editor_last_name").val())
+      $("#remove_editor_button_container").show()
+
+  $(document).on "click", "#remove_editor",  (event)->
+    event.preventDefault()
+    hidden_element = $("#editor_id")
+    hidden_element.val("")
+    $("#searched_editor_id").val("")
+    $("#editor_query").show()
+    $("#editor_container").hide()
+    $("#article_editor_last_name").val("")
     $(this).parent().hide()
 
   $(document).on "click", ".tag_wrap_form",  (event)->

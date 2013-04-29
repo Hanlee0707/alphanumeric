@@ -1,62 +1,54 @@
 <div class="row-fluid" id="instruction">
   <% article = f.object %>
-  <% if edit %>
-  <% else %>
   <div class="span1"></div>
   <div id="assign-issue" style="margin-left:0;" class="span7">
     <div class="row-fluid">
-      <% if editor then %>
-      <%= f.hidden_field :editor_id, value: editor %>
-      <% elsif contributor then %>
       <%= f.hidden_field :contributor_id, value: contributor %>
-      <% end %>
       <div class="row-fluid">
-	  <% if !@assigned_contributor_name.present? %>
-	    <div class="span6" id="contributor_container" style="margin-top:20px;display:none;"></div>
-	    <div class="span6"  id="remove_contributor_button_container" style="display:none;margin-top:20px;">
+	<% if !@assigned_editor_name.present? %>
+	<div class="span6" id="editor_container" style="margin-top:20px;display:none;"></div>
+	<div class="span6"  id="remove_editor_button_container" style="display:none;margin-top:20px;">
 	  <% else %>
-	    <div class="span6" id="contributor_container">
-	      <%= @assigned_contributor_name %></div>
-	    <div class="span6" id="remove_contributor_button_container">
-	  <% end %>
-	    <%= link_to "Remove", "#", id: 'remove_contributor', class: 'btn little-up' %>
-	    </div>
-	</div>
-	<div class="row-fluid">
-	  <% if editor then %>
-	  <% if !@assigned_contributor_name.present? %>
-	  <div class="span12" id="contributor_query">
-	    <% else %>
-	  <div class="span12" id="contributor_query" style="display:none;">
+	  <div class="span6" id="editor_container">
+	    <%= @assigned_editor_name %></div>
+	  <div class="span6" id="remove_editor_button_container">
 	    <% end %>
-	    <%= f.hidden_field :searched_contributor_id, id: "searched_contributor_id" %>
-	    <%= f.hidden_field :contributor_id, id: "contributor_id" %>
-	    <%= f.autocomplete_field :contributor_last_name,  autocomplete_contributor_last_name_articles_path, class:"little-further-down span6", placeholder: "Contributor(Search by last name)", :id_element =>'#searched_contributor_id' %>
+	    <%= link_to "Remove", "#", id: 'remove_editor', class: 'btn little-up' %>
+	  </div>	  
+      </div>
+      <div class="row-fluid">
+	<% if !@assigned_editor_name.present? %>
+	  <div class="span12" id="editor_query">
+	    <% else %>
+	  <div class="span12" id="editor_query" style="display:none;">
+	    <% end %>
+	    <%= f.hidden_field :searched_editor_id, id: "searched_editor_id" %>
+	    <%= f.hidden_field :editor_id, id: "editor_id" %>
+	    <%= f.autocomplete_field :editor_last_name,  autocomplete_editor_last_name_articles_path, class:"little-further-down span6", placeholder: "Editor(Search by last name)", :id_element =>'#searched_editor_id' %>
 	    <span class="down" style="float:right;">
-	    <%= link_to "Set", "#", id: 'set_contributor', class: 'btn'%>
+	    <%= link_to "Set", "#", id: 'set_editor', class: 'btn'%>
 	    &nbsp;&nbsp;OR&nbsp;&nbsp; 
-	    <%= link_to "Assign Random", assign_random_path, id:'assign_random_contributor', method: :post, remote: true, class: 'btn'%>
-	    <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Find a contributor by typing in his last name. You need to press the set button to actually assign this article to the found contributor."} %>
+	    <%= link_to "Assign Random", assign_random_path, id:'assign_random_editor', method: :post, remote: true, class: 'btn'%>
+	    <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Find the editor by typing in his last name. You need to press the set button to actually submit this article to the found editor."} %>
 	    </span>
 	  </div>
-	  <% end %>
+      </div>
+      <div class="row-fluid">
+	<div class="span12" style="display:none;" id="editor_error">Select an editor from the search result.
 	</div>
-	<div class="row-fluid">
-	  <div class="span12" style="display:none;" id="contributor_error">Select a contributor from the search result.
-	  </div>
-	</div>
-	<div class="row-fluid">
-	    <%= f.text_field :temporary_title, :size => 80, maxlength: 80, placeholder: "Enter temporary title(issue) here", class: "span11-5" %>
-	    <span style="float:right;">
-	      <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "enter a temporary title for the article."} %>
-	    </span>
-	</div>
-	<div class="row-fluid">
-	  <%= f.text_area :instruction, rows: 15, class:"input-xxlarge span11-5", placeholder: "instructions for the article" %>
-	  <span style="float:right;">
-	    <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Write an instruction for the contributor. What kind of approach should the contributor take?"} %>
-	  </span>
-	</div>
+      </div>
+      <div class="row-fluid">
+	<%= f.text_field :temporary_title, :size => 80, maxlength: 80, placeholder: "Enter temporary title(issue) here", class: "span11-5" %>
+	<span style="float:right;">
+	  <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "enter a temporary title for the article."} %>
+	</span>
+      </div>
+      <div class="row-fluid">
+	<%= f.text_area :instruction, rows: 15, class:"input-xxlarge span11-5", placeholder: "outline for the article" %>
+	<span style="float:right;">
+	  <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Write an outline for the editor. What kind of approach will you take?"} %>
+	</span>
+      </div>
     </div>
   </div>
   <div class="span1"></div>
@@ -110,7 +102,7 @@
     </div>
 
   </div>
-  <% end %>
+  
 
 
 

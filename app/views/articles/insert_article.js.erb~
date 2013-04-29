@@ -1,7 +1,0 @@
-jQuery.noConflict();
-
-jQuery(function($) {
-  $(document).ready(function() {
-    $("#article_container").html("<%= escape_javascript(render('show_article', :article=> @article)) %>");
-  });
-});

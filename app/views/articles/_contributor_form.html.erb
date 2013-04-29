@@ -111,8 +111,10 @@
   </div>
 </div>
 <div class="row-fluid"><div class="span12"></div></div>
-<% if editor then %>
-<%= render 'instruction_form', :f => f, :edit=>edit, :editor => editor %>
+<% if contributor then %>
+<%= render 'contributor_instruction_form', :f => f, :edit=>edit, :contributor => contributor %>
+<% elsif editor then %>
+<%= render 'editor_instruction_form', :f => f, :edit=>edit, :editor => editor %>
 <% else %>
 <% if edit then %>
 <div class="row-fluid">
@@ -146,7 +148,11 @@
     <div class="row-fluid">
       <div class="span1"></div>
       <div class="span11" style="margin-left:0;">
+      <% if !edit then %>
+      <%= f.submit 'Create', class: 'btn btn-primary' %>
+      <% else %>
       <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <% end %>
       <%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
       </div>
     </div>

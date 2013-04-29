@@ -4,6 +4,7 @@ class ArticlesController < ApplicationController
   helper_method :sort_column, :sort_direction
   autocomplete :tag, :name, :full=> true, :class_name => 'ActsAsTaggableOn::Tag'
   autocomplete :contributor, :last_name, :class_name => 'Employee', :display_value => :full_name_with_email, :extra_data => [:first_name, :email], :scopes => [:contributor_only]
+  autocomplete :editor, :last_name, :class_name => 'Employee', :display_value => :full_name_with_email, :extra_data => [:first_name, :email], :scopes => [:editor_only]
   autocomplete :issue, :name, :full=> true, :class_name => 'ActsAsTaggableOn::Tag', :scopes => [:issues]
 
   before_filter :set_attribute
@@ -123,12 +124,20 @@ class ArticlesController < ApplicationController
   # GET /articles/new.json
   def new
     if request.path.include?("editor") then
+      @isEditor = true
       @article = Article.new
       @back_path = editor_path
       @editor_id = current_employee.id
       respond_to do |format|
         format.html # new.html.erb
-        format.json { render json: @article }
+      end
+    elsif request.path.include?("contributor") then
+      @isContributor = true
+      @article = Article.new
+      @back_path = contributor_path
+      @contributor_id = current_employee.id
+      respond_to do |format|
+        format.html
       end
     else
       respond_to do |format|
@@ -187,24 +196,54 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    params[:article][:status]= "Assigned"
+    if request.path.include? "editor" then
+      params[:article][:status]= "Assigned"
+    elsif request.path.include? "contributor" then
+      params[:article][:status]= "Being Written"
+    end
     @article = Article.new(params[:article])
     respond_to do |format|
       if @article.save
-        contributor = Employee.find(params[:article][:contributor_id])
-        contributor.notify_new_article(params[:article][:title])
-        format.html { redirect_to editor_article_url(@article), notice: 'Article was successfully created.' and return }
-        format.json { render json: @article, status: :created, location: @article }    
+        if request.path.include? "editor" then
+          contributor = Employee.find(params[:article][:contributor_id])
+          contributor.notify_new_article(params[:article][:temporary_title])
+        elsif request.path.include? "contributor" then
+          editor = Employee.find(params[:article][:editor_id])
+          editor.notify_new_article_to_editor(params[:article][:temporary_title])
+        end
+
+        if request.path.include? "editor" then
+          format.html { redirect_to editor_article_url(@article), notice: 'Article was successfully created.' and return }
+          format.json { render json: @article, status: :created, location: @article }    
+        elsif request.path.include? "contributor" then
+          format.html { redirect_to edit_contributor_article_url(@article), notice: 'Article was successfully created.' and return }
+          format.json { render json: @article, status: :created, location: @article }    
+
+        end
       else
         begin
-          if params[:article][:contributor_id] then
-            @assigned_contributor = Employee.find(params[:article][:contributor_id])
-            @assigned_contributor_name = @assigned_contributor.first_name + " "+ @assigned_contributor.last_name+" ("+@assigned_contributor.email+")"
-          end  
+          if request.path.include? "editor" then
+            if params[:article][:contributor_id] then
+              @assigned_contributor = Employee.find(params[:article][:contributor_id])
+              @assigned_contributor_name = @assigned_contributor.first_name + " "+ @assigned_contributor.last_name+" ("+@assigned_contributor.email+")"
+            end 
+          else
+            if params[:article][:editor_id] then
+              @assigned_editor = Employee.find(params[:article][:editor_id])
+              @assigned_editor_name = @assigned_editor.first_name + " "+ @assigned_editor.last_name+" ("+@assigned_editor.email+")"
+            end 
+          end
         rescue ActiveRecord::RecordNotFound
         end
-        @back_path = editor_path
-        @editor_id = @current_employee.id
+        if request.path.include? "editor" then
+          @isEditor = true
+          @back_path = editor_path
+          @editor_id = @current_employee.id
+        elsif request.path.include? "contributor" then
+          @isContributor = true
+          @back_path = contributor_path
+          @contributor_id = @current_employee.id
+        end
         format.html { render action: "new" and return }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
@@ -431,10 +470,23 @@ contributor = Employee.find(item.contributor_id)
   end
 
   def random
-    @employees = Employee.contributor_only
-    @employee = @employees.offset(rand(@employees.count)).first
-    respond_to do |format|
-      format.js
+    @isContributor = false
+    @isEditor = false
+    if request.env['HTTP_REFERER'].include? "editor" then
+      @employees = Employee.contributor_only
+      @employee = @employees.offset(rand(@employees.count)).first
+      @isContributor = true
+      respond_to do |format|
+        format.js
+      end
+    elsif request.env['HTTP_REFERER'].include? "contributor" then
+      @employees = Employee.editor_only
+      @employee = @employees.offset(rand(@employees.count)).first
+      @isEditor = true
+      respond_to do |format|
+        format.js
+      end
+    else
     end
   end
 

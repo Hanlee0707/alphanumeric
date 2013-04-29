@@ -1,8 +1,8 @@
 class Article < ActiveRecord::Base
-  attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id, :temporary_title, :instruction, :category, :issue_list
-  attr_accessor :contributor_last_name, :searched_contributor_id
+  attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id, :temporary_title, :instruction, :category, :issue_list, :searched_editor_id, :editor_last_name
+  attr_accessor :contributor_last_name, :editor_last_name, :searched_contributor_id, :searched_editor_id
 
-  validates_presence_of :instruction, :temporary_title, :contributor_id, :issue_list, :on=> :create
+  validates_presence_of :instruction, :temporary_title, :contributor_id, :issue_list, :on=> :create, :message => "^Required fields are missing."
   has_many :numbers, dependent: :destroy
   has_many :images, dependent: :destroy
   has_many :extra_informations, dependent: :destroy

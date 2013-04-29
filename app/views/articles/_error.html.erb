@@ -5,7 +5,7 @@
     </div>
     <ul>
     <% @article.errors.full_messages.each do |msg| %>
-      <li>* <%= msg %></li>
+      <li>* <%= msg.split("^").last %></li>
     <% end %>
     </ul>
   </div>

@@ -43,7 +43,7 @@
 }
 
 .little-padding {
-  padding-left:5px;
+  padding-left:2px;
   padding-top:5px;
 
 }
@@ -74,6 +74,7 @@
   text-decoration:none;
   background-image: url("bg_listItem_unread.png");
   outline:none;
+  border-color: rgb(66,66,66);
 }
 
 .read-article, .read-article a {
@@ -81,6 +82,7 @@
   text-decoration: none;
   background-image: url("bg_listItem_read.png");
   outline:none;
+  border-color: rgb(55,55,55);
 }
 
 .title-background {
@@ -89,7 +91,6 @@
   margin-bottom: 10px;
   vertical-align: middle;
   border-radius: 12px 12px 12px 12px;
-  border-color: #DFDFDF;
   border-style: solid;
   border-width: 1px;
 }

@@ -1,10 +1,10 @@
-<% provide(:title, "New") %>
+<% provide(:title, "Newsbox") %>
 <div class="row-fluid">
   <div class="span3 side-contents-bar">
     <% if !@articles.empty? %>
     <% articles.each do |article| %>
     <% if article.read %>
-    <div id=<%= article.id %> class="row-fluid no-margin">
+    <div id=<%= article.id %> class="row-fluid little-padding no-margin">
       <div class="span11-5 title-background little-padding-all-around read-article">
 	<%= link_to(insert_article_path(:id => article.id), method: :post, remote: true) do %>
 	<div class="row-fluid">
@@ -24,7 +24,7 @@
       </div>
     </div>
     <% else %>
-    <div id=<%= article.id %> class="row-fluid no-margin">
+    <div id=<%= article.id %> class="row-fluid no-margin little-padding">
       <div class="span11-5 title-background little-padding-all-around unread-article">
 	<%= link_to(insert_article_path(:id => article.id), method: :post, remote: true) do %>
 	<div class="row-fluid">

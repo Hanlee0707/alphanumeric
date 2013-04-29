@@ -15,6 +15,7 @@ Alphanumeric::Application.routes.draw do
       get :autocomplete_tag_name, :on => :collection
       get :autocomplete_issue_name, :on => :collection
       get :autocomplete_contributor_last_name, :on => :collection
+      get :autocomplete_editor_last_name, :on => :collection
     end
     resources :account_creates 
     resources :reset_password, :only => [:new, :create, :edit, :update]

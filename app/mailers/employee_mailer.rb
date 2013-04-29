@@ -17,6 +17,12 @@ class EmployeeMailer < ActionMailer::Base
     mail to: employee.email, :subject => "GIST: You have a new article to write."
   end
 
+  def notify_new_article_to_editor(employee, title)
+    @employee = employee
+    @title = title
+    mail to: employee.email, :subject => "GIST: Contributor has begun writing a new article."
+  end
+
   def notify_delete_article(employee, title, reason)
     @employee = employee
     @title = title

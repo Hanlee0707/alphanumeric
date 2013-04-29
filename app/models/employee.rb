@@ -41,6 +41,10 @@ class Employee < ActiveRecord::Base
     EmployeeMailer.notify_new_article(self, title).deliver
   end
 
+  def notify_new_article_to_editor(title)
+    EmployeeMailer.notify_new_article_to_editor(self, title).deliver
+  end
+
   def notify_review_article(title)
     EmployeeMailer.notify_review_article(self, title).deliver
   end
@@ -81,6 +85,14 @@ class Employee < ActiveRecord::Base
     end while Employee.exists?(column => self[column])
   end
 
+  def self.editor_only
+    joins(:employee_positions).where('position LIKE ?', "%Editor%")
+  end
+
+  def self.contributor_only
+    joins(:employee_positions).where('position LIKE ?', "%Contributor%")
+  end
+
   def self.search(search)
     if search then 
       where("first_name LIKE ? or last_name LIKE ? or email LIKE ? or concat(first_name,' ',last_name) LIKE ?", "%#{search}%","%#{search}%","%#{search}%","%#{search}%")
@@ -89,9 +101,6 @@ class Employee < ActiveRecord::Base
     end
   end
   
-  def self.contributor_only
-    joins(:employee_positions).where('position LIKE ?', "%Contributor%")
-  end
   
   def full_name_with_email
     "#{self.first_name} #{self.last_name} (#{self.email})"
