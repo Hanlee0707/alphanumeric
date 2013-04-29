@@ -70,14 +70,15 @@ module Alphanumeric
 
    config.action_mailer.perform_deliveries = true
    config.action_mailer.raise_delivery_errors = true
-   config.action_mailer.default_url_options = {:host => "clklc.herokuapp.com"}
+   config.action_mailer.default_url_options = {:host => "gist.gs"}
 
    config.action_mailer.delivery_method = :smtp
    config.action_mailer.smtp_settings = {
-     :address => "smtp.gmail.com",
-     :port => 587,
-     :user_name => "han.lee0707@gmail.com",
-     :password => "0!GDlgksruf",
+     :address => "smtp.secureserver.net",
+     :domain => "www.gist.gs",
+     :port => 80,
+     :user_name => "support@gist.gs",
+     :password => "GISTnews56",
      :authentication => "plain",
      :enable_starttls_auto => true
    }
