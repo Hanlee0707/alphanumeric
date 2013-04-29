@@ -38,6 +38,8 @@
   bottom: 0;
   overflow-y: scroll;
   overflow-x: hidden;
+  background-image: url("bg_pattern_blackorchid.png");
+
 }
 
 .little-padding {
@@ -69,15 +71,15 @@
 
 .unread-article, .unread-article a {
   color: rgba(255,255,255, 255/255);
-  background-color: rgba(0,255,255,150/255);
   text-decoration:none;
+  background-image: url("bg_listItem_unread.png");
   outline:none;
 }
 
 .read-article, .read-article a {
   color: rgba(180,180,180, 240/255);  
-  background-color: rgba(44,44,44,140/255);
   text-decoration: none;
+  background-image: url("bg_listItem_read.png");
   outline:none;
 }
 
@@ -86,7 +88,6 @@
   margin-top: 10px;
   margin-bottom: 10px;
   vertical-align: middle;
-  background-image: url("blackorchid.png");
   border-radius: 12px 12px 12px 12px;
   border-color: #DFDFDF;
   border-style: solid;
