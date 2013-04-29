@@ -39,10 +39,12 @@
     <div class="row-fluid">
 	<div style="float:left;position:relative;left:50%;">
 	  <% if (request.path.include?("editor") and @status=="Assigned") or (request.path.include?("contributor") and @status=="Assigned") %>
+	  <div style="float:left;position:relative;left: -50%;">
 	  <h6><%= @article.issue_list %></h6>
 	  <h3 id="title">
 	    <%= @article.temporary_title %>
 	  </h3>
+	  </div>
 	  <% else %>
 	  <div style="float:left;position:relative;left: -50%;">
 	    <h6><%= @article.issue_list %></h6>

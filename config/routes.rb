@@ -38,7 +38,7 @@ Alphanumeric::Application.routes.draw do
     end
     match '/contributor' => 'contributor#show', :via => :get, as: 'contributor'
     scope "/contributor" do 
-      resources :articles, :except => [:new, :create, :index], as: 'contributor_article'
+      resources :articles, :except => [:index], as: 'contributor_article'
       resources :incomplete, :only => [:index], as: 'contributor_incomplete'
       resources :review, :only => [:index], as: 'contributor_review'
     end

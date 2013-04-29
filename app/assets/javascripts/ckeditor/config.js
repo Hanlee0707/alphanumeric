@@ -1,6 +1,5 @@
 CKEDITOR.editorConfig = function( config )
 {
-    config.extraPlugins = 'wordcount';
     config.filebrowserParams = function(){
         var csrf_token = $('meta[name=csrf-token]').attr('content'),
                 csrf_param = $('meta[name=csrf-param]').attr('content'),
@@ -29,6 +28,7 @@ CKEDITOR.editorConfig = function( config )
 	['TextColor', 'FontSize', 'SpecialChar']
     ];
 
+    config.extraPlugins = 'wordcount';
     config.wordcount = {
 	showWordCount: true,
 	showCharCount: true
