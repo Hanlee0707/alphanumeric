@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "support@gist.gs"
+  default from: "han.lee0707@gmail.com"
 
   def reset_password(user)
     @user = user

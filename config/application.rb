@@ -73,12 +73,21 @@ module Alphanumeric
    config.action_mailer.default_url_options = {:host => "gist.gs"}
 
    config.action_mailer.delivery_method = :smtp
+   # config.action_mailer.smtp_settings = {
+   #   :address => "smtp.secureserver.net",
+   #   :domain => "www.gist.gs",
+   #   :port => 80,
+   #   :user_name => "support@gist.gs",
+   #   :password => "GISTnews56",
+   #   :authentication => "plain",
+   #   :enable_starttls_auto => true
+   # }
+
    config.action_mailer.smtp_settings = {
-     :address => "smtp.secureserver.net",
-     :domain => "www.gist.gs",
-     :port => 80,
-     :user_name => "support@gist.gs",
-     :password => "GISTnews56",
+     :address => "smtp.gmail.com",
+     :port => 587,
+     :user_name => "han.lee0707@gmail.com",
+     :password => "0!GDlgksruf",
      :authentication => "plain",
      :enable_starttls_auto => true
    }
