@@ -45,7 +45,7 @@ GEM
     bootstrap-sass (2.3.1.1)
       sass (~> 3.2)
     builder (3.0.4)
-    capistrano (2.15.3)
+    capistrano (2.15.4)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -57,7 +57,7 @@ GEM
     ckeditor (4.0.4)
       mime-types
       orm_adapter
-    clamp (0.5.1)
+    clamp (0.6.0)
     cocoon (1.1.2)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -195,6 +195,9 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
+    turbo-sprockets-rails3 (0.3.6)
+      railties (> 3.2.8, < 4.0.0)
+      sprockets (>= 2.0.0)
     tzinfo (0.3.37)
     uglifier (2.0.1)
       execjs (>= 0.3.0)
@@ -234,6 +237,7 @@ DEPENDENCIES
   sqlite3
   taps
   therubyracer
+  turbo-sprockets-rails3
   uglifier (>= 1.0.3)
   will_paginate
   will_paginate-bootstrap
