@@ -90,7 +90,8 @@ class Employee < ActiveRecord::Base
   end
 
   def self.contributor_only
-    joins(:employee_positions).where('position LIKE ?', "%Contributor%")
+    result = Employee.joins(:employee_positions).where('position LIKE ?', "%Editor").map { |pos| pos.id }
+    joins(:employee_positions).where('position LIKE ? and employee_id NOT IN (?)', "%Contributor%", result)
   end
 
   def self.search(search)

@@ -3,20 +3,16 @@ class ApprovedController < ApplicationController
   before_filter :has_privilege?
   before_filter :select_layout
   def select_layout
-    if request.path.include? "editor" then
-      @editor_layout = true
-    elsif request.path.include? "contributor" then
-      @contributor_layout = true
-    end
+    @workspace_layout= true
   end
 
   def index
     @isContributor= false
     @isEditor = false
-    if request.path.include? "editor" then
+    if employee_privilege("Editor") then
       @isEditor = true
       @articles = Article.where("editor_id=? and status = ?", current_employee.id, "Approved").paginate page: params[:page], order: 'created_at desc', per_page: 20
-    elsif request.path.include? "contributor" then
+    elsif employee_privilege("Contributor") then
       @isContributor = true
       @articles = Article.where("contributor_id=? and status = ?", current_employee.id, "Approved").paginate page: params[:page], order: 'created_at desc', per_page: 20
     else

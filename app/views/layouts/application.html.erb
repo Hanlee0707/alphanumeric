@@ -21,7 +21,7 @@
         <div class="row-fluid">
 	  <div class="span1"></div>
 	  <div class="span11" style="margin-left:0;">
-	    <% if request.path.include? "uploaders" %>
+	    <% if request.path.include? "staff" %>
             <%= link_to "Gist", home_path,class: "brand", id: "logo" %>
 	    <% else %>
             <%= link_to "Gist", user_home_path,class: "brand", id: "logo" %>
@@ -29,25 +29,25 @@
             <nav>
 	      <% if current_employee %>
               <ul class="nav pull-left">
-		<% if employee_privilege("Contributor") or employee_privilege("Editor") or employee_privilege("Administrator") then %>
-		  <% if @editor_layout then %>
-		  <li class="dropdown active"><%= link_to raw("WORKSPACE <span style='font-size:60%'>EDITOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
-		  <% elsif @contributor_layout then %>
-		  <li class="dropdown active"><%= link_to raw("WORKSPACE <span style='font-size:60%'>CONTRIBUTOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
-		  <% elsif @administrator_layout then %>
-		  <li class="dropdown active"><%= link_to raw("WORKSPACE <span style='font-size:60%'>ADMINISTRATOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
+		<% if employee_privilege("Contributor") or employee_privilege("Editor") then %>
+		  <% if @workspace_layout then %>
+		  <li class="dropdown active"><%= link_to raw("WORKSPACE&nbsp;&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
 		  <% else %>
 		  <li class="dropdown"><%= link_to raw("WORKSPACE&nbsp;&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
 		  <% end %>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="history">
-		    <% if employee_privilege("Contributor") %>
-		    <li><%=link_to "Contributor", contributor_path %></li>
-		    <% end %>
+		  <ul class="dropdown-menu row-fluid" role="menu" aria-labelledby="workspace">
 		    <% if employee_privilege("Editor") %>
-		    <li><%=link_to "Editor", editor_path %></li>
-		    <% end %>
-		    <% if employee_privilege("Administrator") %>
-		    <li><%=link_to "Administrator", administrator_path%></li>
+		    <li><%=link_to "Assign New", assign_new_article_path %></li>
+		    <li><%=link_to "Draft New", draft_new_article_path %></li>
+		    <li><%=link_to raw("<span class='row-fluid'><span class='pull-left'>In Progress</span><span class='pull-right'>") + num_incomplete.to_s + raw("</span></span>"), incomplete_workspace_index_path %></li>
+		    <li><%=link_to raw("<span class='row-fluid'><span class='pull-left'>Pending Review</span><span class='pull-right'>") + num_review.to_s + raw("</span></span>"), review_workspace_index_path %></li>
+		    <li><%=link_to raw("<span class='row-fluid'><span class='pull-left'>Approved</span><span class='pull-right'>") + num_publish.to_s + raw("</span></span>"),  approved_workspace_index_path%></li>
+		    <li><%=link_to "Manage Published", published_workspace_index_path %></li>
+		    <% elsif employee_privilege("Contributor") then %>
+		    <li><%=link_to "Draft New", draft_new_article_path %></li>
+		    <li><%=link_to raw("<span class='row-fluid'><span class='pull-left'>Assigned</span><span class='pull-right'>") + num_contributor_assigned.to_s + raw("</span></span>"), assigned_workspace_index_path %></li>
+		    <li><%=link_to raw("<span class='row-fluid'><span class='pull-left'>In Progress</span><span class='pull-right'>") + num_contributor_incomplete.to_s + raw("</span></span>"), incomplete_workspace_index_path %></li>
+		    <li><%=link_to raw("<span class='row-fluid'><span class='pull-left'>Pending Review</span><span class='pull-right'>") + num_contributor_review.to_s + raw("</span></span>"),  review_workspace_index_path%></li>		    
 		    <% end %>
 		  </ul>
 		</li>
@@ -79,12 +79,14 @@
 		<li>
 		<% end %>
 		<%= link_to "PUBLISHED", published_index_path %></li>
+		<% if employee_privilege("Editor") or employee_privilege("Administrator") then %>
 		<% if @employees_layout then %>
 		<li class="active">
 		<% else %>
 		<li>
 		<% end %>
-		<%= link_to "EMPLOYEES", employees_path %></li>
+		<%= link_to "STAFF", employees_path %></li>
+		<% end %>
               </ul>
 	      <% elsif current_user %>
               <ul class="nav pull-left">
@@ -119,23 +121,34 @@
 		    </ul>
 		</li>
 		<% else %>
-		<% if @user_layout then %>
+		<% if @signin_layout %>
 		<li class="active">
-		<% else %>
+		  <% else %>
 		<li>
-		<% end%>
-		<%= link_to "User", root_path %></li>
-		<% if @employee_layout then %>
-		<li class="active">
-		<% else %>
-		<li>
-		<% end%>
-		<%= link_to "Uploader", root_uploader_path %></li>
+		  <% end %>
+		  <%= link_to "Sign In", root_path %></li>
 		<% end %>
               </ul>
             </nav>
 	  </div>
         </div>
+      </div>
+      <% if @editor_layout or @contributor_layout %>
+      <div class="navbar-inner row-fluid secondary-nav">
+	<ul class="nav">
+	  <% if @contributor_layout %>
+	  <li class="nav-list-item"><%=link_to "New", new_contributor_article_path %></li>
+	  <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_contributor_incomplete.to_s + raw("</span>"), contributor_incomplete_index_path %></li>
+	  <li class="nav-list-item"><%=link_to "View Pending Review", contributor_review_index_path %></li>
+	  <% elsif @editor_layout %>
+	  <li class="nav-list-item"><%=link_to "New", new_editor_article_path %></li>
+	  <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_incomplete.to_s + raw("</span>"), editor_incomplete_index_path %></li>
+	  <li class="nav-list-item"><%=link_to raw("Review<span class='round list-right less-up'>") + num_review.to_s + raw("</span>"), editor_review_index_path %></li>
+	  <li class="nav-list-item"><%=link_to raw("Publish<span class='round list-right less-up'>") + num_publish.to_s + raw("</span>"), editor_approved_index_path %></li>
+	  <li class="nav-list-item"><%=link_to "Manage Published", editor_published_index_path %></li>
+	  <% end %>
+	</ul>
+	<% end %>
       </div>
     </header>
     <div class="row-fluid">
@@ -158,37 +171,7 @@
 	<%= yield %><!-- <label id="code.depot.e.include"/> -->
       </div>
     </div>
-    <% if @editor_layout or @contributor_layout %>
-    <div class="row-fluid">
-      <div id="sidebar" class="span2 bs-docs-sidebar" style="display:none;">
-	<div class="well sidebar-nav sidebar-nav-fixed">
-	  <ul class="nav nav-list bs-docs-sidenav">
-	    <li class="nav-header">Articles Options</li>
-	    <% if @contributor_layout %>
-	    <li class="nav-list-item"><%=link_to "New", new_contributor_article_path %></li>
-	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_contributor_incomplete.to_s + raw("</span>"), contributor_incomplete_index_path %></li>
-	    <li class="nav-list-item"><%=link_to "View Pending Review", contributor_review_index_path %></li>
-	    <% elsif @editor_layout %>
-	    <li class="nav-list-item"><%=link_to "New", new_editor_article_path %></li>
-	    <li class="nav-list-item"><%=link_to raw("View Incomplete<span class='round list-right less-up'>") + num_incomplete.to_s + raw("</span>"), editor_incomplete_index_path %></li>
-	    <li class="nav-list-item"><%=link_to raw("Review<span class='round list-right less-up'>") + num_review.to_s + raw("</span>"), editor_review_index_path %></li>
-	    <li class="nav-list-item"><%=link_to raw("Publish<span class='round list-right less-up'>") + num_publish.to_s + raw("</span>"), editor_approved_index_path %></li>
-	    <li class="nav-list-item"><%=link_to "Manage Published", editor_published_index_path %></li>
-	    <% end %>
-	  </ul>
-	</div><!--/.well -->
-      </div><!--/span-->
-    </div>
-    <div class="toggles-container-in">
-      <% if @editor_layout %>
-      <a href="#" class="toggles editor">
-	<% else %>
-	<a href="#" class="toggles contributor">
-	  <% end %>
-	  <i class="icon-chevron-right"></i></a>
-    </div>
-    <% end %>
   </body>
-  <!-- <%= debug(params) if Rails.env.development? %> -->
+  <%= debug(params) if Rails.env.development? %>
 </html>
 

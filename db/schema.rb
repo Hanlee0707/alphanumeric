@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422134321) do
+ActiveRecord::Schema.define(:version => 20130430115421) do
 
   create_table "additional_texts", :force => true do |t|
     t.integer  "article_id"
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(:version => 20130422134321) do
     t.string   "country"
     t.text     "previous_summary"
     t.text     "current_content"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
     t.string   "status"
     t.integer  "contributor_id"
     t.integer  "editor_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20130422134321) do
     t.text     "instruction"
     t.string   "category"
     t.datetime "published_at"
+    t.boolean  "initiated_by_contributor"
   end
 
   add_index "articles", ["contributor_id"], :name => "index_articles_on_contributor_id"

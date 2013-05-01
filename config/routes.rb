@@ -1,7 +1,9 @@
 Alphanumeric::Application.routes.draw do
 
+  get "assigned/index"
+
   mount Ckeditor::Engine => '/ckeditor'
-  scope "/uploaders" do
+  scope "/staff" do
     match '/history/editor', to: 'history#editor', :via => :get, as: 'history_editor'
     match '/history/contributor', to: 'history#contributor', :via => :get, as: 'history_contributor'
     match '/history/editor/articles/:id', to: 'articles#show', :via => :get, as: 'history_editor_article'
@@ -30,12 +32,17 @@ Alphanumeric::Application.routes.draw do
     match '/administrator/employees/:id' => 'employees#destroy', :via => :delete
     resources :employees, :only => [:show, :edit, :update, :index]
     match '/editor' => 'editor#show', :via => :get, as: 'editor'
-    scope "/editor" do
-      resources :articles, :except => [:index], as: 'editor_article'
-      resources :incomplete, :only => [:index], as: 'editor_incomplete' 
-      resources :review, :only => [:index], as: 'editor_review' 
-      resources :approved, :only => [:index], as: 'editor_approved' 
-      resources :published, :only => [:index], as: 'editor_published' 
+    scope "/workspace" do
+      match '/draft/new/' => 'articles#new', :via => :get, as: 'draft_new_article'
+      match '/assign/new/' => 'articles#new', :via => :get, as: 'assign_new_article'
+      match '/draft/new/' => 'articles#create', :via => :post, as: 'post_new_draft'
+      match '/assign/new/' => 'articles#create', :via => :post, as: 'post_new_assign'
+      resources :articles, :except => [:index, :new, :create], as: 'workspace_article'
+      resources :incomplete, :only => [:index], as: 'incomplete_workspace' 
+      resources :assigned, :only => [:index], as: 'assigned_workspace'
+      resources :review, :only => [:index], as: 'review_workspace' 
+      resources :approved, :only => [:index], as: 'approved_workspace' 
+      resources :published, :only => [:index], as: 'published_workspace' 
     end
     match '/contributor' => 'contributor#show', :via => :get, as: 'contributor'
     scope "/contributor" do 
@@ -44,6 +51,7 @@ Alphanumeric::Application.routes.draw do
       resources :review, :only => [:index], as: 'contributor_review'
     end
     match '/update_status', to: 'articles#update_status', :via => :post, as: 'update_status'
+    match '/insert_article', to: 'articles#insert_article', :via => :post, as: 'staff_insert_article'
     match '/publish_articles', to: 'articles#publish_articles', :via => :post, as: 'publish_articles'
     match 'archive_articles', to: 'articles#archive_articles', :via => :post, as: 'archive_articles'
     match '/sign_out', to: 'sessions#destroy', as: 'log_out'

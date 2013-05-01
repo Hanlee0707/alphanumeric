@@ -9,10 +9,8 @@ class ArticlesController < ApplicationController
 
   before_filter :set_attribute
   def set_attribute
-    if request.path.include?("editor") then
-      @editor_layout = true
-    elsif request.path.include?("contributor") then
-      @contributor_layout = true
+    if request.path.include?("workspace") then
+      @workspace_layout = true
     elsif request.path.include?("published")
       @published_layout = true
     elsif request.path.include?("archived")
@@ -42,6 +40,8 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     @status = @article.status
     @show_edit = false
+    @can_update = false
+    @can_delete = false
     object = {:article => @article, :image =>@article.images, :numbers => @article.numbers, :extra_informations => @article.extra_informations, :additional_texts => @article.additional_texts, :citations => @article.citations, :tag_list => @article.tag_list, :issue_list => @article.issue_list}
     if current_user then 
       if current_user.user_read_articles.find_by_article_id(params[:id]).nil? 
@@ -49,19 +49,26 @@ class ArticlesController < ApplicationController
       end
     end
     if current_employee then
-      if request.path.include?("editor") then
-        if @article.editor_id == current_employee.id then
-          @edit_path = edit_editor_article_path(@article)
+      if employee_privilege("Editor") then
+        if @article.editor_id == current_employee.id or current_employee.employee_positions.find_by_position("Editor").level > 1 then
+          @edit_path = edit_workspace_article_path(@article)
+          if @article.contributor_id == current_employee.id then
+            @can_delete = true
+            @can_update = true
+            @show_edit = true
+          end
           if @status == "Being Written" or @status == "Assigned" or @status == "Revoked" then
-            @back_path = editor_incomplete_index_path
+            @back_path = incomplete_workspace_index_path
           else
+            @can_delete = true
+            @can_update = true
             @show_edit = true
             if @status == "Need Review" then
-              @back_path = editor_review_index_path
+              @back_path = review_workspace_index_path
             elsif @status == "Approved" then
-              @back_path = editor_approved_index_path
+              @back_path = approved_workspace_index_path
             elsif @status == "Published" then
-              @back_path = editor_published_index_path
+              @back_path = published_workspace_index_path
             elsif @status == "Archived" then
               @back_path = history_editor_path
             end
@@ -75,7 +82,7 @@ class ArticlesController < ApplicationController
           end
         else
           if @status=="Published" then
-            @back_path = editor_published_index_path
+            @back_path = published_workspace_index_path
             if flash[:back_path] then
               @back_path = flash[:back_path]
             end
@@ -85,14 +92,18 @@ class ArticlesController < ApplicationController
             end
           end
         end
-      elsif request.path.include?("contributor")
+      elsif employee_privilege("Contributor") then
         if @article.contributor_id == current_employee.id
           if @status == "Being Written" or @status == "Assigned" or @status=="Revoked" then
+            if @article.initiated_by_contributor then
+              @can_delete = true
+            end
             @show_edit = true
-            @back_path = contributor_incomplete_index_path
-            @edit_path = edit_contributor_article_path(@article)
+            @can_update = true
+            @back_path = incomplete_workspace_index_path
+            @edit_path = edit_workspace_article_path(@article)
           elsif @status == "Need Review" then
-            @back_path = contributor_review_index_path
+            @back_path = review_workspace_index_path
           else
             @back_path = history_contributor_path
           end
@@ -109,11 +120,6 @@ class ArticlesController < ApplicationController
             format.json { render json: object }
           end 
         end
-      elsif request.path.include?("published") then
-        @back_path = published_index_path
-        if flash[:back_path] then
-          @back_path = flash[:back_path]
-        end
       end
     elsif current_user then 
       @user_archived_article = current_user.user_archived_articles.find_by_article_id(@article.id)
@@ -123,21 +129,41 @@ class ArticlesController < ApplicationController
   # GET /articles/new
   # GET /articles/new.json
   def new
-    if request.path.include?("editor") then
-      @isEditor = true
-      @article = Article.new
-      @back_path = editor_path
-      @editor_id = current_employee.id
-      respond_to do |format|
-        format.html # new.html.erb
+    if employee_privilege("Editor") then
+      if !request.path.include? "draft" and !request.path.include? "assign" then
+        respond_to do |format|
+          format.html { redirect_to home_path, notice: "Invalid Access." and return}
+        end
+      else
+        if request.path.include? "assign" then
+          @isAssign = true
+        elsif request.path.include? "draft" then
+          @isDraft = true
+        end
+        @isEditor = true
+        @article = Article.new
+        @back_path = home_path
+        @editor_id = current_employee.id
+        respond_to do |format|
+          format.html # new.html.erb
+        end
       end
-    elsif request.path.include?("contributor") then
-      @isContributor = true
-      @article = Article.new
-      @back_path = contributor_path
-      @contributor_id = current_employee.id
-      respond_to do |format|
-        format.html
+    elsif employee_privilege("Contributor") then
+      if !request.path.include? "draft" then
+        respond_to do |format|
+          format.html { redirect_to home_path, notice: "Invalid Access." and return}
+        end
+      else
+        if request.path.include? "draft" then
+          @isDraft = true
+        end
+        @isContributor = true
+        @article = Article.new
+        @back_path = home_path
+        @contributor_id = current_employee.id
+        respond_to do |format|
+          format.html
+        end
       end
     else
       respond_to do |format|
@@ -146,33 +172,46 @@ class ArticlesController < ApplicationController
     end
   end
 
+
   # GET /articles/1/edit
   def edit
     @article = Article.find(params[:id])
     @status = @article.status
-    if request.path.include?("editor") then
-      if current_employee.id == @article.editor_id
-        if @status!= "Assigned" and @status!="Being Written" then
-          @back_path = editor_article_path(@article)
-          respond_to do |format|
-            format.html 
+    @contributorInit = false
+    if @article.initiated_by_contributor.nil?
+      @article.update_attribute(:initiated_by_contributor, false)
+    else
+      if @article.initiated_by_contributor then
+        @contributorInit = true
+      end
+    end
+      
+    if employee_privilege("Editor") then
+      if current_employee.id == @article.editor_id or current_employee.employee_positions.find_by_position("Editor").level > 1 then
+        if current_employee.id == @article.contributor_id then
+          if @status== "Assigned" then
+            @article.update_attribute(:status, "Being Written")
           end
-        else
-          respond_to do |format|
-            format.html { redirect_to editor_article_path(@article), notice: "You can't edit this article yet." and return }
-          end
+        end
+        @isEditor = true
+        @back_path = workspace_article_path(@article)
+        if !request.env['HTTP_REFERER'].include? "workspace" and request.env['HTTP_REFERER'].include? "published" then
+          @back_path = published_index_path
+        end
+        respond_to do |format|
+          format.html 
         end
       else
         respond_to do |format|
           format.html { redirect_to home_path, notice: "You can't edit other editors' articles." and return}
         end 
       end
-    elsif request.path.include?("contributor") then
-      if current_employee.id = @article.contributor_id then
-        @back_path = contributor_article_path(@article)    
+    elsif employee_privilege("Contributor") then 
+      if current_employee.id == @article.contributor_id then
+        @isContributor = true
+        @back_path = workspace_article_path(@article)    
         if @status == "Assigned" then
           @article.update_attribute(:status, "Being Written")
-          @article = Article.find(params[:id])
           respond_to do |format|
             format.html 
           end
@@ -182,7 +221,7 @@ class ArticlesController < ApplicationController
           end
         else 
           respond_to do |format|
-            format.html { redirect_to contributor_article_path(@article), notice: "You can't edit this article." and return}
+            format.html { redirect_to workspace_article_path(@article), notice: "You can't edit this article." and return}
           end
         end
       else
@@ -196,56 +235,65 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    if request.path.include? "editor" then
-      params[:article][:status]= "Assigned"
-    elsif request.path.include? "contributor" then
-      params[:article][:status]= "Being Written"
-    end
-    @article = Article.new(params[:article])
-    respond_to do |format|
-      if @article.save
-        if request.path.include? "editor" then
-          contributor = Employee.find(params[:article][:contributor_id])
-          contributor.notify_new_article(params[:article][:temporary_title])
-        elsif request.path.include? "contributor" then
-          editor = Employee.find(params[:article][:editor_id])
-          editor.notify_new_article_to_editor(params[:article][:temporary_title])
-        end
-
-        if request.path.include? "editor" then
-          format.html { redirect_to editor_article_url(@article), notice: 'Article was successfully created.' and return }
-          format.json { render json: @article, status: :created, location: @article }    
-        elsif request.path.include? "contributor" then
-          format.html { redirect_to edit_contributor_article_url(@article), notice: 'Article was successfully created.' and return }
-          format.json { render json: @article, status: :created, location: @article }    
-
-        end
-      else
-        begin
-          if request.path.include? "editor" then
-            if params[:article][:contributor_id] then
-              @assigned_contributor = Employee.find(params[:article][:contributor_id])
-              @assigned_contributor_name = @assigned_contributor.first_name + " "+ @assigned_contributor.last_name+" ("+@assigned_contributor.email+")"
-            end 
-          else
-            if params[:article][:editor_id] then
-              @assigned_editor = Employee.find(params[:article][:editor_id])
-              @assigned_editor_name = @assigned_editor.first_name + " "+ @assigned_editor.last_name+" ("+@assigned_editor.email+")"
-            end 
+    if employee_privilege("Editor") or employee_privilege("Contributor") then
+      if request.path.include? "assign" then
+        params[:article][:status]= "Assigned"
+      elsif request.path.include? "draft" then
+        params[:article][:status]= "Being Written"
+      end
+      @article = Article.new(params[:article])
+      respond_to do |format|
+        if @article.save
+          if request.path.include? "assign" then
+            contributor = Employee.find(params[:article][:contributor_id])
+            contributor.notify_new_article(params[:article][:temporary_title])
+            @article.update_attribute(:initiated_by_contributor, false)
+          elsif request.path.include? "draft" and !employee_privilege("Editor") then
+            editor = Employee.find(params[:article][:editor_id])
+            editor.notify_new_article_to_editor(params[:article][:temporary_title])
+            @article.update_attribute(:initiated_by_contributor, true)
           end
-        rescue ActiveRecord::RecordNotFound
+          if request.path.include? "draft" and employee_privilege("Editor") then
+            @article.update_attribute(:initiated_by_contributor, false)
+            format.html { redirect_to edit_article_url(@article), notice: 'Article was successfully created.' and return }
+          elsif request.path.include? "draft" and employee_privilege("Contributor") then
+            format.html { redirect_to edit_article_url(@article), notice: 'Article was successfully created.' and return }
+          elsif request.path.include? "assign" then
+            format.html { redirect_to workspace_article_url(@article), notice: 'Article was successfully created.' and return }
+          end
+        else
+          begin
+            if request.path.include? "assign" then
+              if params[:article][:contributor_id] then
+                @assigned_contributor = Employee.find(params[:article][:contributor_id])
+                @assigned_contributor_name = @assigned_contributor.first_name + " "+ @assigned_contributor.last_name+" ("+@assigned_contributor.email+")"
+              end 
+            elsif request.path.include? "draft" and !employee_privilege("Editor") then
+              if params[:article][:editor_id] then
+                @assigned_editor = Employee.find(params[:article][:editor_id])
+                @assigned_editor_name = @assigned_editor.first_name + " "+ @assigned_editor.last_name+" ("+@assigned_editor.email+")"
+              end 
+            end
+          rescue ActiveRecord::RecordNotFound
+          end
+          @back_path = home_path
+          if request.path.include? "assign" then
+            @isAssign = true
+            @isEditor = true
+            @editor_id = @current_employee.id
+          elsif request.path.include? "draft" then
+            @isDraft = true
+            if employee_privilege("Editor") then
+              @isEditor = true
+              @editor_id = @current_employee.id
+            elsif employee_privilege("Contributor") then
+              @isContributor = true
+              @contributor_id = @current_employee.id
+            end
+          end
+          format.html { render action: "new" and return }
+          format.json { render json: @article.errors, status: :unprocessable_entity }
         end
-        if request.path.include? "editor" then
-          @isEditor = true
-          @back_path = editor_path
-          @editor_id = @current_employee.id
-        elsif request.path.include? "contributor" then
-          @isContributor = true
-          @back_path = contributor_path
-          @contributor_id = @current_employee.id
-        end
-        format.html { render action: "new" and return }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -256,20 +304,12 @@ class ArticlesController < ApplicationController
   def update
     @article = Article.find(params[:id])
     if current_employee and (current_employee.id == @article.editor_id or current_employee.id == @article.contributor_id)
+      @article = Article.find(params[:id])
       respond_to do |format|
         if @article.update_attributes(params[:article])
-          if request.path.include? "contributor" then
-            format.html { redirect_to contributor_article_url(@article), notice: "Article was successfully updated." and return}
-          elsif request.path.include? "editor" then
-            format.html { redirect_to editor_article_url(@article), notice: "Article was successfully updated." and return }
-          end
-          format.json { head :no_content }
+            format.html { redirect_to workspace_article_url(@article), notice: "Article was successfully updated." and return}
         else
-          if request.path.include? "editor" then
-            @back_path = editor_article_path(@article)
-          elsif request.path.include? "contributor" then
-            @back_path = contributor_article_path(@article)  
-          end
+          @back_path = workspace_article_path(@article)
           format.html { render action: "edit" and return}
           format.json { render json: @article.errors, status: :unprocessable_entity }
         end
@@ -289,8 +329,10 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       begin
-        contributor = Employee.find(@article.contributor_id)
-        contributor.notify_delete_article(@article.title, params[:reason])
+        if @article.contributor_id != current_employee.id then
+          contributor = Employee.find(@article.contributor_id)
+          contributor.notify_delete_article(@article.title, params[:reason])
+        end
       rescue ActiveRecord::RecordNotFound
       end
       format.html { redirect_to params[:back_path], notice: "Article was successfully deleted." and return }
@@ -299,19 +341,27 @@ class ArticlesController < ApplicationController
   end
 
   def publish_articles 
-    @published_items = Article.where("editor_id=? and status = ?", params[:editor_id], "Approved")
-    count = 0
-    @published_items.each do |item|
-      if !params[:"article_#{item.id}"].nil? 
-contributor = Employee.find(item.contributor_id)
-        contributor.notify_publish_article(item.title)
-        item.update_attribute(:status, "Published")        
-        item.update_attribute(:published_at, Time.now)
-        count = count + 1
+    if employee_privilege("Editor") then
+      @published_items = Article.where("editor_id=? and status = ?", params[:editor_id], "Approved")
+      count = 0
+      @published_items.each do |item|
+        if !params[:"article_#{item.id}"].nil?  then
+          contributor = Employee.find(item.contributor_id)
+          if contributor.id != current_employee.id then
+            contributor.notify_publish_article(item.title)
+          end
+          item.update_attribute(:status, "Published")        
+          item.update_attribute(:published_at, Time.now)
+          count = count + 1
+        end
       end
-    end
-    respond_to do |format|
-      format.html { redirect_to editor_approved_index_path, notice: count.to_s + " articles were successfully published." and return}
+      respond_to do |format|
+        format.html { redirect_to approved_workspace_index_path, notice: count.to_s + " articles were successfully published." and return}
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to home_path, notice: "You can't publish articles." and return}
+      end
     end
   end
   
@@ -338,78 +388,86 @@ contributor = Employee.find(item.contributor_id)
   end
 
   def archive_articles 
-    @published_items = Article.where("status = ?", "Published")
-    count = 0
-    @published_items.each do |item|
-      if !params[:"article_#{item.id}"].nil? 
+    if employee_privilege("Editor") then
+      @published_items = Article.where("status = ?", "Published")
+      count = 0
+      @published_items.each do |item|
+        if !params[:"article_#{item.id}"].nil? 
         item.update_attribute(:status, "Archived")        
-        count = count + 1
+          count = count + 1
+        end
       end
-    end
-    respond_to do |format|
-      format.html { redirect_to editor_published_index_path, notice: count.to_s + " articles were successfully archived." and return}
+      respond_to do |format|
+        format.html { redirect_to published_workspace_index_path, notice: count.to_s + " articles were successfully archived." and return}
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to home_path, notice: "You can't archive articles." and return}
+      end
     end
   end
 
   def update_status
-    @article = Article.find(params[:id])
-    @update= true
-    if (@article.title.nil? or @article.title=="") or (@article.city.nil? or @article.city=="") or (@article.current_content.nil? or @article.current_content=="") then
-      @update = false
-    end
-    if @update then
-      @article.update_attribute(:status, params[:status])
-    end
-    if request.env['HTTP_REFERER'].include? "contributor" then
-      if params[:status]=="Need Review" then
-        if @update then
-          editor = Employee.find(@article.editor_id)
-          editor.notify_review_article(@article.title)
-          @status = "Need Review"
-          @notice = "Article was successfully submitted for review."
-        else
-          @notice = "Article was not submitted for review because required fields are not filled out."
-        end
-        respond_to do |format|
-          format.html { redirect_to contributor_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
-        end
+    if request.env['HTTP_REFERER'].include? "workspace" then
+      @article = Article.find(params[:id])
+      @update= true
+      if (@article.title.nil? or @article.title=="") or (@article.city.nil? or @article.city=="") or (@article.current_content.nil? or @article.current_content=="") then
+        @update = false
       end
-    elsif request.env['HTTP_REFERER'].include? "editor" then
-      if params[:status]=="Revoked" then
-        if !@update then
-          @article.update_attribute(:status, params[:status])
-        end
-        contributor = Employee.find(@article.contributor_id)
-        contributor.notify_revoke_article(@article.title, params[:reason])
-        @status = "Revoked"
-        @notice= "Article was successfully revoked."
-        @update= true
-        respond_to do |format|
-          format.html { redirect_to editor_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
-        end
-      elsif params[:status]=="Approved" then
-        if @update then
-          @notice =  "Article was successfully approved."
-        else
-          @notice = "Article was not approved because required fields are not filled out."
-        end
-        @status = "Approved"
-        respond_to do |format|
-          format.html { redirect_to editor_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
-        end
-      elsif params[:status]=="Published" then
-        if @update then
-          @article.update_attribute(:published_at, Time.now)
-          @status = "Published"
-          @notice = "Article was successfully published."
-        else
-          @notice = "Article was not published. Check if all required fields were filled out."
-        end
-        respond_to do |format|
-          format.html { redirect_to editor_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
-        end
+      if @update then
+        @article.update_attribute(:status, params[:status])
       end
-    end    
+      if employee_privilege("Editor") then
+        if params[:status]=="Revoked" then
+          if !@update then
+            @article.update_attribute(:status, params[:status])
+          end
+          contributor = Employee.find(@article.contributor_id)
+          contributor.notify_revoke_article(@article.title, params[:reason])
+          @status = "Revoked"
+          @notice= "Article was successfully revoked."
+          @update= true
+          respond_to do |format|
+            format.html { redirect_to workspace_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
+          end
+        elsif params[:status]=="Approved" then
+          if @update then
+            @notice =  "Article was successfully approved."
+          else
+            @notice = "Article was not approved because required fields are not filled out."
+          end
+          @status = "Approved"
+          respond_to do |format|
+            format.html { redirect_to workspace_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
+          end
+        elsif params[:status]=="Published" then
+          if @update then
+            @article.update_attribute(:published_at, Time.now)
+            @status = "Published"
+            @notice = "Article was successfully published."
+          else
+            @notice = "Article was not published. Check if all required fields were filled out."
+          end
+          respond_to do |format|
+            format.html { redirect_to workspace_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
+          end
+        end
+      elsif employee_privilege("Contributor") then
+        if params[:status]=="Need Review" then
+          if @update then
+            editor = Employee.find(@article.editor_id)
+            editor.notify_review_article(@article.title)
+            @status = "Need Review"
+            @notice = "Article was successfully submitted for review."
+          else
+            @notice = "Article was not submitted for review because required fields are not filled out."
+          end
+          respond_to do |format|
+            format.html { redirect_to workspace_article_url(@article), notice: @notice, flash: {:back_path => params[:back_path]} and return}
+          end
+        end  
+      end
+    end
   end
 
   def search_articles
@@ -492,7 +550,7 @@ contributor = Employee.find(item.contributor_id)
 
   def insert_article 
     article_id = params[:id] 
-   if current_user then 
+    if current_user then 
       if current_user.user_read_articles.find_by_article_id(params[:id]).nil? 
         UserReadArticle.create(:user_id => current_user.id, :article_id => article_id)
       end

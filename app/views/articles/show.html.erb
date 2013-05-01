@@ -38,7 +38,7 @@
 
     <div class="row-fluid">
 	<div style="float:left;position:relative;left:50%;">
-	  <% if (request.path.include?("editor") and @status=="Assigned") or (request.path.include?("contributor") and @status=="Assigned") %>
+	  <% if ((employee_privilege("Editor") and (@status=="Assigned" or (@article.contributor_id != current_employee.id and @status=="Being Written"))) or (employee_privilege("Contributor") and @status=="Assigned")) %>
 	  <div style="float:left;position:relative;left: -50%;">
 	  <h6><%= @article.issue_list %></h6>
 	  <h3 id="title">
@@ -63,15 +63,24 @@
 	<div class="row-fluid">
           STATUS: <%= @status %>    
 	</div>	
-	<div class="row-fluid">
-	  <% if request.path.include?("contributor") and (@status=="Being Written" or @status=="Revoked") then %>
+	<div class="row-fluid down">
+	  <% if @can_update and (@status=="Being Written" or @status=="Revoked") then %>
 	  <div class="span12">
-	    <%= form_tag(update_status_path(:contributor_id => current_employee.id, :id => @article.id, :status => "Need Review")) do |f| %>
+	    <% if employee_privilege("Editor") %>
+	      <% new_status = "Approved" %>
+	    <% else %>
+	      <% new_status = "Need Review" %>
+	    <% end %>
+	    <%= form_tag(update_status_path(:contributor_id => current_employee.id, :id => @article.id, :status => new_status)) do |f| %>
 	    <%= hidden_field_tag "back_path", @back_path %>
-            <%= submit_tag "Submit For Review", class: 'btn btn-primary make-white'%>
+	    <% if employee_privilege("Editor") %>
+	    <%= submit_tag "Approve", class: 'btn btn-primary make-white'%>            
+	    <% else %>
+	    <%= submit_tag "Submit For Review", class: 'btn btn-primary make-white'%>
+	    <% end %>
 	    <% end %>
 	  </div>
-	  <% elsif request.path.include?("editor") and @status=="Need Review" then %>
+	  <% elsif @can_update and @status=="Need Review" then %>
 	  <div class="row-fluid" id="article_status_actions">
 	    <%= form_tag(update_status_path(:editor_id => current_employee.id, :id => @article.id, :status => "Approved")) do |f| %>
 	    <%= hidden_field_tag "back_path", @back_path %>
@@ -91,7 +100,7 @@
 	    <% end %>
 	    </div>
 	  </div>
-	  <% elsif request.path.include?("editor") and @status=="Approved" then %>
+	  <% elsif @can_update and @status=="Approved" then %>
 	  <div class="row-fluid" id="article_status_actions">
 	    <%= form_tag(update_status_path(:editor_id => current_employee.id, :id => @article.id, :status => "Published")) do |f| %>
 	    <%= hidden_field_tag "back_path", @back_path %>
@@ -105,11 +114,7 @@
       <% end %>
     </div>
 
-    <div class="row-fluid">
-      <div class="span12"></div>
-    </div>
-
-    <% if (request.path.include?("editor") and (@status=="Being Written" or @status == "Assigned")) or (request.path.include?("contributor") and @status=="Assigned") %>
+    <% if (employee_privilege("Editor") and !@can_update and (@status=="Being Written" or @status == "Assigned")) or (!employee_privilege("Editor") and employee_privilege("Contributor") and @status=="Assigned") %>
 
     <div class="row-fluid">
       <div class="span4"></div>
@@ -139,9 +144,10 @@
       <div class="span2"></div>
       <div class="span8">
 	<% if @article.published_at.nil? %>
-	<em>NOT PUBLISHED YET</em>
+	<div class="row-fluid"><em>NOT PUBLISHED YET</em></div>
+	<div class="row-fluid"><em>in <%= @article.city %>, <%= @article.country %>,</em></div>
 	<% else %>
-	<em><%=distance_of_time_in_words(@article.published_at, Time.now)%> ago in <%= @article.city %>, <%= @article.country %>,</em>
+	<em><%=distance_of_time_in_words(@article.published_at, Time.now)%> ago in <%= @article.city %>, <%= @article.country %>,</em></em>
 	<% end %>
       </div>
       <div class="span2"></div>
@@ -181,24 +187,10 @@
 	    <% if @show_edit %>
 	    <%= link_to 'Edit', @edit_path, class: 'btn btn-primary make-white' %>
 	    <% end %>
-	    <% if request.path.include?("editor") then %>
+	    <% if @can_delete then %>
 	    <%= link_to 'Delete', "#", id: "delete_article_button", class: 'btn btn-primary make-white'%>
 	    <% end %>
-	    <% if !request.path.include?("editor") and !request.path.include?("contributor") and current_user.present?%> 
-	    <% if @user_archived_article.nil? %>
-	    <%= form_tag(archive_for_user_path(:user_id => current_user.id, :article_id => @article.id, :archive => true)) do |f| %>
-            <%= submit_tag "Archive", class: 'btn btn-primary make-white' %>
- 	    <%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
-	    <% end %>
-	    <% else %>
-	    <%= form_tag(archive_for_user_path(:user_id => current_user.id, :article_id => @article.id, :archive => false)) do |f| %>
-            <%= submit_tag "Unarchive", class: 'btn btn-primary make-white' %>
- 	    <%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
-	    <% end %>
-	    <% end %>
-	    <% else %>
- 	    <%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
-	    <% end %>
+	    <%= link_to 'Back', @back_path,class: 'btn btn-primary make-white'%>
 	  </div>
 	  <div class="span4"></div>
 	  <% if @article.status == "Assigned" then %>
@@ -216,8 +208,8 @@
 	<div class="row-fluid">
 	  <div class= "span4"></div>
 	  <div class= "span4">
-	    <% if request.path.include?("editor") then %>
-	    <%= form_tag(editor_article_path(@article, :back_path => @back_path), :method => :delete) do |f| %>
+	    <% if @can_delete then %>
+	    <%= form_tag(workspace_article_path(@article, :back_path => @back_path), :method => :delete) do |f| %>
 	    <div class="row-fluid center">
 	      <%= hidden_field_tag "back_path", @back_path %>
 	      <%= text_area_tag "reason", nil, placeholder:"Reason for deletion", rows: 8, class:'input-xlarge' %>

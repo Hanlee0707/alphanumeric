@@ -1,4 +1,4 @@
-<% provide(:title, " Review") %>
+<% provide(:title, "Pending Review") %>
 
 
 <div class="row-fluid">
@@ -28,12 +28,7 @@
 	  <tbody>
 	    <% @articles.each do |article| %>
 	    <tr>
-	      <% if @isEditor then %>
-	      <td><%= link_to article.title, editor_article_path(article) %></td>
-	      <% end %>
-	      <% if @isContributor then %>
-	      <td><%= link_to article.title, contributor_article_path(article) %></td>
-	      <% end %>
+	      <td><%= link_to article.title, workspace_article_path(article) %></td>
 	      <% if @isEditor then %>
 	      <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
 	      <% end %>
@@ -56,7 +51,6 @@
     <div class="row-fluid center">
       <strong>There are no articles.</strong>
     </div>
-  </div>
     <% end %>
   </div>  
 </div>

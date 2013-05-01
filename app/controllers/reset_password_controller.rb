@@ -2,7 +2,7 @@ class ResetPasswordController < ApplicationController
 
   def new
     path = request.path
-    if path.include? "uploaders" then
+    if path.include? "staff" then
       @through_user = false
     else
       @through_user = true
@@ -11,7 +11,7 @@ class ResetPasswordController < ApplicationController
 
   def create
     path = request.path
-    if path.include? "uploaders" then
+    if path.include? "staff" then
       employee = Employee.find_by_email(params[:email])
       if employee then
         if employee.send_password_reset
@@ -38,7 +38,7 @@ class ResetPasswordController < ApplicationController
 
   def edit
     path = request.path
-    if path.include? "uploaders" then
+    if path.include? "staff" then
       @employee = Employee.find_by_password_reset_token!(params[:id])
     else
       @user = User.find_by_password_reset_token!(params[:id])
@@ -47,7 +47,7 @@ class ResetPasswordController < ApplicationController
 
   def update
     path = request.path
-    if path.include? "uploaders" then
+    if path.include? "staff" then
       @employee = Employee.find_by_password_reset_token!(params[:id])
       if @employee.password_reset_sent_at < 2.hours.ago
         redirect_to new_reset_password_path,

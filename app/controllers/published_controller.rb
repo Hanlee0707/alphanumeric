@@ -4,11 +4,9 @@ class PublishedController < ApplicationController
   before_filter :set_attributes
 
   def set_attributes
-    if request.path.include? "editor" then
-      @editor_layout = true
-    elsif request.path.include? "contributor" then
-      @contributor_layout = true
-    else
+    if request.path.include? "workspace" then
+      @workspace_layout = true
+    elsif request.path.include? "published" then
       @published_layout = true
     end
   end  
@@ -34,7 +32,7 @@ class PublishedController < ApplicationController
           article[:read] = false
         end
       }        
-    elsif request.path.include? "editor"
+    elsif employee_privilege("Editor") and @workspace_layout then
       @isEditor = true
       @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
     else

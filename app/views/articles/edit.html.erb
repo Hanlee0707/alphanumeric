@@ -1,4 +1,13 @@
-<%= render partial: 'form', locals: { edit: true, :editor => false } %>
+<% provide(:title, "Edit Article") %>
+
+<% if @isEditor then %>
+<%= render partial: 'editor_form', locals: { isEditor: true, editor: @editor_id } %>
+<% elsif @isContributor then %>
+<%= render partial: 'contributor_form', locals: { isContributor: true, contributor: @contributor_id, initiated: @contributorInit } %>
+<% end %>
+
+
+
 
 
 

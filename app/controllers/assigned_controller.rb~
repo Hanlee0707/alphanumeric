@@ -1,0 +1,4 @@
+class AssignedController < ApplicationController
+  def index
+  end
+end

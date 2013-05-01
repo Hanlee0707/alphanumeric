@@ -1,4 +1,0 @@
-class ArchivedController < ApplicationController
-  def index
-  end
-end

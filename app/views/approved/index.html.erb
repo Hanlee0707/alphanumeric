@@ -24,7 +24,7 @@
 	    <% @articles.each do |article| %>
 	    <tr>
 	      <td><%= check_box_tag 'article_'+article.id.to_s, article.id, false %> </td>
-	      <td><%= link_to article.title, editor_article_path(article)%></td>
+	      <td><%= link_to article.title, workspace_article_path(article)%></td>
 	      <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
 	      <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
 	    </tr>
@@ -43,7 +43,6 @@
     <div class="row-fluid center">
       <strong>There are no articles.</strong>
     </div>
-  </div>
     <% end %>
   </div>  
 </div>

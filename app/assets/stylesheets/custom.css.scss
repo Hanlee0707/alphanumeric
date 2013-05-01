@@ -16,8 +16,22 @@
      }
  }
 
+#previous {
+  background:rgb(240,240,240);
+  border-radius: 12px 12px 12px 12px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+
 a {
   outline:none;
+}
+
+#recent_container {
+padding-top: 20px;
+background: rgb(240,240,240);
+
 }
 
 .row-fluid {
@@ -136,6 +150,12 @@ ul.nav li.dropdown:hover > ul.dropdown-menu{
     display: block;    
 }
 
+
+.navbar .dropdown-menu {
+  margin-top: 0px;
+}
+
+
 div {
     word-wrap: break-word;
 }
@@ -223,6 +243,7 @@ div {
    padding-left: 16px;
 
 }
+
 
 .sidebar-nav-fixed {
      position:fixed;

@@ -1,0 +1,38 @@
+<% go_to_action = post_new_draft_path %>
+<%= form_for @article, :url=> go_to_action, :html => {:multipart => true} do |f| %>
+<div id="tip_window" style="display:none;" class="row-fluid">
+  <div class="span12">
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span1"></div>
+  <div class="span11">
+    <% if @article.errors.any? %>
+    <div class="row-fluid">
+      <%= render 'error' %>
+    </div>
+    <% end %>
+    
+    <div class="row-fluid">
+      <h3 style="text-align:left;"><%=image_tag("pencil.png", alt: "logo", class: "up")%>Draft New</h3>
+    </div>
+    
+    <div class="row-fluid"><div class="span12"></div></div>
+    
+    <% if isEditor then %>
+    <%= render 'editor_instruction_form', :f => f, :edit=> false, :editor => editor, :isDraft => true %>
+    <% elsif isContributor then %>
+    <%= render 'contributor_instruction_form', :f => f, :edit=> false, :contributor => contributor, :isDraft => true %>
+    <% end %>
+    
+    <div class="row-fluid"><div class="span12"></div></div>    
+
+    <div class="row-fluid">
+    <%= f.submit 'Create', class: 'btn btn-primary' %>
+    <%= link_to 'Back', @back_path, class: 'btn btn-primary make-white' %>
+    </div>
+    
+    <% end %>
+    </div>
+</div>

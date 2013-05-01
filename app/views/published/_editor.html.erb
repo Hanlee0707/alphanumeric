@@ -25,7 +25,7 @@
 	    <% articles.each do |article| %>
 	    <tr>
 	      <td><%= check_box_tag 'article_'+article.id.to_s, article.id, false %> </td>
-	      <td><%= link_to article.title, editor_article_path(article)%></td>
+	      <td><%= link_to article.title, workspace_article_path(article)%></td>
 	      <% if article.contributor.nil? then %>
 	      <td>NO AUTHOR</td>
 	      <% else %>

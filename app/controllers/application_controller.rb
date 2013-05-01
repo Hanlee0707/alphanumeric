@@ -15,14 +15,10 @@ class ApplicationController < ActionController::Base
   private
 
   def has_privilege?
-    if request.path.include?("editor")
+    if request.path.include?("workspace")
       if current_employee and employee_privilege("Editor") then
         @fine = true
-      else
-        redirect_to home_path, notice: "You don't have the required privilege."
-      end
-    elsif request.path.include?("contributor")
-      if current_employee and employee_privilege("Contributor") then
+      elsif current_employee and employee_privilege("Contributor") then
         @fine = true
       else
         redirect_to home_path, notice: "You don't have the required privilege."
@@ -68,9 +64,9 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in?
-    if current_employee.present? and request.path.include? "uploaders"
+    if current_employee.present? and request.path.include? "staff"
       @employee = current_employee
-    elsif current_user.present? and !(request.path.include? "uploaders")
+    elsif current_user.present? and !(request.path.include? "staff")
       @user = current_user
     else
       if current_employee.present? then
@@ -78,7 +74,7 @@ class ApplicationController < ActionController::Base
       elsif current_user.present? then
         redirect_to user_home_path, notice: "Please log in as an employee first."
       elsif params[:controller] != "sessions" and params[:action] != "new"
-        if request.path.include? "uploaders" then
+        if request.path.include? "staff" then
           redirect_to root_uploader_path, notice: "Please log in first."
         else
           redirect_to root_path, notice: "Please log in first."

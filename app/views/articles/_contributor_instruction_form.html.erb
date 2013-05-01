@@ -1,6 +1,5 @@
 <div class="row-fluid" id="instruction">
   <% article = f.object %>
-  <div class="span1"></div>
   <div id="assign-issue" style="margin-left:0;" class="span7">
     <div class="row-fluid">
       <%= f.hidden_field :contributor_id, value: contributor %>
@@ -41,8 +40,6 @@
 	    <% end %>
 	    <span class="down" style="float:right;">
 	    <%= link_to "Set", "#", id: 'set_editor', class: 'btn'%>
-	    &nbsp;&nbsp;OR&nbsp;&nbsp; 
-	    <%= link_to "Assign Random", assign_random_path, id:'assign_random_editor', method: :post, remote: true, class: 'btn'%>
 	    <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Find the editor by typing in his last name. You need to press the set button to actually submit this article to the found editor."} %>
 	    </span>
 	  </div>
@@ -117,7 +114,7 @@
     <div class="row-fluid down">
       <div id="tags" class="span12">
 	<div class="postbox center">
-	  <h3>General Tags<%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Enter general tags you want associated with this article."} %></h3>
+	  <h3>General Tag<%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Enter general tags you want associated with this article."} %></h3>
 	  <div class="down inside">
 	    <%= f.hidden_field :tag_list %>
 	    <%= autocomplete_field_tag "throwaway", "",  autocomplete_tag_name_articles_path, 'data-delimiter' => ', ', :multiple=> true, class:"little-further-down input-tag", placeholder: "search for tags" %>
@@ -131,6 +128,6 @@
 
   </div>
   
-
+</div>
 
 

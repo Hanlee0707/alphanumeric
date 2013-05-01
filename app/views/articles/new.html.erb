@@ -1,8 +1,19 @@
-<% provide(:title, "New Article") %>
-
-<% if @isEditor then %>
-<%= render partial: 'editor_form', locals: { edit: false, editor: @editor_id } %>
-<% elsif @isContributor then %>
-<%= render partial: 'contributor_form', locals: { edit: false, contributor: @contributor_id } %>
+<% if @isDraft then %>
+  <% provide(:title, "Draft New") %>
+<% elsif @isAssign then %>
+  <% provide(:title, "Assign New") %>
 <% end %>
+
+<% if @isDraft then %>
+  <% if @isEditor then %>
+  <%= render partial: 'draft_new_form', locals: { isEditor: true, editor: @editor_id, isDraft: true } %>
+  <% elsif @isContributor then %>
+  <%= render partial: 'draft_new_form', locals: { isEditor: false, isContributor:true, contributor: @contributor_id, isDraft: true } %>
+  <% end %>
+<% elsif @isAssign then %>
+  <% if @isEditor then %>
+  <%= render partial: 'assign_new_form', locals: { isEditor: true, editor: @editor_id, isDraft: false } %>
+  <% end %>
+<% end %>
+
 

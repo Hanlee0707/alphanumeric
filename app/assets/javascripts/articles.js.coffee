@@ -117,7 +117,7 @@ jQuery ($) ->
       $("#contributor_error").show()	
       $("#contributor_error").fadeOut(2000)
     else 
-      $("#contributor_id").val(hidden_element.val())
+      $("#article_contributor_id").val(hidden_element.val())
       $("#contributor_query").hide()
       $("#contributor_container").show()
       $("#contributor_container").html($("#article_contributor_last_name").val())
@@ -125,7 +125,7 @@ jQuery ($) ->
 
   $(document).on "click", "#remove_contributor",  (event)->
     event.preventDefault()
-    hidden_element = $("#contributor_id")
+    hidden_element = $("#article_contributor_id")
     hidden_element.val("")
     $("#searched_contributor_id").val("")
     $("#contributor_query").show()
