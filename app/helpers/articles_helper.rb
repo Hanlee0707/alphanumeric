@@ -50,9 +50,9 @@ module ArticlesHelper
     new_object = f.object.class.reflect_on_association(association).klass.new
     fields = f.fields_for(association, new_object, :child_index => "new_"+association.to_s) do |builder|
       if association == :images then
-        render association.to_s.singularize + "_fields", :f => builder, :image_type => params[:image_type]
+        render "articles/fields/"+ association.to_s.singularize + "_fields", :f => builder, :image_type => params[:image_type]
       else
-        render( association.to_s.singularize + "_fields", :f => builder)
+        render( "articles/fields/"+association.to_s.singularize + "_fields", :f => builder)
       end
     end
 

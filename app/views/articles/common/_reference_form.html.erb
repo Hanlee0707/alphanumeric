@@ -1,0 +1,31 @@
+<div class="row-fluid" id="reference">
+  <div class="span1"></div>
+  <div class="span11" style="margin-left:0;">
+    <div class="row-fluid">
+      <div class="span12" id="background">
+	<h5>Reference<%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Add as many citation fields as you need. Our citation should follow MLA format."} %></h5>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span12">
+	<div class="hr-full"></div>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div id="reference-fields" class="row-fluid">
+	<div class="row-fluid">
+	  <div id="citations" class="row-fluid">
+	    <%= f.fields_for :citations do |builder| %>
+	    <div class="fields row-fluid">
+	      <%= render 'articles/fields/citation_fields', :f => builder %>
+	    </div>
+	    <% end %>
+	  </div>
+	  <div class="row-fluid">
+	    <%= link_to_add_fields "New citation", f, :citations, target: "citations", delete: false, class: 'btn btn-large' %>
+	  </div>
+	</div>
+      </div>
+    </div>  
+  </div>
+</div>

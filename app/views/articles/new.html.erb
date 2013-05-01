@@ -6,13 +6,13 @@
 
 <% if @isDraft then %>
   <% if @isEditor then %>
-  <%= render partial: 'draft_new_form', locals: { isEditor: true, editor: @editor_id, isDraft: true } %>
+  <%= render partial: 'articles/common/draft_new_form', locals: { isEditor: true, editor: @editor_id, isDraft: true } %>
   <% elsif @isContributor then %>
-  <%= render partial: 'draft_new_form', locals: { isEditor: false, isContributor:true, contributor: @contributor_id, isDraft: true } %>
+  <%= render partial: 'articles/common/draft_new_form', locals: { isEditor: false, isContributor:true, contributor: @contributor_id, isDraft: true } %>
   <% end %>
 <% elsif @isAssign then %>
   <% if @isEditor then %>
-  <%= render partial: 'assign_new_form', locals: { isEditor: true, editor: @editor_id, isDraft: false } %>
+  <%= render partial: 'articles/common/assign_new_form', locals: { isEditor: true, editor: @editor_id, isDraft: false } %>
   <% end %>
 <% end %>
 
