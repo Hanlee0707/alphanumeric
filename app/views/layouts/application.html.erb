@@ -112,7 +112,7 @@
 		    <%= link_to image_tag("Control Panel.png", alt: "Settings") + raw("&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
 		      <% if current_employee %>
-		      <li><%= link_to "Edit Account", edit_employee_path(current_employee) %></li>
+		      <li><%= link_to "Edit Account", edit_personal_info_path %></li>
 		      <% else %>
 		      <li><%= link_to "Edit Account", edit_user_path(current_user) %></li>
 		      <% end %>

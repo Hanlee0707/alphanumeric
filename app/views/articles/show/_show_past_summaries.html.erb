@@ -20,24 +20,24 @@
     <% article.issue_list.each do |tag| %>
     <div class="row-fluid">
       <% if current_user then %>
-      <%= link_to "More on "+tag, user_tag_path(tag) %>
+      <%= link_to "Previously on "+tag, user_tag_path(tag) %>
       <% else %>
-      <%= link_to "More on "+tag, tag_path(tag) %>
+      <%= link_to "Previously on "+tag, tag_path(tag) %>
       <% end %>
     </div>
     <% end %>
-    <% article.tag_list.each do |tag| %>
-      <% if count < 3 then %>
-        <div class="row-fluid">
-	  <% if current_user then %>
-	  <%= link_to "More on "+tag, user_tag_path(tag) %>
-	  <% else %>
-	  <%= link_to "More on "+tag, tag_path(tag) %>
-	  <% end %>
-	  <% count = count +1 %>
-	</div>
-      <% end %>
-    <% end %>
+    <!-- <% article.tag_list.each do |tag| %> -->
+    <!--   <% if count < 3 then %> -->
+    <!--     <div class="row-fluid"> -->
+    <!-- 	  <% if current_user then %> -->
+    <!-- 	  <%= link_to "More on "+tag, user_tag_path(tag) %> -->
+    <!-- 	  <% else %> -->
+    <!-- 	  <%= link_to "More on "+tag, tag_path(tag) %> -->
+    <!-- 	  <% end %> -->
+    <!-- 	  <% count = count +1 %> -->
+    <!-- 	</div> -->
+    <!--   <% end %> -->
+    <!-- <% end %> -->
   </div>
   <div class="row-fluid"><div class="span12"></div></div>
   <div class="row-fluid"><div class="span12"></div></div>

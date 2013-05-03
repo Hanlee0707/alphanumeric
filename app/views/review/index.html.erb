@@ -14,14 +14,15 @@
 	<table class="table table-striped table-hover">
 	  <thead>
 	    <tr>
-	      <th class="span5">TITLE</th>
+	      <th class="span4">TITLE</th>
 	      <% if @isEditor then %> 
-	      <th class="span3">CONTRIBUTOR</th>
+	      <th class="span2">CONTRIBUTOR</th>
 	      <% end %>
 	      <% if @isContributor then %> 
-	      <th class="span3">EDITOR</th>
+	      <th class="span2">EDITOR</th>
 	      <% end %>
 	      <th class="span2">CREATED</th>
+	      <th class="span2">MODIFIED</th>
 	      <th class="span2">STATUS</th>
 	    </tr>
 	  </thead>
@@ -36,6 +37,7 @@
 	      <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
 	      <% end %>
 	      <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	      <td><%= article.updated_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
 	      <td><%= article.status %></td>
 	    </tr>
 	    <% end %>

@@ -15,10 +15,11 @@
 	    <tr>
 	      <%= form_tag(archive_articles_path(:editor_id => current_employee.id), method: :post) do %>
 	      <th class="span1"><%=check_box_tag 'check_all', 'check_all', false%></th>
-	      <th class="span5">TITLE</th>
+	      <th class="span3">TITLE</th>
 	      <th class="span2">CONTRIBUTOR</th>
 	      <th class="span2">EDITOR</th>
-	      <th class="span2">PUBLISHED TIME</th>
+	      <th class="span2">PUBLISHED</th>
+	      <th class="span2">MODIFIED</th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -41,6 +42,7 @@
 	      <% else %>
 	      <td><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
 	      <% end %>
+	      <td><%= article.updated_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
 	    </tr>
 	    <% end %>
 	  </tbody>
@@ -57,7 +59,6 @@
     <div class="row-fluid center">
       <strong>There are no articles.</strong>
     </div>
-  </div>
     <% end %>
   </div>  
 </div>

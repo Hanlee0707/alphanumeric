@@ -42,10 +42,6 @@
 	      <div class="postbox center">
 		<h3>Issue Tag<%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Enter a specific tag that will be used to find articles with the same topic."} %></h3>
 		<div>
-		  <div id="issue-container" class="row-fluid down inside" style="display:none;">
-		    <strong><em id="issue"></em></strong>
-		    <%= link_to "Remove", "#", id: 'remove_issue', class: 'btn'%>
-		  </div>
 		  <div id="issue-search-container" class="row-fluid down inside">
 		    <%= f.hidden_field :issue_list %>
 		    <% if @article.errors.any? %>
@@ -59,11 +55,10 @@
 		    <% if contains %>
 		    <div class="field_with_errors" >
 		      <% end %>
-		      <%= autocomplete_field_tag "throwaway-issue", "",  autocomplete_issue_name_articles_path, :multiple=> false, class:"input-small", placeholder: "search for a tag" %>
+		      <%= autocomplete_field_tag "throwaway-issue", "",  autocomplete_issue_name_articles_path, :multiple=> false, class:"input-tag", placeholder: "search for a tag" %>
 		      <% if contains %>
 		    </div>
 		    <% end %>
-		    <%= button_tag "Set", class: 'btn up', type: 'button', id: 'add_issue_tag_button' %>
 		  </div>
 		</div>
 	      </div>

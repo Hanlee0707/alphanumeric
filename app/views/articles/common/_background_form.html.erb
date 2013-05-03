@@ -9,6 +9,14 @@
   </div>
 </div>
 <div class="row-fluid center">
+  <% if f.object.previous_summary.nil? or f.object.previous_summary == "" then %>
+  <% if @previous_article.nil? then %>
   <%= f.cktext_area :previous_summary, :ckeditor=>{ :height=> 150 }, class:"span12" %>
+  <% else %>
+  <%= f.cktext_area :previous_summary, value:@previous_article.previous_summary, :ckeditor=>{ :height=> 150 }, class:"span12" %>
+  <% end %>
+  <% else %>
+  <%= f.cktext_area :previous_summary, :ckeditor=>{ :height=> 150 }, class:"span12" %>
+  <% end %>
 </div>
 

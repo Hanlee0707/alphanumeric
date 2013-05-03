@@ -3,8 +3,8 @@ class ArticlesController < ApplicationController
   before_filter :has_privilege?
   helper_method :sort_column, :sort_direction
   autocomplete :tag, :name, :full=> true, :class_name => 'ActsAsTaggableOn::Tag'
-  autocomplete :contributor, :last_name, :class_name => 'Employee', :display_value => :full_name_with_email, :extra_data => [:first_name, :email], :scopes => [:contributor_only]
-  autocomplete :editor, :last_name, :class_name => 'Employee', :display_value => :full_name_with_email, :extra_data => [:first_name, :email], :scopes => [:editor_only]
+  autocomplete :contributor, :last_name, :class_name => 'Employee', :display_value => :full_name_with_email, :extra_data => [:first_name, :email, :last_name], :scopes => [:contributor_only]
+  autocomplete :editor, :last_name, :class_name => 'Employee', :display_value => :full_name_with_email, :extra_data => [:first_name, :email, :last_name], :scopes => [:editor_only]
   autocomplete :issue, :name, :full=> true, :class_name => 'ActsAsTaggableOn::Tag', :scopes => [:issues]
 
   before_filter :set_attribute
@@ -59,6 +59,8 @@ class ArticlesController < ApplicationController
           end
           if @status == "Being Written" or @status == "Assigned" or @status == "Revoked" then
             @back_path = incomplete_workspace_index_path
+            @can_delete = true
+            @show_edit = false
           else
             @can_delete = true
             @can_update = true
@@ -185,7 +187,7 @@ class ArticlesController < ApplicationController
         @contributorInit = true
       end
     end
-      
+    @previous_article = Article.tagged_with(@article.issue_list, :on => :issues).where("status = ? or status = ?", "Archived", "Published").order("published_at desc").first
     if employee_privilege("Editor") then
       if current_employee.id == @article.editor_id or current_employee.employee_positions.find_by_position("Editor").level > 1 then
         if current_employee.id == @article.contributor_id then

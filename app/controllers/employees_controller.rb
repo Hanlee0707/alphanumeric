@@ -4,9 +4,7 @@ class EmployeesController < ApplicationController
   before_filter :set_attributes
 
   def set_attributes
-    if request.path.include? "administrator" then
-      @administrator_layout = true
-    else
+    if request.path.include? "employees" then
       @employees_layout = true
     end
   end  
@@ -15,9 +13,9 @@ class EmployeesController < ApplicationController
     begin
       @can_edit = false
       @can_delete = false
-      if request.path.include? "administrator" then
+      if employee_privilege("Administrator") and current_employee.employee_positions.find_by_position("Administrator").level > 1 then
         @can_edit = true
-        @back_path = administrator_path
+        @back_path = employees_path
         @administrative = true
         if current_employee.id.to_s != params[:id] then
           @can_delete = true
@@ -25,15 +23,17 @@ class EmployeesController < ApplicationController
         @employee = Employee.find(params[:id])
         respond_to do |format|
           format.html # show.html.erb
-          format.json { render json: @employee }
         end
-      else
+      elsif employee_privilege("Editor") then
         @administrative = false
         @back_path = employees_path
         @employee = Employee.find(params[:id])
         respond_to do |format|
           format.html # show.html.erb
-          format.json { render json: @employee }
+        end
+      else
+        respond_to do |format|
+          format.html {redirect_to home_path, notice: "You can't view other employees' information."} 
         end
       end
     rescue ActiveRecord::RecordNotFound
@@ -45,14 +45,15 @@ class EmployeesController < ApplicationController
 
   def edit
     begin
-      @employee = Employee.find(params[:id])
-      @employees_layout = false
-      if request.path.include? "administrator" then
+       @employees_layout = false
+      if request.path.include? "admin_edit" and employee_privilege("Administrator") then
         @administrative = true 
-        @back_path = administrator_employee_path(params[:id])
+        @employee = Employee.find(params[:id])
+        @back_path = employee_path(@employee)
       else
-        if @current_employee.id.to_s == params[:id] 
+        if request.path.include? "edit_personal" then
           @administrative = false
+          @employee = Employee.find(current_employee.id)
           @back_path = home_path
         else
           respond_to do |format|
@@ -91,34 +92,37 @@ class EmployeesController < ApplicationController
 
   def update
     begin
-      @employee = Employee.find(params[:id])
-      if request.path.include? "administrator" then 
+      if request.env['HTTP_REFERER'].include? "admin_edit" and employee_privilege("Administrator") then 
+        @employee = Employee.find(params[:id])
         administrative = true
         @employee.employee_positions.destroy_all
-      else
-        administrative = false
-      end
-      respond_to do |format|
-        if (administrative and @employee.update_attribute('employee_positions_attributes',params[:employee][:employee_positions_attributes])) or (!administrative and @employee.update_attributes(params[:employee])) then
-          if administrative then
-            format.html { redirect_to administrator_employee_url(@employee), notice: "Employee was successfully updated." }
+        respond_to do |format|
+          if (administrative and @employee.update_attribute('employee_positions_attributes',params[:employee][:employee_positions_attributes])) then
+            format.html { redirect_to employee_url(@employee), notice: "Employee was successfully updated." }
           else
-            format.html { redirect_to home_path, notice: "Your account was successfully updated." }
+            format.html { render action: "edit" }
+            format.json { render json: @employee.errors, status: :unprocessable_entity }
           end
-          format.json { head :no_content }
-        else
-          if administrative then
-            @back_path = administrator_employee_path(params[:id])
-          else
-            @back_path = home_path
-          end
-          format.html { render action: "edit" }
-          format.json { render json: @employee.errors, status: :unprocessable_entity }
         end
+      elsif request.env['HTTP_REFERER'].include? "edit_personal" then
+        administrative = false
+        @employee = Employee.find(current_employee.id)
+        respond_to do |format|
+          if (!administrative and @employee.update_attributes(params[:employee])) then
+            format.html { redirect_to home_url, notice: "Your account was successfully updated." }
+          else
+            format.html { render action: "edit" }
+            format.json { render json: @employee.errors, status: :unprocessable_entity }
+          end
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to home_url, notice: "You don't have the required privilege."}
+        end        
       end
     rescue ActiveRecord::RecordNotFound
       respond_to do |format|
-        format.html { redirect_to home_path, notice: "That employee does not exist."}
+        format.html { redirect_to home_url, notice: "That employee does not exist."}
       end
     end
   end

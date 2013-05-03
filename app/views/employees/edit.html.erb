@@ -5,9 +5,9 @@
 <% end %>
 
 <% if @administrative then %>
-<% to_url = administrator_employee_path(@employee) %>
+<% to_url = edit_administrative_employee_path %>
 <% else %>
-<% to_url = employee_path(@employee) %>
+<% to_url = edit_personal_info_path %>
 <% end %>
 
 <%= form_for @employee, :url=> to_url do |f| %> 

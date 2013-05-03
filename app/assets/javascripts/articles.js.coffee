@@ -8,10 +8,7 @@ jQuery ($) ->
     $("a").attr('disabled', false)
     existing_issue_tag = $("#article_issue_list").val()
     if existing_issue_tag && ((/^\s*$/.test(existing_issue_tag)) == false)
-      $("#issue-search-container").hide()
-      hidden_element = $("#article_issue_list")
-      $("#issue").text(existing_issue_tag)
-      $("#issue-container").show()
+      $("#throwaway-issue").val(existing_issue_tag)
     existing_tags = $("#article_tag_list").val()
     tag_list = $("#tag_icons")
     if (existing_tags) && ((/^\s*$/.test(existing_tags)) == false) 
@@ -32,6 +29,85 @@ jQuery ($) ->
       pickTime: false
     ht = $(".navbar").height()
     $(".side-contents-bar").css({'top':(ht+'px')})
+    clearRecords = false
+    if $("#article_contributor_last_name").val() and $("#contributor_container").val() and ($("#article_contributor_last_name").val().trim() != $("#contributor_container").val().trim() or $("#article_contributor_last_name").val() =="")
+      clearRecords = true
+    if $("#searched_contributor_id").val() and $("#article_contributor_id").val() and ($("#searched_contributor_id").val() == "" or $("#article_contributor_id").val() == "") 
+      clearRecords = true
+    if clearRecords   
+      $("#article_contributor_last_name").val("")
+      $("#article_contributor_id").val("")
+      $("#searched_contributor_id").val("")
+      $("#article_contributor_last_name").val("")
+      $("#contributor_container").val("")
+      $(this).attr("placeholder", "You have to select from the searched list")
+    clearRecords = false
+    if $("#article_editor_last_name").val() and $("#editor_container").val() and ($("#article_editor_last_name").val().trim() != $("#editor_container").val().trim() or $("#article_editor_last_name").val() =="")
+      clearRecords = true
+    if $("#searched_editor_id").val() and $("#article_editor_id").val() and ($("#searched_editor_id").val() == "" or $("#article_editor_id").val() == "") 
+      clearRecords = true
+    if clearRecords   
+      $("#article_editor_last_name").val("")
+      $("#article_editor_id").val("")
+      $("#searched_editor_id").val("")
+      $("#article_editor_last_name").val("")
+      $("#editor_container").val("")
+      $(this).attr("placeholder", "You have to select from the searched list")
+
+
+
+
+  $("input, select").bind "keypress keydown keyup", (e) ->
+    code = e.keycode or e.which
+    return code != 13
+  
+  $("#article_contributor_last_name").bind "railsAutocomplete.select", (event, data) ->
+    display_val = data.item.first_name + " " + data.item.last_name + " ("+ data.item.email + ")"
+    $("input#contributor_container").val(display_val)
+    $("input#article_contributor_id").val(data.item.id)
+
+  $(document).on "focusout", "#article_contributor_last_name", (event) ->
+    clearRecords = false
+    if $("#article_contributor_last_name").val().trim() != $("#contributor_container").val().trim() or $("#article_contributor_last_name").val() ==""
+      clearRecords = true
+    if $("#searched_contributor_id").val() == "" or $("#article_contributor_id").val() == "" 
+      clearRecords = true
+    if clearRecords   
+      $("#article_contributor_last_name").val("")
+      $("#contributor_id").val("")
+      $("#searched_contributor_id").val("")
+      $("#contributor_container").val("")
+      $(this).attr("placeholder", "You have to select from the searched list")
+
+  $("#article_editor_last_name").bind "railsAutocomplete.select", (event, data) ->
+    display_val = data.item.first_name + " " + data.item.last_name + " ("+ data.item.email + ")"
+    $("input#editor_container").val(display_val)
+    $("input#article_editor_id").val(data.item.id)
+
+  $(document).on "focusout", "#article_editor_last_name", (event) ->
+    clearRecords = false
+    if $("#article_editor_last_name").val().trim() != $("#editor_container").val().trim() or $("#article_editor_last_name").val() ==""
+      clearRecords = true
+    if $("#searched_editor_id").val() == "" or $("#article_editor_id").val() == "" 
+      clearRecords = true
+    if clearRecords   
+      $("#article_editor_last_name").val("")
+      $("#article_editor_id").val("")
+      $("#searched_editor_id").val("")
+      $("#editor_container").val("")
+      $(this).attr("placeholder", "You have to select from the searched list")
+
+  $(document).on "click", "#article_editor_last_name", (event)-> 
+    if $(this).attr("placeholder") != "Editor(Search by last name)" 
+      $(this).attr("placeholder", "Editor(Search by last name)")
+
+
+  $(document).on "focusout", "#throwaway-issue", (event) ->
+    $("#article_issue_list").val($("#throwaway-issue").val().trim())
+
+  $(document).on "click", "#article_contributor_last_name", (event)-> 
+    if $(this).attr("placeholder") != "Contributor(Search by last name)" 
+      $(this).attr("placeholder", "Contributor(Search by last name)")
 
   $(document).on "change", "#check_all",  (event)->
     if $(this).is(':checked')
@@ -167,31 +243,6 @@ jQuery ($) ->
     hidden_element.val(existing_tags_array.join(", "))
     $(this).remove()
 
-
-  $(document).on "click", "#add_issue_tag_button", (event)-> 
-    tag_input = $("#throwaway-issue")
-    new_tag = tag_input.val().trim().toLowerCase()
-    temp_tag_array = new_tag.split(",")
-    new_tag = temp_tag_array.join(' ')
-    new_tag = new_tag.trim()
-    if new_tag !="" 
-      $("#issue-search-container").hide()
-      hidden_element = $("#article_issue_list")
-      hidden_element.val(new_tag)
-      $("#issue").text(new_tag)
-      $("#issue-container").show()
-    else
-      $("#throwaway-issue").attr("placeholder", "Invalid tag")
-
-  $(document).on "click", "#remove_issue", (event)-> 
-    event.preventDefault()
-    $("#issue-search-container").show()
-    tag_input = $("#throwaway-issue")
-    tag_input.val("")
-    hidden_element = $("#article_issue_list")
-    hidden_element.val("")
-    $("#issue-container").hide()
-    
   $(document).on "click", "#throwaway-issue", (event)-> 
     if $(this).attr("placeholder") != "tag (No Comma)" 
       $(this).attr("placeholder", "tag (No Comma)")

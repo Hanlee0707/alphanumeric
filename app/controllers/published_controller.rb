@@ -34,7 +34,11 @@ class PublishedController < ApplicationController
       }        
     elsif employee_privilege("Editor") and @workspace_layout then
       @isEditor = true
-      @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
+      if current_employee.employee_positions.find_by_position("Editor").level > 1 then 
+        @articles = Article.where("status = ?", "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
+      else
+        @articles = Article.where("editor_id = ? and status = ?", current_employee.id, "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
+      end
     else
       if params[:tag] then
         @articles = Article.tagged_with(params[:tag]).where("status = ?", "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20

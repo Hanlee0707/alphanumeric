@@ -11,7 +11,11 @@ class ApprovedController < ApplicationController
     @isEditor = false
     if employee_privilege("Editor") then
       @isEditor = true
-      @articles = Article.where("editor_id=? and status = ?", current_employee.id, "Approved").paginate page: params[:page], order: 'created_at desc', per_page: 20
+      if current_employee.employee_positions.find_by_position("Editor").level > 1 then
+        @articles = Article.where("status = ?", "Approved").paginate page: params[:page], order: 'created_at desc', per_page: 20
+      else
+        @articles = Article.where("editor_id = ? and status = ?", current_employee.id, "Approved").paginate page: params[:page], order: 'created_at desc', per_page: 20
+      end
     elsif employee_privilege("Contributor") then
       @isContributor = true
       @articles = Article.where("contributor_id=? and status = ?", current_employee.id, "Approved").paginate page: params[:page], order: 'created_at desc', per_page: 20

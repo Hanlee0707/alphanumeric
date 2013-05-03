@@ -1,7 +1,7 @@
 class Employee < ActiveRecord::Base
   has_secure_password
   attr_accessible :email, :first_name, :last_name, :password, :password_confirmation, :employee_positions_attributes, :email_confirmation, :account_create_time, :updating_password
-  attr_accessor :email_confirmation, :updating_password, :name
+  attr_accessor :email_confirmation, :updating_password, :name, :full_name_with_email
   validates_presence_of :email, :password, :first_name, :last_name, :on => :create
   validates :email, :uniqueness => {:case_sensitive => false }, length: { minimum: 3, maximum: 50}
 

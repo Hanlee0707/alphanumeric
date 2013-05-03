@@ -13,19 +13,18 @@ CKEDITOR.editorConfig = function( config )
     };
     config.toolbar = "MyToolbar";
     config.enterMode = CKEDITOR.ENTER_BR; 
-
+    config.forcePasteAsPlainText = true;
 
     config.toolbar_MyToolbar =
     [
         ['Bold','Italic', 'Underline'],
-	['TextColor', 'FontSize'],
-        [ 'Outdent','Indent','-', 'SpecialChar'] 
+        [ 'SpecialChar'] 
     ];
 
     config.toolbar_abridgedToolbar =
     [
         ['Bold','Italic', 'Underline'],
-	['TextColor', 'FontSize', 'SpecialChar']
+	['SpecialChar']
     ];
 
     config.extraPlugins = 'wordcount';

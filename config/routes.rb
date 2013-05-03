@@ -22,16 +22,11 @@ Alphanumeric::Application.routes.draw do
     resources :account_creates 
     resources :reset_password, :only => [:new, :create, :edit, :update]
     resources :sessions
-    match '/administrator' => 'administrator#show', :via => :get, as: 'administrator'
-    match '/administrator' => 'administrator#show', :via => :post, as: 'administrator'
-    match '/administrator/employees/new' => 'employees#new', :via => :get, as: 'new_administrator_employee'
-    match '/administrator/employees/' => 'employees#create', :via => :post
-    match '/administrator/employees/:id/' => 'employees#show', :via => :get, as: 'administrator_employee'
-    match '/administrator/employees/:id/edit' => 'employees#edit', :via => :get, as: 'edit_administrator_employee'
-    match '/administrator/employees/:id' => 'employees#update', :via => :put
-    match '/administrator/employees/:id' => 'employees#destroy', :via => :delete
-    resources :employees, :only => [:show, :edit, :update, :index]
-    match '/editor' => 'editor#show', :via => :get, as: 'editor'
+    resources :employees, :only => [:new, :create, :show, :edit, :update, :index]
+    match '/employees/:id/admin_edit/' => 'employees#edit', :via => :get, as: 'edit_administrative_employee'
+    match '/employees/:id/admin_edit/' => 'employees#update', :via => :put, as: 'edit_administrative_employee'
+    match '/edit_personal' => 'employees#edit', :via => :get, as: 'edit_personal_info'
+    match '/edit_personal' => 'employees#update', :via => :put, as: 'edit_personal_info'
     scope "/workspace" do
       match '/draft/new/' => 'articles#new', :via => :get, as: 'draft_new_article'
       match '/assign/new/' => 'articles#new', :via => :get, as: 'assign_new_article'
@@ -43,12 +38,6 @@ Alphanumeric::Application.routes.draw do
       resources :review, :only => [:index], as: 'review_workspace' 
       resources :approved, :only => [:index], as: 'approved_workspace' 
       resources :published, :only => [:index], as: 'published_workspace' 
-    end
-    match '/contributor' => 'contributor#show', :via => :get, as: 'contributor'
-    scope "/contributor" do 
-      resources :articles, :except => [:index], as: 'contributor_article'
-      resources :incomplete, :only => [:index], as: 'contributor_incomplete'
-      resources :review, :only => [:index], as: 'contributor_review'
     end
     match '/update_status', to: 'articles#update_status', :via => :post, as: 'update_status'
     match '/insert_article', to: 'articles#insert_article', :via => :post, as: 'staff_insert_article'
