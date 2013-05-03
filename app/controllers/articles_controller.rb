@@ -22,6 +22,16 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def get_autocomplete_items(params) 
+    if request.path.include? "contributor_last_name" then
+      items = Employee.joins(:employee_positions).where('position LIKE ?', "%Contributor%").where("lower(first_name) LIKE ? or lower(last_name) LIKE ? or lower(concat(first_name, ' ', last_name)) LIKE ? or lower(concat(last_name, ' ', first_name)) LIKE ? ", "%#{params[:term].downcase}%", "%#{params[:term].downcase}%", "%#{params[:term].downcase}%", "%#{params[:term].downcase}%")
+    elsif request.path.include? "editor_last_name" then
+      items = Employee.joins(:employee_positions).where('position LIKE ?', "%Editor%").where("lower(first_name) LIKE ? or lower(last_name) LIKE ? or lower(concat(first_name, ' ', last_name)) LIKE ? or lower(concat(last_name, ' ', first_name)) LIKE ? ", "%#{params[:term].downcase}%", "%#{params[:term].downcase}%", "%#{params[:term].downcase}%", "%#{params[:term].downcase}%")
+    else
+      super
+    end
+  end
+
   # GET /articles
   # GET /articles.json
   def index
@@ -60,7 +70,6 @@ class ArticlesController < ApplicationController
           if @status == "Being Written" or @status == "Assigned" or @status == "Revoked" then
             @back_path = incomplete_workspace_index_path
             @can_delete = true
-            @show_edit = false
           else
             @can_delete = true
             @can_update = true

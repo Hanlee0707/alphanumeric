@@ -19,7 +19,7 @@
 	  <% if contains then %>
 	    <div class="field_with_errors">
 	  <% end %>
-	  <%= f.autocomplete_field :editor_last_name, autocomplete_editor_last_name_articles_path, class:"little-further-down span6", placeholder: "Editor(Search by last name)", :id_element =>'#searched_editor_id' %>
+	  <%= f.autocomplete_field :editor_last_name, autocomplete_editor_last_name_articles_path, class:"little-further-down span6", placeholder: "Editor(Search by name)", :id_element =>'#searched_editor_id' %>
 	  <% if contains then %>
 	    </div>
 	  <% end %>

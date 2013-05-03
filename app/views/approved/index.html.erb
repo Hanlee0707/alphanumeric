@@ -15,8 +15,14 @@
 	    <tr>
 	      <%= form_tag(publish_articles_path(:editor_id => current_employee.id), method: :post) do %>
 	      <th class="span1"><%=check_box_tag 'check_all', 'check_all', false%></th>
-	      <th class="span5">TITLE</th>
-	      <th class="span2">CONTRIBUTOR</th>
+	      <% if current_employee.employee_positions.find_by_position("Editor").level >1 then %>
+	        <th class="span3">TITLE</th>
+	        <th class="span2">EDITOR</th>
+  	        <th class="span2">CONTRIBUTOR</th>
+		<% else %>
+	        <th class="span4">TITLE</th>
+  	        <th class="span3">CONTRIBUTOR</th>
+		<% end %>
 	      <th class="span2">CREATED</th>
 	      <th class="span2">MODIFIED</th>
 	    </tr>
@@ -26,7 +32,12 @@
 	    <tr>
 	      <td><%= check_box_tag 'article_'+article.id.to_s, article.id, false %> </td>
 	      <td><%= link_to article.title, workspace_article_path(article)%></td>
+	      <% if current_employee.employee_positions.find_by_position("Editor").level >1 then %>
+	      <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
 	      <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
+		<% else %>
+	      <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
+		<% end %>
 	      <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
 	      <td><%= article.updated_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
 	    </tr>

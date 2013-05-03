@@ -13,7 +13,7 @@ jQuery ($) ->
     tag_list = $("#tag_icons")
     if (existing_tags) && ((/^\s*$/.test(existing_tags)) == false) 
       existing_tags_array = []
-      existing_tags_array = existing_tags.toLowerCase().split(",")
+      existing_tags_array = existing_tags.split(",")
       html = []
       i = 0
       while i < existing_tags_array.length
@@ -54,8 +54,17 @@ jQuery ($) ->
       $("#editor_container").val("")
       $(this).attr("placeholder", "You have to select from the searched list")
 
-
-
+  $(document).on "change", "span.cke_path_item", (event) ->
+    counts = $(this).val().split(", ")
+    character_count_word =  counts[0]
+    word_count_word = counts[1]
+    character_count_num = character_count_word.split(": ")[1]
+    word_count_num = word_count_word.split(": ")[1]
+    if parseInt(word_count_num) > 50 or parseInt(character_count_num) > 350
+      $(this).css("font-color", "red")
+    else
+      $(this).css("font-color", "black")
+    end		    
 
   $("input, select").bind "keypress keydown keyup", (e) ->
     code = e.keycode or e.which
@@ -234,7 +243,7 @@ jQuery ($) ->
 
   $(document).on "click", ".tag_wrap_form",  (event)->
     hidden_element = $("#article_tag_list")
-    existing_tags = hidden_element.val().toLowerCase()
+    existing_tags = hidden_element.val()
     deleted_tag = $(event.tager).children().text().split(" x")[0]
     existing_tags_array = []
     existing_tags_array = existing_tags.split(", ")
@@ -249,7 +258,7 @@ jQuery ($) ->
 
   $(document).on "click", "#add_tag_button", (event)-> 
     tag_input = $("#throwaway")
-    new_tag = tag_input.val().trim().toLowerCase()
+    new_tag = tag_input.val().trim()
     temp_tag_array = new_tag.split(",")
     new_tag_array = []
     i = 0
@@ -260,7 +269,7 @@ jQuery ($) ->
       i++
     new_tag = new_tag_array.join(", ")
     hidden_element = $(this).parent().find("#article_tag_list")
-    existing_tags = hidden_element.val().toLowerCase()
+    existing_tags = hidden_element.val()
     existing_tags_array = []
     existing_tags_array = existing_tags.split(", ")
     i=0

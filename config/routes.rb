@@ -9,6 +9,7 @@ Alphanumeric::Application.routes.draw do
     match '/history/editor/articles/:id', to: 'articles#show', :via => :get, as: 'history_editor_article'
     match '/history/contributor/articles/:id', to: 'articles#show', :via => :get, as: 'history_contributor_article'
     match '/published', to: 'published#index', :via => :get, as:'published_index' 
+    match '/published', to: 'published#index', :via => :get, as:'published_index' 
     match '/published/articles/:id' => 'articles#show', :via => :get, as: 'published_article'
     match '/archived', to: 'archived#index', :via => :get, as:'archived_index'
     match '/archived/articles/:id' => 'articles#show', :via => :get, as: 'archived_article'

@@ -52,27 +52,27 @@
 		  </ul>
 		</li>
 		<% end %>
-		<% if employee_privilege("Contributor") or employee_privilege("Editor") then %>
-		  <% if @history_editor_layout then %>
-		  <li class="dropdown active">
-		    <%= link_to raw("HISTORY<span style='font-size:60%'>EDITOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
-		    <% elsif @history_contributor_layout then %>
-		  <li class="dropdown active">
-		    <%= link_to raw("HISTORY<span style='font-size:60%'>CONTRIBUTOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
-		    <% else %>
-		  <li class="dropdown">
-		    <%= link_to raw("HISTORY&nbsp;&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %>
-		    <% end %>
-		    <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
-		      <% if employee_privilege("Contributor") %>
-		      <li><%=link_to "Contributor History", history_contributor_path %></li>
-		      <% end %>
-		      <% if employee_privilege("Editor") %>
-		      <li><%=link_to "Editor History", history_editor_path %></li>
-		      <% end %>
-		    </ul>
-		  </li>
-		<% end %>
+		<!-- <% if employee_privilege("Contributor") or employee_privilege("Editor") then %> -->
+		<!--   <% if @history_editor_layout then %> -->
+		<!--   <li class="dropdown active"> -->
+		<!--     <%= link_to raw("HISTORY<span style='font-size:60%'>EDITOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %> -->
+		<!--     <% elsif @history_contributor_layout then %> -->
+		<!--   <li class="dropdown active"> -->
+		<!--     <%= link_to raw("HISTORY<span style='font-size:60%'>CONTRIBUTOR&nbsp;&nbsp;&nbsp;</span><i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %> -->
+		<!--     <% else %> -->
+		<!--   <li class="dropdown"> -->
+		<!--     <%= link_to raw("HISTORY&nbsp;&nbsp;&nbsp;<i class='caret blue-caret'></i>"), '#', data: {toggle: "dropdown"}, class:"dropdown-toggle" %> -->
+		<!--     <% end %> -->
+		<!--     <ul class="dropdown-menu" role="menu" aria-labelledby="drop"> -->
+		<!--       <% if employee_privilege("Contributor") %> -->
+		<!--       <li><%=link_to "Contributor History", history_contributor_path %></li> -->
+		<!--       <% end %> -->
+		<!--       <% if employee_privilege("Editor") %> -->
+		<!--       <li><%=link_to "Editor History", history_editor_path %></li> -->
+		<!--       <% end %> -->
+		<!--     </ul> -->
+		<!--   </li> -->
+		<!-- <% end %> -->
 		<% if @published_layout then %>
 		<li class="active">
 		<% else %>
@@ -95,7 +95,7 @@
 		<% else %>
 		<li>
 		<% end %>
-		<%= link_to "NEWSBOX", user_published_index_path %></li>
+		<%= link_to "NEWSBOX", user_home_path %></li>
               </ul>
 	      <% end %>
               <ul class="nav pull-right">

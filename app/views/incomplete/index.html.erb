@@ -13,9 +13,14 @@
 	<table class="table table-striped table-hover">
 	  <thead>
 	    <tr>
-	      <th class="span4">ISSUE</th>
+	      <th class="span3">ISSUE</th>
 	      <% if @isEditor then %> 
-	      <th class="span2">CONTRIBUTOR</th>
+	        <% if current_employee.employee_positions.find_by_position("Editor").level >1 then %>
+	        <th class="span2">EDITOR</th>
+	        <th class="span2">CONTRIBUTOR</th>
+		<% else %>
+  	        <th class="span2">CONTRIBUTOR</th>
+		<% end %>
 	      <% end %>
 	      <% if @isContributor then %> 
 	      <th class="span2">EDITOR</th>
@@ -35,7 +40,12 @@
 	      <td><%= link_to article.temporary_title, workspace_article_path(article) %></td>
 	      <% end %>
 	      <% if @isEditor then %>
+	        <% if current_employee.employee_positions.find_by_position("Editor").level >1 then %>
+	      <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
 	      <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
+	      <% else %>
+	      <td><%= article.contributor.first_name + " " + article.contributor.last_name %></td>
+	      <% end %>
 	      <% end %>
 	      <% if @isContributor then %>
 	      <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
