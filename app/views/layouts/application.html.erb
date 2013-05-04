@@ -19,7 +19,12 @@
     <header class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner row-fluid">
         <div class="row-fluid">
-	  <div class="span1"></div>
+	  <% if (!request.path.include? "workspace" and request.path.include? "published") or request.path.include? "newsbox" then %>
+	    <%= link_to raw("<i class='icon-chevron-down icon-white'></i>"), "#", class:"span1 center toggles", style:"margin:0;height:40px;padding-top:10px;" %>
+	  <% else %>
+	  <div class="span1">
+	  </div>
+	  <% end %>	  
 	  <div class="span11" style="margin-left:0;">
 	    <% if request.path.include? "staff" %>
             <%= link_to "Gist", home_path,class: "brand", id: "logo" %>

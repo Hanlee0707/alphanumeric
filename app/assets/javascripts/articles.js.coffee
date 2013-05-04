@@ -142,27 +142,14 @@ jQuery ($) ->
 
   $(document).on "click", "a.toggles", (event)->
     event.preventDefault()
-    $("a.toggles i").toggleClass "icon-chevron-left icon-chevron-right"
-    if $(this).parent().attr("class") == "toggles-container-in" 
-      $(this).parent().attr("class", "toggles-container-out")
-      $(this).parent().css({'left':($("#sidebar").children().width()+'%')})
-    else 
-      $(this).parent().attr("class", "toggles-container-in")
-      $(this).parent().css({'left':('0px')})
-    $("#sidebar").animate
+    $("a.toggles i").toggleClass "icon-chevron-down icon-chevron-up"
+    $(".side-contents-bar").animate
       width: "toggle"
     , 0
-    path = window.location.pathname
-    if path.indexOf("articles") != -1
-      if $("#content").attr("class")=="span12 offset2"
-        $("#content").attr("class","span12")
-      else 
-        $("#content").attr("class","span12 offset2")
-    else
-      if $("#content").attr("class")=="span10 offset2"
-        $("#content").attr("class","span12")
-      else 
-        $("#content").attr("class","span10 offset2")
+    if $("#article_contents").attr("class")=="span12"
+      $("#article_contents").attr("class","span9 offset3")
+    else 
+      $("#article_contents").attr("class","span12")
 
   $(document).on "submit", "form", (event)->
     $(this).find("input[type='submit']").val("Working...")
