@@ -3,6 +3,11 @@ class SessionsController < ApplicationController
     path = request.path
 
     @signin_layout= true
+    if path.include? "staff" then
+      @is_employee = true
+    else
+      @is_employee = false
+    end
     if current_employee then
       redirect_to home_path
     elsif current_user then
@@ -16,24 +21,17 @@ class SessionsController < ApplicationController
     authenticated = false
     isUser = false
     isEmployee= false
-    if params[:uid] then
+    if params[:uid] or params[:user] then
       personnel = User.find_by_email(params[:email])
     else
       personnel = Employee.find_by_email(params[:email])
     end
     if personnel && personnel.authenticate(params[:password]) then
       authenticated = true
-      if params[:uid] then
+      if params[:uid] or params[:user] then
         isUser = true
       else
         isEmployee = true
-      end
-    elsif params[:uid] then 
-    else
-      personnel = User.find_by_email(params[:email])
-      if personnel && personnel.authenticate(params[:password]) then
-        authenticated = true
-        isUser = true
       end
     end
 
@@ -61,6 +59,8 @@ class SessionsController < ApplicationController
       respond_to do |format|
         if params[:uid] then
           format.json { render json: @not_valid }
+        elsif params[:user] then
+          format.html { redirect_to root_path, :notice => "Invalid email or password."}
         else
           format.html { redirect_to root_uploader_path, :notice => "Invalid email or password."}
         end
@@ -71,6 +71,10 @@ class SessionsController < ApplicationController
   def destroy
     session[:employee_id] = nil
     session[:user_id] = nil
-    redirect_to root_path, :notice => "You have successfully logged out."
+    if request.env['HTTP_REFERER'].include? 'staff' then
+      redirect_to root_uploader_path, :notice => "You have successfully logged out."
+    else
+      redirect_to root_path, :notice => "You have successfully logged out."
+    end
   end
 end
