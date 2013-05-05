@@ -81,7 +81,7 @@ class EmployeesController < ApplicationController
     if @employee.save
       @employee.send_create_account
       respond_to do |format|
-        format.html { redirect_to administrator_url, notice: 'Employee was successfully created.' }
+        format.html { redirect_to employees_url, notice: 'Employee was successfully created.' }
         #     format.json
       end 
     else
@@ -132,12 +132,12 @@ class EmployeesController < ApplicationController
       @employee = Employee.find(params[:id])
       @employee.destroy    
       respond_to do |format|
-        format.html { redirect_to administrator_path }
+        format.html { redirect_to employees_path }
         format.json { head :no_content }
       end
     rescue ActiveRecord::RecordNotFound
       respond_to do |format|
-        format.html { redirect_to home_path, notice: "That employee does not exist."}
+        format.html { redirect_to employees_path, notice: "That employee does not exist."}
       end
     end
   end

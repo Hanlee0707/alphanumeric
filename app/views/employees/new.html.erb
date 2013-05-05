@@ -1,7 +1,7 @@
 <% provide(:title, "New Employee") %>
 
 
-<%= form_for @employee, :url=> administrator_employees_path do |f| %>
+<%= form_for @employee, :url=> employees_path do |f| %>
   <div class="row-fluid center">
     <div class="span3"></div>
     <div class="span6">
@@ -110,7 +110,7 @@
     <div class="span3"></div>    
     <div class="actions span6 center">
       <%= f.submit "Create and send mail", class: 'btn btn-primary' %>
-      <%= link_to 'Back', administrator_path, class: 'btn btn-primary make-white' %>
+      <%= link_to 'Back', employees_path, class: 'btn btn-primary make-white' %>
     </div>
     <div class="span3"></div>
   </div>

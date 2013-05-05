@@ -23,7 +23,7 @@ Alphanumeric::Application.routes.draw do
     resources :account_creates 
     resources :reset_password, :only => [:new, :create, :edit, :update]
     resources :sessions
-    resources :employees, :only => [:new, :create, :show, :edit, :update, :index]
+    resources :employees, :only => [:new, :create, :show, :edit, :update, :index,:destroy]
     match '/employees/:id/admin_edit/' => 'employees#edit', :via => :get, as: 'edit_administrative_employee'
     match '/employees/:id/admin_edit/' => 'employees#update', :via => :put, as: 'edit_administrative_employee'
     match '/edit_personal' => 'employees#edit', :via => :get, as: 'edit_personal_info'
