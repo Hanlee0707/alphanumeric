@@ -18,13 +18,13 @@
   <div class="row-fluid">
     <% count = 0 %>
     <% article.issue_list.each do |tag| %>
-    <div class="row-fluid">
+    <div class="row-fluid"><em>
       <% if current_user then %>
-      <%= link_to "Previously on "+tag, user_tag_path(tag) %>
+      <%= link_to "Previously on "+tag, user_tag_path(tag), style: "color:#555;" %>
       <% else %>
-      <%= link_to "Previously on "+tag, tag_path(tag) %>
+      <%= link_to "Previously on "+tag, tag_path(tag), style: "color:#555;" %>
       <% end %>
-    </div>
+    </em></div>
     <% end %>
     <!-- <% article.tag_list.each do |tag| %> -->
     <!--   <% if count < 3 then %> -->

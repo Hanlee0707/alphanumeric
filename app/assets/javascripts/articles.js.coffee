@@ -296,13 +296,14 @@ jQuery ($) ->
     event.preventDefault()
     event.stopPropagation()
     target= $(this)
-    right = target.offset().left + target.width()
+    target_placement = $("#recent_container").children(".row-fluid").children(".span11") 
+    right = target_placement.offset().left
     bottom = target.offset().top + target.height()
     content = target.data("content")
     content_regexp = new RegExp("&quot;", "g")
     content = content.replace(content_regexp, "\"")
     $("#definition_window").html(content)
-    $("#definition_window").css({'top': bottom, 'left': right})
+    $("#definition_window").css({'top': bottom, 'left': right, 'width': target_placement.width()-12})
     $("#definition_window").show()
     $(document).on "click", ->
       $("#definition_window").hide()
