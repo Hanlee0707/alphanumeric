@@ -2,7 +2,7 @@
 <div class="span11">
   <div class="row-fluid">
     <div class="row-fluid center">
-      <strong>Details</strong>
+      <strong>Numbers</strong>
       <div class="hr-full center"></div>
     </div>
   </div>
@@ -49,19 +49,12 @@
     <% end %>
     
     <div class="row-fluid">
-      <% ordering = "left" %>
       <% article.numbers.each do |number| %>
-      <% class_location = "row-fluid " + ordering %>
-      <div class="<%= class_location %>">
-	  <% if ordering == "left" %>
-	  <% ordering = "right" %>
-	  <% else %>
-	  <% ordering = "left" %>
-	  <% end %>
+      <div style="margin-top:8px;">
 	<div class="row-fluid" style="font-size:20pt;">
 	  <%= number.value%>
 	</div>
-	<div class="row-fluid">
+	<div class="row-fluid" style="margin-top:1px;">
 	  <%=number.explanation %>
 	</div>
       </div>
