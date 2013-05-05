@@ -49,8 +49,13 @@
     <% end %>
     
     <div class="row-fluid">
+      <% index = 0 %>
       <% article.numbers.each do |number| %>
+      <% if index > 0 then %>
       <div style="margin-top:13px;">
+	<% else %>
+	<div>
+	  <% end %>
 	<div class="row-fluid" style="font-size:20pt;">
 	  <%= number.value%>
 	</div>
@@ -58,6 +63,7 @@
 	  <%=number.explanation %>
 	</div>
       </div>
+	<% index = index + 1 %>
       <% end %>
     </div>
     <div class="row-fluid"><div class="span12"></div></div>
