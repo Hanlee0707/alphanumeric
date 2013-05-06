@@ -40,7 +40,7 @@ Alphanumeric::Application.routes.draw do
       resources :approved, :only => [:index], as: 'approved_workspace' 
       resources :published, :only => [:index], as: 'published_workspace' 
     end
-    resources :users, :only => [:index]
+    resources :users, :only => [:index], as: 'staff_users'
     match '/update_status', to: 'articles#update_status', :via => :post, as: 'update_status'
     match '/insert_article', to: 'articles#insert_article', :via => :post, as: 'staff_insert_article'
     match '/publish_articles', to: 'articles#publish_articles', :via => :post, as: 'publish_articles'
