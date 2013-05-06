@@ -12,7 +12,7 @@ class ResetPasswordController < ApplicationController
   def create
     path = request.path
     if path.include? "staff" then
-      employee = Employee.find_by_email(params[:email])
+      employee = Employee.find_by_email(params[:email].downcase)
       if employee then
         if employee.send_password_reset
           redirect_to root_uploader_url, :notice => "Email sent with password reset instructions."
@@ -23,7 +23,7 @@ class ResetPasswordController < ApplicationController
         redirect_to new_reset_password_url, :notice => "Account with that email does not exist."
       end
     else
-      user = User.find_by_email(params[:email])
+      user = User.find_by_email(params[:email].downcase)
       if user then
         if user.send_password_reset
           redirect_to root_url, :notice => "Email sent with password reset instructions."

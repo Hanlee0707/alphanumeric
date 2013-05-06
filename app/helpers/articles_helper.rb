@@ -20,7 +20,6 @@ module ArticlesHelper
 #      puts explanation
       def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);" )
        content = content.gsub(/#{definition[:phrase]}(?=[^>]*(<))/i, def_link)
-                         puts content
     }
  
     return content
