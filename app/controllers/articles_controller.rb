@@ -314,9 +314,12 @@ class ArticlesController < ApplicationController
   # PUT /articles/1.json
   def update
     @article = Article.find(params[:id])
-    if current_employee and (current_employee.id == @article.editor_id or current_employee.id == @article.contributor_id)
+    if current_employee and (current_employee.id == @article.editor_id or current_employee.id == @article.contributor_id or current_employee.employee_positions.find_by_position("Editor").level > 1) 
       @article = Article.find(params[:id])
       respond_to do |format|
+        if @article != params[:article] then
+          params[:article][:updated_at] = Time.now
+        end
         if @article.update_attributes(params[:article])
             format.html { redirect_to workspace_article_url(@article), notice: "Article was successfully updated." and return}
         else

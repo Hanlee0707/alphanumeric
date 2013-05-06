@@ -1,5 +1,5 @@
 class Article < ActiveRecord::Base
-  attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id, :temporary_title, :instruction, :category, :issue_list, :searched_editor_id, :editor_last_name, :initiated_by_contributor
+  attr_accessible :city, :country, :current_content, :title, :numbers_attributes, :images_attributes, :check, :id, :numbers, :images, :tag_list, :previous_summary, :contributor_id, :extra_informations_attributes, :additional_texts_attributes, :citations_attributes, :contributor_last_name, :status, :searched_contributor_id, :editor_id, :temporary_title, :instruction, :category, :issue_list, :searched_editor_id, :editor_last_name, :initiated_by_contributor, :updated_at
   attr_accessor :contributor_last_name, :editor_last_name, :searched_contributor_id, :searched_editor_id
 
   validates_presence_of :temporary_title, :message => "^Please give the article a temporary title.", :on=> :create

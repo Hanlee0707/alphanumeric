@@ -40,14 +40,18 @@
 	<div style="float:left;position:relative;left:50%;">
 	  <% if ((employee_privilege("Editor") and (@status=="Assigned" or (@article.contributor_id != current_employee.id and @status=="Being Written"))) or (employee_privilege("Contributor") and @status=="Assigned")) %>
 	  <div style="float:left;position:relative;left: -50%;">
+	    <% if @article.issue_list.any? %>
 	  <h6><%= @article.issue_list[0].upcase %></h6>
+	  <% end %>
 	  <h3 id="title">
 	    <%= @article.temporary_title %>
 	  </h3>
 	  </div>
 	  <% else %>
 	  <div style="float:left;position:relative;left: -50%;">
+	    <% if @article.issue_list.any? %>
 	    <h6><%= @article.issue_list[0].upcase %></h6>
+	    <% end %>
 	    <h3 id="title">
 	      <%= @article.title %><%= link_to raw("<i class='icon-info-sign'></i>"), "#",  class: 'show_citations_window' %>	  
 	    </h3>
