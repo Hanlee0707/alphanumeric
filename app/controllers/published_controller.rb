@@ -81,6 +81,7 @@ class PublishedController < ApplicationController
     @articles.map { |article| 
       object = {}
       object[:article]=article
+      object[:article][:updated_at] = article.updated_at.localtime
       object[:image]=article.images
       object[:numbers]=article.numbers
       object[:extra_informations]=article.extra_informations

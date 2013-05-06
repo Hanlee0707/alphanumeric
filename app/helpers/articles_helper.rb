@@ -11,6 +11,7 @@ module ArticlesHelper
     definitions = article.extra_informations
     puts content
     index = 0
+    content = "<span>" + content + "</span>"
     definitions.each { |definition|
 #      puts definition[:explanation]
 #      explanation = definition[:explanation].gsub("\"", "&quot;");
@@ -19,6 +20,7 @@ module ArticlesHelper
       explanation = definition[:explanation]
 #      puts explanation
       def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);" )
+#       content = content.gsub(/(?<!\<[^\>]*)\b#{definition[:phrase]}\b(?![^\>]*\>)/i, def_link)
        content = content.gsub(/#{definition[:phrase]}(?=[^>]*(<))/i, def_link)
     }
  
