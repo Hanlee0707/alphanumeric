@@ -32,6 +32,7 @@
 	  <tr>
 	    <th class="span4">NAME</th>
 	    <th class="span3">EMAIL</th>
+	    <th class="span1"></th>
 	  </tr>
 	</thead>
 	<tbody>
@@ -39,6 +40,10 @@
 	  <tr>
 	    <td><%= user.first_name+" "+user.last_name %></td>
 	    <td><%= user.email %></td>
+	    <% if @can_delete then %>
+	    <td><%= link_to 'Delete', staff_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary make-white' %> 
+	    </td>
+	    <% end %>
 	  </tr>
 	  <% end %>
 	</tbody>
