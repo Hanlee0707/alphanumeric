@@ -3,7 +3,7 @@
   <div class="span3 side-contents-bar" style="padding:0;">
     <div class="row-fluid" style="margin:0;padding:0;">
       <div class="row-fluid" style="margin:0;padding:0;">
-	  <%= link_to image_tag("bt_time.png", alt: "time"), published_index_path(:sort => "published_at", :direction => @direction), class:"span4 read-article title-background center", style:"width:33.3%;margin:0;height:40px;padding-top:7px;" %>
+	  <%= link_to image_tag("bt_time.png", alt: "time"), published_index_path(:sort => "updated_at", :direction => @direction), class:"span4 read-article title-background center", style:"width:33.3%;margin:0;height:40px;padding-top:7px;" %>
 	  <%= link_to image_tag("bt_category.png", alt: "category"), published_index_path(:sort => "category"),  class:"span4 read-article title-background center", style:"width:33.3%;margin:0;height:40px;padding-top:7px;" %>
 	<div class="span4 read-article title-background" style="width:33.3%;margin:0;height:40px;padding-top:7px;">
 	</div>
@@ -21,7 +21,7 @@
 	  <div class='row-fluid little-padding-bottom'>
 	    <span class="category-color"><%= article.category + " | "%></span><span class="location-color"><%= article.country %></span>
 	    <span class="published-time-color" style="float:right;padding-right:5px;">
-	      <%= distance_of_time_in_words_to_now(article.published_at.localtime) %>
+	      <%= distance_of_time_in_words_to_now(article.updated_at.localtime) %>
 	    </span>
 	  </div>
 	</div>

@@ -36,7 +36,7 @@ class PublishedController < ApplicationController
       if followed_article_ids.present?
         @articles = @articles.where("id NOT IN (?)", followed_article_ids)
       end
-      if sort_column == "published_at" then
+      if sort_column == "updated_at" then
         @articles = @articles.order(sort_column+ " " + sort_direction).paginate(:per_page => 20, :page => params[:page])
       else
         if sort_direction == "desc" then
@@ -58,14 +58,14 @@ class PublishedController < ApplicationController
       if current_employee.employee_positions.find_by_position("Editor").level > 1 then 
         @articles = Article.where("status =?", "Published").order(sort_column+ " " + sort_direction).paginate(:per_page => 20, :page => params[:page])
       else
-        @articles = Article.where("editor_id = ? and status = ?", current_employee.id, "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
+        @articles = Article.where("editor_id = ? and status = ?", current_employee.id, "Published").order('updated_at desc, created_at desc').paginate page: params[:page], per_page: 20
       end
     else
       if params[:tag] then
-        @articles = Article.tagged_with(params[:tag]).where("status = ?", "Published").order('published_at desc, created_at desc').paginate page: params[:page], per_page: 20
+        @articles = Article.tagged_with(params[:tag]).where("status = ?", "Published").order('updated_at desc, created_at desc').paginate page: params[:page], per_page: 20
       else
         @articles = Article.where("status = ?", "Published")
-        if sort_column == "published_at" then
+        if sort_column == "updated_at" then
           @articles = @articles.order(sort_column+ " " + sort_direction).paginate(:per_page => 20, :page => params[:page])
         else
           if sort_direction == "desc" then
@@ -99,7 +99,7 @@ class PublishedController < ApplicationController
   private
 
   def sort_column
-    Article.column_names.include?(params[:sort]) ? params[:sort] : "published_at"
+    Article.column_names.include?(params[:sort]) ? params[:sort] : "updated_at"
   end
   
   def sort_direction
