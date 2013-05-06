@@ -1,6 +1,18 @@
 class UsersController < ApplicationController
   before_filter :logged_in?, :only => [:edit, :update] 
 
+  def index
+    @user_index_layout = true
+    if employee_privilege("Administrator") or employee_privilege("Editor") then
+      @users = User.order("last_name").paginate(:per_page => 10, :page => params[:page])
+    else
+      respond_to do |format|
+        format.html { redirect_to home_path, notice: "You don't have the required privilege." }
+      end
+    end
+  end
+
+
   def new
     @user = User.new
   end

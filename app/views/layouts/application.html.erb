@@ -91,6 +91,12 @@
 		<li>
 		<% end %>
 		<%= link_to "STAFF", employees_path %></li>
+		<% if @user_index_layout then %>
+		<li class="active">
+		<% else %>
+		<li>
+		<% end %>
+		<%= link_to "USERS", users_path %></li>
 		<% end %>
               </ul>
 	      <% elsif current_user %>
