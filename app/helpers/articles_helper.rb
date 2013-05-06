@@ -8,23 +8,25 @@ module ArticlesHelper
 
   def add_definitions(article)
     content = article.current_content
-    definitions = article.extra_informations
-    puts content
-    index = 0
-    content = "<span>" + content + "</span>"
-    definitions.each { |definition|
-#      puts definition[:explanation]
-#      explanation = definition[:explanation].gsub("\"", "&quot;");
-#      explanation = explanation.gsub("<", "&lt;");
-#      explanation = explanation.gsub(">", "&gt;");
-      explanation = definition[:explanation]
-#      puts explanation
-      def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);" )
-#       content = content.gsub(/(?<!\<[^\>]*)\b#{definition[:phrase]}\b(?![^\>]*\>)/i, def_link)
-       content = content.gsub(/#{definition[:phrase]}(?=[^>]*(<))/i, def_link)
-    }
+    if !content.nil? then
+      definitions = article.extra_informations
+      puts content
+      index = 0
+      content = "<span>" + content + "</span>"
+      definitions.each { |definition|
+        #      puts definition[:explanation]
+        #      explanation = definition[:explanation].gsub("\"", "&quot;");
+        #      explanation = explanation.gsub("<", "&lt;");
+        #      explanation = explanation.gsub(">", "&gt;");
+        explanation = definition[:explanation]
+        #      puts explanation
+        def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);" )
+                           #       content = content.gsub(/(?<!\<[^\>]*)\b#{definition[:phrase]}\b(?![^\>]*\>)/i, def_link)
+                           content = content.gsub(/#{definition[:phrase]}(?=[^>]*(<))/i, def_link)
+                         }
  
-    return content
+      return content
+    end
   end
 
   def calculate_date(article)
