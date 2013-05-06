@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   validates :password, presence: true,  length: {:minimum => 8, :maximum => 20},:if => :should_validate_password?
   validates :first_name, :presence => :true
   validates :last_name, :presence => :true
+
   has_many :user_archived_articles, :dependent => :destroy
   has_many :user_read_articles, :dependent => :destroy
   has_many :user_followed_articles, :dependent => :destroy
@@ -23,8 +24,7 @@ class User < ActiveRecord::Base
 
   def send_password_reset
     generate_token(:password_reset_token)
-    self.password_reset_sent_at = Time.zone.now
-    save!
+    self.update_attribute(:password_reset_sent_at, Time.zone.now)
     UserMailer.reset_password(self).deliver
   end
 

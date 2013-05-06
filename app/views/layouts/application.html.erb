@@ -131,7 +131,11 @@
 		  <% else %>
 		<li>
 		  <% end %>
+		  <% if @is_employee then %>
+		  <%= link_to "Sign In", root_uploader_path %></li>
+		<% else %>
 		  <%= link_to "Sign In", root_path %></li>
+		<% end %>
 		<% end %>
               </ul>
             </nav>
