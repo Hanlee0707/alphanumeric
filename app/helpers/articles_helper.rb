@@ -20,7 +20,7 @@ module ArticlesHelper
         #      explanation = explanation.gsub(">", "&gt;");
         explanation = definition[:explanation]
         #      puts explanation
-        def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);" )
+        def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);font-weight:bold;" )
                            #       content = content.gsub(/(?<!\<[^\>]*)\b#{definition[:phrase]}\b(?![^\>]*\>)/i, def_link)
                            content = content.gsub(/#{definition[:phrase]}(?=[^>]*(<))/i, def_link)
                          }
