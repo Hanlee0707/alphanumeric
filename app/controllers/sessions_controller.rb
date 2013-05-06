@@ -22,9 +22,9 @@ class SessionsController < ApplicationController
     isUser = false
     isEmployee= false
     if params[:uid] or params[:user] then
-      personnel = User.find_by_email(params[:email].downcase)
+      personnel = User.where("lower(email) = lower(?)", params[:email]).first 
     else
-      personnel = Employee.find_by_email(params[:email].downcase)
+      personnel = Employee.where("lower(email) = lower(?)", params[:email]).first 
     end
     if personnel && personnel.authenticate(params[:password]) then
       authenticated = true
