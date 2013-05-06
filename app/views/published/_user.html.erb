@@ -23,7 +23,7 @@
 	    <span class="category-color"><%= article.category + " | "%></span><span class="location-color"><%= article.country %></span>
 	    <!-- </div> -->
 	    <!-- <span class='span5 right little-padding-right'> -->
-	    <span class="published-time-color" style="float:right;">
+	    <span class="published-time-color" style="float:right;padding-right:5px;">
 	      <%= distance_of_time_in_words_to_now(article.published_at.localtime) %>
 	    </span>
 	  </div>
@@ -41,7 +41,7 @@
 	  </div>
 	  <div class='row-fluid little-padding-bottom'>
 	    <span class="category-color"><%= article.category + " | "%></span><span class="location-color"><%= article.country %></span>
-	    <span class="published-time-color" style="float:right;">
+	    <span class="published-time-color" style="float:right;padding-right:5px;">
 	      <%= distance_of_time_in_words_to_now(article.published_at.localtime) %>
 	    </span>
 	  </div>

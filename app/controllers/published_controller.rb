@@ -9,6 +9,8 @@ class PublishedController < ApplicationController
       @workspace_layout = true
     elsif request.path.include? "published" then
       @published_layout = true
+    elsif request.path.include? "newsbox" then
+      @newsbox_layout = true
     end
   end  
 
