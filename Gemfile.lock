@@ -225,7 +225,7 @@ DEPENDENCIES
   gelf
   graylog2-resque
   graylog2_exceptions!
-  htmlentities
+  htmlentities (~> 4.3.1)
   jquery-rails
   jquery-ui-rails
   json
