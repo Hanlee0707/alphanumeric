@@ -38,7 +38,7 @@
 	      <% if @isContributor then %>
 	      <td><%= article.editor.first_name + " " + article.editor.last_name %></td>
 	      <% end %>
-	      <td><%= article.created_at.localtime.strftime "%m/%d/%y" %></td>
+	      <td><%= article.created_at.strftime "%m/%d/%y %Z" %></td>
 	    </tr>
 	    <% end %>
 	  </tbody>

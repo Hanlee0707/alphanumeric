@@ -40,9 +40,9 @@
 	      <% if article.published_at.nil? %>
 	      <td>NO TIME </td>
 	      <% else %>
-	      <td><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
+	      <td><%= article.published_at.strftime "%m/%d/%y %I:%M:%S %p %Z" %></td>
 	      <% end %>
-	      <td><%= article.updated_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
+	      <td><%= article.updated_at.strftime "%m/%d/%y %I:%M:%S %p %Z" %></td>
 	    </tr>
 	    <% end %>
 	  </tbody>

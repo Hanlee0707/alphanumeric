@@ -30,7 +30,7 @@
 	    <% if article.published_at.nil? %>
 	      <td style="color:gray;">NO TIME </td>
 	    <% else %>
-	      <td style="color:gray;"><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
+	      <td style="color:gray;"><%= article.published_at.strftime "%m/%d/%y %I:%M:%S %p %Z" %></td>
 	    <% end %>
 	  <% else %>
 	    <td><%= link_to article.title, user_archived_article_path(article)%></td>
@@ -38,7 +38,7 @@
 	    <% if article.published_at.nil? %>
 	      <td>NO TIME </td>
 	    <% else %>
-	      <td><%= article.published_at.localtime.strftime "%m/%d/%y %I:%M:%S %p" %></td>
+	      <td><%= article.published_at.strftime "%m/%d/%y %I:%M:%S %p %Z" %></td>
 	    <% end %>
 	  <% end %>
 	</tr>
