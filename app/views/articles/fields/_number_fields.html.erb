@@ -1,10 +1,16 @@
 <div class="row-fluid">
   <div class="span3 input-append">
-    <%= f.text_field :value, size: 20, maxlength: 20, placeholder: "Number", class: "span10"%>
-    <span class="add-on">
-      <%= f.hidden_field :_destroy, value: "0" %>
-      <%= link_to raw('<i class="icon-remove-sign"></i>'), "#", class:'remove_nested_attributes_button up'%>
-    </span>
+    <div class="row-fluid">
+      <%= f.text_field :value, size: 20, maxlength: 20, placeholder: "Number", class: "span10"%>
+      <span class="add-on">
+	<%= f.hidden_field :_destroy, value: "0" %>
+	<%= link_to raw('<i class="icon-remove-sign"></i>'), "#", class:'remove_nested_attributes_button up'%>
+      </span>
+    </div>
+    <div class="row-fluid center">
+      <%= link_to raw("<i class='icon-arrow-up'></i>"), "#", class: "switch_number_values_up" %>
+      <%= link_to raw("<i class='icon-arrow-down'></i>"), "#", class: "switch_number_values_down" %>
+    </div>    
   </div>
   <div class="span1"></div>
   <div class="span8">

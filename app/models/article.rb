@@ -17,7 +17,7 @@ class Article < ActiveRecord::Base
   belongs_to :contributor, :class_name => "Employee", :foreign_key => "contributor_id"
   belongs_to :editor, :class_name => "Employee", :foreign_key => "editor_id"
 
-  accepts_nested_attributes_for :numbers, allow_destroy: true
+  accepts_nested_attributes_for :numbers, allow_destroy: true, reject_if: lambda { |a| a[:value].blank? || a[:explanation].blank? }
   accepts_nested_attributes_for :images, allow_destroy: true, reject_if: lambda { |a| a[:image_name].blank? || a[:image_type].blank? }
   accepts_nested_attributes_for :extra_informations, allow_destroy: true, reject_if: lambda { |a| a[:phrase].blank? || a[:explanation].blank? }
   accepts_nested_attributes_for :additional_texts, allow_destroy: true

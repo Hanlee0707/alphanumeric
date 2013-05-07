@@ -156,6 +156,42 @@ jQuery ($) ->
     $("input[type='submit']").attr('disabled', true)
     $("a").attr('disabled', true)
 
+  $(document).on "click", ".switch_number_values_up", (event)->
+    event.preventDefault()
+    field = $(this).closest(".fields")
+    if field.prevAll("div[class*=fields][style!='display:none;']:first").length > 0
+      prev_field = field.prevAll("div[class*=fields][style!='display:none;']:first")
+      curr_value_container = field.find("[id*='value']")
+      curr_explanation_container = field.find("[id*='explanation']")
+      curr_value = curr_value_container.val()
+      curr_explanation = curr_explanation_container.val()
+      prev_value_container = prev_field.find("[id*='value']")
+      prev_explanation_container = prev_field.find("[id*='explanation']")
+      prev_value = prev_value_container.val()
+      prev_explanation = prev_explanation_container.val()
+      prev_value_container.val(curr_value)
+      prev_explanation_container.val(curr_explanation)      
+      curr_value_container.val(prev_value)
+      curr_explanation_container.val(prev_explanation)      
+
+  $(document).on "click", ".switch_number_values_down", (event)->
+    event.preventDefault()
+    field = $(this).closest(".fields")
+    if field.nextAll("div[class*=fields][style!='display:none;']:first").length > 0
+      next_field = field.nextAll("div[class*=fields][style!='display:none;']:first")
+      curr_value_container = field.find("[id*='value']")
+      curr_explanation_container = field.find("[id*='explanation']")
+      next_value_container = next_field.find("[id*='value']")
+      next_explanation_container = next_field.find("[id*='explanation']")
+      curr_value = curr_value_container.val()
+      curr_explanation = curr_explanation_container.val()
+      next_value = next_value_container.val()
+      next_explanation = next_explanation_container.val()
+      curr_value_container.val(next_value)
+      curr_explanation_container.val(next_explanation)      
+      next_value_container.val(curr_value)
+      next_explanation_container.val(curr_explanation)      
+
 
   $(document).on "click", ".hide-form-element", (event)->
     event.preventDefault()
