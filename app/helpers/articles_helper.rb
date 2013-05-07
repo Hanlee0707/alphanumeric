@@ -1,5 +1,6 @@
 module ArticlesHelper
   include ERB::Util
+  require 'htmlentities'
 
   def get_contributor(contributor_id)
     contributor= Employee.find(contributor_id)
@@ -7,6 +8,7 @@ module ArticlesHelper
   end
 
   def add_definitions(article)
+    coder = HTMLEntities.new
     content = article.current_content
     if !content.nil? then
       definitions = article.extra_informations
@@ -15,8 +17,22 @@ module ArticlesHelper
       content = "<span>" + content + "</span>"
       definitions.each { |definition|
         explanation = definition[:explanation]
-        def_link = link_to(h(definition[:phrase]), "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);font-weight:bold;" )
-                           content = content.gsub(/#{h(definition[:phrase])}(?=[^>]*(<))/i, def_link)
+        escaped_phrase = coder.encode(definition[:phrase])
+        if definition[:phrase] != escaped_phrase then
+          escaped_phrase_decimal = coder.encode(definition[:phrase], :decimal)
+          escaped_phrase_basic = coder.encode(definition[:phrase], :basic)
+          escaped_phrase_named = coder.encode(definition[:phrase], :named)
+          escaped_phrase_hex = coder.encode(definition[:phrase], :hexadecimal)
+        end
+        def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);font-weight:bold;" )
+        content = content.gsub(/#{escaped_phrase}(?=[^>]*(<))/i, def_link)
+        if definition[:phrase] != escaped_phrase then
+          content = content.gsub(/#{escaped_phrase_decimal}(?=[^>]*(<))/i, def_link)
+          content = content.gsub(/#{escaped_phrase_basic}(?=[^>]*(<))/i, def_link)
+          content = content.gsub(/#{escaped_phrase_named}(?=[^>]*(<))/i, def_link)
+          content = content.gsub(/#{escaped_phrase_hex}(?=[^>]*(<))/i, def_link)
+        end  
+
                          }
  
       return content

@@ -14,7 +14,7 @@ gem 'rails3-jquery-autocomplete'
 gem 'sass-rails',   '~> 3.2.3'
 gem 'rubber'
 gem 'turbo-sprockets-rails3'
-
+gem 'htmlentities'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
