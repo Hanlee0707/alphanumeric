@@ -217,7 +217,7 @@ DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
   bootstrap-datetimepicker-rails
   bootstrap-modal-rails
-  bootstrap-sass
+  bootstrap-sass (~> 2.3.1.0)
   carrierwave
   ckeditor
   cocoon
