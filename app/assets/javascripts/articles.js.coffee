@@ -416,7 +416,6 @@ jQuery ($) ->
     event.preventDefault()
     association = $(this).attr("data-association")
     content = $(this).attr("data-content")
-    alert content
     target = $(this).attr("data-target")
     del = $(this).attr("data-delete") 
     new_id = new Date().getTime()
