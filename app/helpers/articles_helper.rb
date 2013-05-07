@@ -14,15 +14,9 @@ module ArticlesHelper
       index = 0
       content = "<span>" + content + "</span>"
       definitions.each { |definition|
-        #      puts definition[:explanation]
-        #      explanation = definition[:explanation].gsub("\"", "&quot;");
-        #      explanation = explanation.gsub("<", "&lt;");
-        #      explanation = explanation.gsub(">", "&gt;");
         explanation = definition[:explanation]
-        #      puts explanation
-        def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);font-weight:bold;" )
-                           #       content = content.gsub(/(?<!\<[^\>]*)\b#{definition[:phrase]}\b(?![^\>]*\>)/i, def_link)
-                           content = content.gsub(/#{definition[:phrase]}(?=[^>]*(<))/i, def_link)
+        def_link = link_to(h(definition[:phrase]), "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);font-weight:bold;" )
+                           content = content.gsub(/#{h(definition[:phrase])}(?=[^>]*(<))/i, def_link)
                          }
  
       return content
