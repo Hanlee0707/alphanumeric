@@ -4,6 +4,6 @@
 
 jQuery ($) ->
   $(document).on "ready", ->
-    btnHeight = parseInt($("#password").outerHeight()) + parseInt($("#email").parent().height())
+    btnHeight = parseInt($("#login_password").outerHeight()) + parseInt($("#email").parent().height())
     $("#login_button").css({'height':(btnHeight+'px')})
 

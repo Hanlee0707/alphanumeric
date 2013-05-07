@@ -66,7 +66,7 @@ jQuery ($) ->
       $(this).css("font-color", "black")
     end		    
 
-  $("input, select").bind "keypress keydown keyup", (e) ->
+  $("input:not('#login_password, #reset_password_email, [id*=password_confirmation]'), select").bind "keypress keydown keyup", (e) ->
     code = e.keycode or e.which
     return code != 13
   

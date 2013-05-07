@@ -12,7 +12,7 @@
 <% else %>
 <%= form_tag reset_password_index_path, :method => :post do %>
 <div class="row-fluid fields center">
-  <%= text_field_tag :email, params[:email], placeholder: "email", class: 'down' %>
+  <%= text_field_tag :email, params[:email], placeholder: "email", class: 'down', id:"reset_password_email" %>
   <%= submit_tag "Request", :class => "btn"%>
 </div>
 <% end %>

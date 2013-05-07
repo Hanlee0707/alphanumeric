@@ -27,14 +27,18 @@
 	</div>
       </div>
       <div class="row-fluid">
-	<%= f.text_field :temporary_title, :size => 80, maxlength: 80, placeholder: "Enter temporary title(issue) here", class: "span11-5" %>
-	<span style="float:right;">
+	<div class="span11">
+	<%= f.text_field :temporary_title, :size => 80, maxlength: 80, placeholder: "Enter temporary title(issue) here", class: "span12" %>
+	</div>
+	<span class="span1" style="float:right;">
 	  <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "enter a temporary title for the article."} %>
 	</span>
       </div>
       <div class="row-fluid">
-	<%= f.text_area :instruction, rows: 15, class:"input-xxlarge span11-5", placeholder: "outline for the article" %>
-	<span style="float:right;">
+	<div class="span11">
+	<%= f.text_area :instruction, rows: 15, class:"input-xxlarge span12", placeholder: "outline for the article" %>
+	</div>
+	<span class="span1" style="float:right;">
 	  <%= link_to raw("<i class='icon-question-sign'></i>"), "#",  class: 'show_tip', data: {tip: "Write an outline for the editor. What kind of approach will you take?"} %>
 	</span>
       </div>
