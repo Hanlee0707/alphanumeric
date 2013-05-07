@@ -80,8 +80,10 @@ class PublishedController < ApplicationController
     objects = []
     @articles.map { |article| 
       object = {}
-      object[:article]=article
-      object[:article][:updated_at] = article.updated_at.localtime
+      object[:article]=article.attributes.deep_dup
+      puts object[:article]["updated_at"]
+      object[:article]["updated_at"]= object[:article]["updated_at"].localtime
+      puts object[:article]["updated_at"]
       object[:image]=article.images
       object[:numbers]=article.numbers
       object[:extra_informations]=article.extra_informations
