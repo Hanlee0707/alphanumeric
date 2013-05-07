@@ -42,7 +42,7 @@ GEM
     bootstrap-datetimepicker-rails (0.0.10.1)
     bootstrap-modal-rails (2.1)
       railties (>= 3.1)
-    bootstrap-sass (2.3.1.1)
+    bootstrap-sass (2.3.1.0)
       sass (~> 3.2)
     builder (3.0.4)
     capistrano (2.15.4)
@@ -217,7 +217,7 @@ DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
   bootstrap-datetimepicker-rails
   bootstrap-modal-rails
-  bootstrap-sass (~> 2.3.1.0)
+  bootstrap-sass (= 2.3.1.0)
   carrierwave
   ckeditor
   cocoon
