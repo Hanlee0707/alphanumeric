@@ -56,9 +56,9 @@ class PublishedController < ApplicationController
     elsif employee_privilege("Editor") and (@workspace_layout or params[:page]) then
       @isEditor = true
       if current_employee.employee_positions.find_by_position("Editor").level > 1 then 
-        @articles = Article.where("status =?", "Published").order('updated_at desc, created_at desc').paginate(:per_page => 5, :page => params[:page])
+        @articles = Article.where("status =?", "Published").order('updated_at desc, created_at desc').paginate(:per_page => 20, :page => params[:page])
       else
-        @articles = Article.where("editor_id = ? and status = ?", current_employee.id, "Published").order('updated_at desc, created_at desc').paginate(page: params[:page], per_page: 5)
+        @articles = Article.where("editor_id = ? and status = ?", current_employee.id, "Published").order('updated_at desc, created_at desc').paginate(page: params[:page], per_page: 20)
       end
     else
       if params[:tag] then
