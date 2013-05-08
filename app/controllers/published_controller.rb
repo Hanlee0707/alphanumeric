@@ -82,7 +82,7 @@ class PublishedController < ApplicationController
       object = {}
       object[:article]=article
       object[:image]=article.images
-      object[:numbers]=article.numbers
+      object[:numbers]=article.numbers.order("id asc")
       object[:extra_informations]=article.extra_informations
       object[:additional_texts]=article.additional_texts
       object[:tag_list]=article.tag_list

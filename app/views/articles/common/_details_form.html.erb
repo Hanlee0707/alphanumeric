@@ -60,7 +60,7 @@
     <div class="row-fluid">
       <div class="row-fluid">
 	<div id="numbers" class="row-fluid">
-	  <% @article.numbers.order("created_at asc").each do |number| %>
+	  <% @article.numbers.order("id asc").each do |number| %>
  	    <%= f.fields_for :numbers, number do |builder| %>
 	    <div class="fields row-fluid">
 	      <%= render 'articles/fields/number_fields', :f => builder %>
