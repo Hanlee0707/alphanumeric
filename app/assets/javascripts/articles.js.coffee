@@ -53,6 +53,12 @@ jQuery ($) ->
       $("#article_editor_last_name").val("")
       $("#editor_container").val("")
       $(this).attr("placeholder", "You have to select from the searched list")
+    pathname = window.location.pathname
+    if pathname.indexOf("workspace/published") != -1
+      $("div.pagination a").each ->
+        url = $(this).attr("href")
+        url = url.replace("/staff/published", "/staff/workspace/published")
+        $(this).attr "href", url
 
   $(document).on "change", "span.cke_path_item", (event) ->
     counts = $(this).val().split(", ")
