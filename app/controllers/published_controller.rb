@@ -37,14 +37,14 @@ class PublishedController < ApplicationController
         @articles = @articles.where("id NOT IN (?)", followed_article_ids)
       end
       if sort_column == "updated_at" then
-        @articles = @articles.order(sort_column+ " " + sort_direction).paginate(:per_page => 20, :page => params[:page])
+        @articles = @articles.order(sort_column+ " " + sort_direction)
       else
         if sort_direction == "desc" then
           order_words = "category != 'US', category != 'World', category !='Politics', category !='Economy', category!='Technology'"
         else
           order_words = "category != 'Technology', category != 'Economy', category !='Politics', category !='World', category!='US'"
         end
-        @articles = @articles.order(order_words).paginate(:per_page => 20, :page => params[:page])
+        @articles = @articles.order(order_words)
       end
       @articles.each { |article| 
         if !current_user.user_read_articles.find_by_article_id(article.id).nil? 
@@ -62,18 +62,18 @@ class PublishedController < ApplicationController
       end
     else
       if params[:tag] then
-        @articles = Article.tagged_with(params[:tag]).where("status = ?", "Published").order('updated_at desc, created_at desc').paginate page: params[:page], per_page: 20
+        @articles = Article.tagged_with(params[:tag]).where("status = ?", "Published")
       else
         @articles = Article.where("status = ?", "Published")
         if sort_column == "updated_at" then
-          @articles = @articles.order(sort_column+ " " + sort_direction).paginate(:per_page => 20, :page => params[:page])
+          @articles = @articles.order(sort_column+ " " + sort_direction)
         else
           if sort_direction == "desc" then
             order_words = "category != 'US', category != 'World', category !='Politics', category !='Economy', category!='Technology'"
           else
             order_words = "category != 'Technology', category != 'Economy', category !='Politics', category !='World', category!='US'"
           end
-          @articles = @articles.order(order_words).paginate(:per_page => 20, :page => params[:page])
+          @articles = @articles.order(order_words)
         end
       end
     end
