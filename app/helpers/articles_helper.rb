@@ -26,7 +26,10 @@ module ArticlesHelper
           escaped_phrase_hex = coder.encode(definition[:phrase], :hexadecimal)
         end
         def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);font-weight:bold;" )
+        puts escaped_phrase
+        puts def_link
         content = content.sub(/#{escaped_phrase}(?=[^>]*(<))/i, def_link)
+        puts content
         if definition[:phrase] != escaped_phrase and original_content == content then
           content = content.sub(/#{escaped_phrase_decimal}(?=[^>]*(<))/i, def_link)
           if content == original_content then
@@ -38,7 +41,8 @@ module ArticlesHelper
           if content == original_content then
             content = content.sub(/#{escaped_phrase_hex}(?=[^>]*(<))/i, def_link)
           end
-        end  
+        end
+#        puts content  
 
                          }
  

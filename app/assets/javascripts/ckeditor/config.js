@@ -13,18 +13,17 @@ CKEDITOR.editorConfig = function( config )
     };
     config.toolbar = "MyToolbar";
     config.enterMode = CKEDITOR.ENTER_BR; 
-    config.forcePasteAsPlainText = true;
 
     config.toolbar_MyToolbar =
     [
         ['Bold','Italic', 'Underline'],
-        [ 'SpecialChar'] 
+        [ 'SpecialChar', '-', 'Scayt'] 
     ];
 
     config.toolbar_abridgedToolbar =
     [
         ['Bold','Italic', 'Underline'],
-	['SpecialChar']
+	['SpecialChar', '-', 'Scayt']
     ];
 
     config.extraPlugins = 'wordcount';
