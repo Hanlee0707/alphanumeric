@@ -15,6 +15,7 @@ module ArticlesHelper
       puts content
       index = 0
       content = "<span>" + content + "</span>"
+      original_content = content
       definitions.each { |definition|
         explanation = definition[:explanation]
         escaped_phrase = coder.encode(definition[:phrase])
@@ -25,12 +26,18 @@ module ArticlesHelper
           escaped_phrase_hex = coder.encode(definition[:phrase], :hexadecimal)
         end
         def_link = link_to(definition[:phrase], "#", data: {content: explanation}, class: 'show_definition_window', style: "color:rgb(112, 17, 18);font-weight:bold;" )
-        content = content.gsub(/#{escaped_phrase}(?=[^>]*(<))/i, def_link)
-        if definition[:phrase] != escaped_phrase then
-          content = content.gsub(/#{escaped_phrase_decimal}(?=[^>]*(<))/i, def_link)
-          content = content.gsub(/#{escaped_phrase_basic}(?=[^>]*(<))/i, def_link)
-          content = content.gsub(/#{escaped_phrase_named}(?=[^>]*(<))/i, def_link)
-          content = content.gsub(/#{escaped_phrase_hex}(?=[^>]*(<))/i, def_link)
+        content = content.sub(/#{escaped_phrase}(?=[^>]*(<))/i, def_link)
+        if definition[:phrase] != escaped_phrase and original_content == content then
+          content = content.sub(/#{escaped_phrase_decimal}(?=[^>]*(<))/i, def_link)
+          if content == original_content then
+            content = content.sub(/#{escaped_phrase_basic}(?=[^>]*(<))/i, def_link)
+          end
+          if content == original_content then
+            content = content.sub(/#{escaped_phrase_named}(?=[^>]*(<))/i, def_link)
+          end
+          if content == original_content then
+            content = content.sub(/#{escaped_phrase_hex}(?=[^>]*(<))/i, def_link)
+          end
         end  
 
                          }
