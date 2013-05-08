@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+ssource 'http://rubygems.org'
 gem 'rails'
 gem 'bootstrap-sass', "2.3.1.0"
 gem 'json'
